@@ -1,0 +1,111 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+    {% if cl.formset %}
+        <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+    {% endif %}
+    {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+            &rsaquo; <a href="/admin/reports">Reports</a>
+            &rsaquo; <a href="/admin/reports/pipelinemonthlypipelinereport/">Pipeline Report</a>
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% block coltype %}{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        {% if not employee_exists %}
+            <p>No Pipeline</p>
+        {% else %}
+            <table style="width: 100%; margin-bottom: 10px;">
+                <thead>
+                <tr>
+                    <td><b>Pipelines</b></td>
+                    {% for month in months %}
+                        <td><b>{{ month.value }}</b></td>
+                    {% endfor %}
+                    <td><b>Yearly Total</b></td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pipeline_type, yearly_pipelines in  grouped_pipelines.items %}
+                    {% if type_total_pipelines|get_item:pipeline_type %}
+                    <tr>
+                        <td>{{ pipeline_type }}</td>
+                        {% for year, monthly_pipelines in  yearly_pipelines.items %}
+                            {% for month, pipeline in  monthly_pipelines.items %}
+                                <td>
+                                    <p>
+                                        <span>$ {{ pipeline }}</span>
+                                        <!--
+                                        <p class="pipeline-txt-container-span" style="display: block">
+                                            <input type="text" class="pipeline-txt pipeline_{{ pipeline_type|replace_space }} pipeline_{{ year }}_{{ month }}"
+                                                   value="{{ pipeline }}" style="border:none"
+                                                   data-pipeline-type="{{ pipeline_type }}"
+                                                   data-year="{{ year }}"
+                                                   data-month="{{ month }}"
+                                                   data-previous-value="{{ pipeline }}"
+                                            />
+                                        </p>
+                                        <span>
+                                            <input type="button" class="pipeline-edit-btn" value="✓" style="display: none;">
+                                        </span>
+                                        <span>
+                                            <input type="button" class="edit-close-btn" value="x" style="display: none;">
+                                        </span>
+                                        -->
+                                    </p>
+                                </td>
+                            {% endfor %}
+                        {% endfor %}
+                        <td>
+                            <span>$</span>
+                            <span class="type_pipeline" id="pipeline_{{ pipeline_type|replace_space }}">
+                                {{ type_total_pipelines|get_item:pipeline_type }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                    <tr>
+                        <td><b>Total Amount</b></td>
+                        {% for month, pipeline in monthly_total_pipelines.items %}
+                            <td>
+                                <span>$</span>
+                                <span class="monthly_total"
+                                      id="total_pipeline_{{ yr }}_{{ month }}">
+                                    {{ pipeline }}
+                                </span>
+                            </td>
+                        {% endfor %}
+                        <td>
+                            <span>$</span>
+                            <span id="total">
+                                {{ total }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="{% static '/reports/js/pipeline_pipeline_report.js' %}"></script>
+    </div>
+{% endblock %}

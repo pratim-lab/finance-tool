@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+    {% if cl.formset %}
+        <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+    {% endif %}
+    {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+            &rsaquo; <a href="/admin/reports">Reports</a>
+            &rsaquo; <a href="/admin/reports/invoicemonthlyexpensereport/">Invoices Report</a>
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% block coltype %}{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        {% if not invoice_exists %}
+            <p>No Invoice</p>
+        {% else %}
+            <table style="width: 100%; margin-bottom: 10px;">
+                <thead>
+                <tr>
+                    <td><b>Client</b></td>
+                    <td><b>Project</b></td>
+                    <td><b>Invoice Date</b></td>
+                    <td><b>Invoice Number</b></td>
+                    <td><b>Invoice Status</b></td>
+                    <td><b>Expected Month of Payment</b></td>
+                    <td><b>Invoice Amount</b></td>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoices %}
+                    <tr>
+                        <td>{{ invoice.client.client_name}}</td>
+                        <td>{{ invoice.project.project_name}}</td>
+                        <td>{{ invoice.invoice_date|date:'m/d/Y'}}</td>
+                        <td>{{ invoice.invoice_number}}</td>
+                        <td>
+                            {% if invoice.invoice_status == 'P' %}
+                                {{ 'Paid' }}
+                            {% elif invoice.invoice_status == 'S' %} 
+                                {{ 'Sent' }}  
+                             {% elif invoice.invoice_status == 'TBI' %} 
+                                {{ 'To Be Invoiced' }}       
+                            {% else %}
+                                {{ '' }}
+                            {% endif %}
+                            <a href="/admin/tools/invoice/{{ invoice.id }}/change" target="_BLANK">(Edit)</a>  
+                        </td>
+                        <td>{{ invoice.expected_date_of_payment|date:'m/d/Y'}}</td>
+                        <td>${{ invoice.invoice_amount}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="{% static '/reports/js/employee_expense_report.js' %}"></script>
+    </div>
+{% endblock %}

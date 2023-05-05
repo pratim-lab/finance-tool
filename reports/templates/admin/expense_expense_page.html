@@ -1,0 +1,109 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+    {% if cl.formset %}
+        <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+    {% endif %}
+    {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+            &rsaquo; <a href="/admin/reports">Reports</a>
+            &rsaquo; <a href="/admin/reports/expensemonthlyexpensereport/">Expenses Report</a>
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% block coltype %}{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        {% if not employee_exists %}
+            <p>No Expense</p>
+        {% else %}
+            <table style="width: 100%; margin-bottom: 10px;">
+                <thead>
+                <tr>
+                    <td><b>Expenses</b></td>
+                    {% for month in months %}
+                        <td><b>{{ month.value }}</b></td>
+                    {% endfor %}
+                    <td><b>Yearly Total</b></td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for expense_type, yearly_expenses in  grouped_expenses.items %}
+                    {% if type_total_expenses|get_item:expense_type %}
+                    <tr>
+                        <td>{{ expense_type }}</td>
+                        {% for year, monthly_expenses in  yearly_expenses.items %}
+                            {% for month, expense in  monthly_expenses.items %}
+                                <td>
+                                    <p>
+                                        <span>$</span>
+                                        <p class="expense-txt-container-span" style="display: block">
+                                            <input type="text" class="expense-txt expense_{{ expense_type|replace_space }} expense_{{ year }}_{{ month }}"
+                                                   value="{{ expense }}" style="border:none"
+                                                   data-expense-type="{{ expense_type }}"
+                                                   data-year="{{ year }}"
+                                                   data-month="{{ month }}"
+                                                   data-previous-value="{{ expense }}"
+                                            />
+                                        </p>
+                                        <span>
+                                            <input type="button" class="expense-edit-btn" value="✓" style="display: none;">
+                                        </span>
+                                        <span>
+                                            <input type="button" class="edit-close-btn" value="x" style="display: none;">
+                                        </span>
+                                    </p>
+                                </td>
+                            {% endfor %}
+                        {% endfor %}
+                        <td>
+                            <span>$</span>
+                            <span class="type_expense" id="expense_{{ expense_type|replace_space }}">
+                                {{ type_total_expenses|get_item:expense_type }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                    <tr>
+                        <td><b>Total Expenses Amount</b></td>
+                        {% for month, expense in monthly_total_expenses.items %}
+                            <td>
+                                <span>$</span>
+                                <span class="monthly_total"
+                                      id="total_expense_{{ yr }}_{{ month }}">
+                                    {{ expense }}
+                                </span>
+                            </td>
+                        {% endfor %}
+                        <td>
+                            <span>$</span>
+                            <span id="total">
+                                {{ total }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="{% static '/reports/js/expense_expense_report.js' %}"></script>
+    </div>
+{% endblock %}
