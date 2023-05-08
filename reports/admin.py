@@ -311,35 +311,116 @@ def get_month_pipeline(pipeline, year, month):
                                                                          pipeline.expected_date_of_first_payment.month,
                                                                          pipeline.expected_date_of_first_payment.year),
                                                        '%d-%m-%Y').date()
-    # if pipeline.recurring_payment == 'Y':
-    #     last_payment_date = pipeline.date_of_last_payment if pipeline.date_of_last_payment is not None \
-    #         else datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
 
-    #     if pipeline.expense_frequency == 'Q':
-    #         if start_month_first_day <= date <= last_payment_date:
-    #             diff = month - pipeline.expected_date_of_first_payment.month
-    #             if diff % 3 == 0:
-    #                 actual_expense = float(pipeline.expense_payment_amount)
-    #             else:
-    #                 actual_expense = 0
-    #         else:
-    #             actual_expense = 0
-    #     else:
-    #         if start_month_first_day <= date <= last_payment_date:
-    #             actual_expense = pipeline.get_monthly_expense()
-    #         else:
-    #             actual_expense = 0
-    # else:
-    
-    recurring_months = pipeline.expected_date_of_first_payment.month + int(pipeline.no_of_payments) -1
-    expected_date_of_last_payment_month =  recurring_months % 12
-    expected_date_of_last_payment_year = pipeline.expected_date_of_first_payment.year if recurring_months <= 12 else pipeline.expected_date_of_first_payment.year + 1
-    end_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
-                                                                         expected_date_of_last_payment_month,
-                                                                         expected_date_of_last_payment_year),
+    if pipeline.expected_date_of_second_payment is not None:
+        second_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_second_payment.month,
+                                                                         pipeline.expected_date_of_second_payment.year),
                                                        '%d-%m-%Y').date()
+    else:
+        second_month_first_day = ''
 
-    if start_month_first_day <= date <= end_month_first_day:
+    if pipeline.expected_date_of_third_payment is not None:    
+        third_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_third_payment.month,
+                                                                         pipeline.expected_date_of_third_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        third_month_first_day = ''
+    
+    if pipeline.expected_date_of_forth_payment is not None:    
+        forth_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_forth_payment.month,
+                                                                         pipeline.expected_date_of_forth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+       forth_month_first_day = ''
+       
+    if pipeline.expected_date_of_fifth_payment is not None:    
+        fifth_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_fifth_payment.month,
+                                                                         pipeline.expected_date_of_fifth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        fifth_month_first_day = ''
+
+    if pipeline.expected_date_of_sixth_payment is not None:
+        sixth_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_sixth_payment.month,
+                                                                         pipeline.expected_date_of_sixth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        sixth_month_first_day = ''   
+    
+    if pipeline.expected_date_of_seventh_payment is not None:    
+        seventh_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_seventh_payment.month,
+                                                                         pipeline.expected_date_of_seventh_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        seventh_month_first_day = ''
+
+    if pipeline.expected_date_of_eighth_payment is not None: 
+        eight_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_eighth_payment.month,
+                                                                         pipeline.expected_date_of_eighth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        eight_month_first_day = ''
+
+    if pipeline.expected_date_of_nineth_payment is not None:    
+        nineth_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_nineth_payment.month,
+                                                                         pipeline.expected_date_of_nineth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        nineth_month_first_day = ''
+
+    if pipeline.expected_date_of_tenth_payment is not None:     
+        tenth_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_tenth_payment.month,
+                                                                         pipeline.expected_date_of_tenth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        tenth_month_first_day = ''
+        
+    if pipeline.expected_date_of_eleventh_payment is not None:       
+        eleventh_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_eleventh_payment.month,
+                                                                         pipeline.expected_date_of_eleventh_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        eleventh_month_first_day = ''
+
+    if pipeline.expected_date_of_twelfth_payment is not None:     
+        twelfth_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         pipeline.expected_date_of_twelfth_payment.month,
+                                                                         pipeline.expected_date_of_twelfth_payment.year),
+                                                       '%d-%m-%Y').date()
+    else:
+        twelfth_month_first_day = ''
+
+    # recurring_months = pipeline.expected_date_of_first_payment.month + int(pipeline.no_of_payments) -1
+    # expected_date_of_last_payment_month =  recurring_months % 12
+    # expected_date_of_last_payment_year = pipeline.expected_date_of_first_payment.year if recurring_months <= 12 else pipeline.expected_date_of_first_payment.year + 1
+    # end_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+    #                                                                      expected_date_of_last_payment_month,
+    #                                                                      expected_date_of_last_payment_year),
+    #                                                    '%d-%m-%Y').date()
+
+    #if start_month_first_day <= date <= end_month_first_day:
+    if start_month_first_day == date or \
+        second_month_first_day == date or \
+        third_month_first_day == date or \
+        forth_month_first_day == date or \
+        fifth_month_first_day == date or \
+        sixth_month_first_day == date or \
+        seventh_month_first_day == date or \
+        eight_month_first_day == date or \
+        nineth_month_first_day == date or \
+        tenth_month_first_day == date or \
+        eleventh_month_first_day == date or \
+        twelfth_month_first_day == date:
         actual_expense = float(pipeline.estimated_payment_amount)
     else:
         actual_expense = 0

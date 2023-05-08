@@ -10,14 +10,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='project',
-            name='confidence',
-        ),
-        migrations.RemoveField(
-            model_name='project',
-            name='total_fees',
-        ),
+        # migrations.RemoveField(
+        #     model_name='project',
+        #     name='confidence',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='project',
+        #     name='total_fees',
+        # ),
         # migrations.AddField(
         #     model_name='pipeline',
         #     name='estimated_payment_amount',
