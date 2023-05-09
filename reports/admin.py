@@ -22,6 +22,7 @@ from tools.models import Expense
 from tools.models import ExpenseType
 
 from reports.models import InvoiceMonthlyExpenseReport
+from reports.models import IncomeForecastReport
 from tools.models import Invoice
 
 from reports.models import PipelineMonthlyExpenseReport
@@ -427,6 +428,20 @@ def get_month_pipeline(pipeline, year, month):
 
     return float(actual_expense)
 
+def get_month_invoice(invoice, year, month):
+    date = datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
+    start_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                         invoice.expected_date_of_payment.month,
+                                                                         invoice.expected_date_of_payment.year),
+                                                       '%d-%m-%Y').date()
+
+    if start_month_first_day == date:
+        actual_expense = float(invoice.invoice_amount)
+    else:
+        actual_expense = 0
+
+    return float(actual_expense)
+
 
 
 class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
@@ -655,6 +670,79 @@ class PipelineMonthlyExpenseAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+class IncomeForecastAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/income_forecast_page.html'
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [path("edit", self.admin_site.admin_view(type_total_expense_edit_view))]
+
+        return my_urls + urls
+
+    @csrf_protect_m
+    def changelist_view(self, request, extra_context=None):
+        """
+        The 'change list' admin view for this model.
+        """
+        if not self.has_view_or_change_permission(request):
+            raise PermissionDenied
+
+        months = get_months()
+        year = get_current_year()
+
+        grouped_invoice = {}
+        type_total_invoices = {}
+        monthly_total_invoices = {}
+        total = 0
+        for m in months:
+            monthly_total_invoices[m['id']] = 0
+
+        for item in Client.objects.values_list('client_name'):    
+            type_total_invoices[item[0]] = 0
+            m_dict = {}
+            for m in months:
+                m_dict[m['id']] = 0
+            grouped_invoice[item[0]] = {
+                year: m_dict
+            }
+
+        invoices_list = Invoice.objects.all()
+        for i in invoices_list:
+            for m in months:
+                ex = get_month_invoice(i, year, m['id'])
+                grouped_invoice[i.client.client_name][year][m['id']] = grouped_invoice[i.client.client_name][year][m['id']] + ex
+
+        
+        for ex_type, value in grouped_invoice.items():
+            for year, value2 in value.items():
+                for month, expense_value in value2.items():
+                    monthly_total_invoices[month] = monthly_total_invoices[month] + expense_value
+                    type_total_invoices[ex_type] = type_total_invoices[ex_type] + expense_value
+                    total = total + expense_value
+
+        context = {
+            **self.admin_site.each_context(request),
+            'title': "Income Forecast Report",
+            'subtitle': None,
+            'has_add_permission': self.has_add_permission(request),
+            **(extra_context or {}),
+
+            # page specific
+
+            'months': months,
+            'total': total,
+            'employee_exists': True,
+            'grouped_invoices': grouped_invoice,
+            'monthly_total_invoices': monthly_total_invoices,
+            'type_total_invoices': type_total_invoices,
+            'yr': year
+        }
+        request.current_app = self.admin_site.name
+        return TemplateResponse(request, self.change_list_template, context)
+
 
 # admin.site.register(ContractorMonthlyExpense)
 admin.site.register(ContractorMonthlyExpenseReport, ContractorMonthlyExpenseAdmin)
@@ -667,3 +755,5 @@ admin.site.register(TypeTotalExpenseReport, ExpenseMonthlyExpenseAdmin)
 admin.site.register(InvoiceMonthlyExpenseReport, InvoiceMonthlyAdmin)
 
 admin.site.register(PipelineMonthlyExpenseReport, PipelineMonthlyExpenseAdmin)
+
+admin.site.register(IncomeForecastReport, IncomeForecastAdmin)

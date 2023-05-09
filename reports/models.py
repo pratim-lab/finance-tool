@@ -75,9 +75,21 @@ class PipelineMonthlyExpense(models.Model):
     def __str__(self):
         return ''
 
-class PipelineMonthlyExpenseReport(InvoiceMonthlyExpense):
+class PipelineMonthlyExpenseReport(PipelineMonthlyExpense):
 
     class Meta:
         proxy = True
         verbose_name = 'Pipeline'
         verbose_name_plural = 'Pipelines'
+
+class IncomeForecast(models.Model):
+   
+    def __str__(self):
+        return ''
+
+class IncomeForecastReport(IncomeForecast):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Income Forecast'
+        verbose_name_plural = 'Income Forecasts'
