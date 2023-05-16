@@ -93,3 +93,15 @@ class IncomeForecastReport(IncomeForecast):
         proxy = True
         verbose_name = 'Income Forecast'
         verbose_name_plural = 'Income Forecasts'
+
+class MonthlyBudgetTracker(models.Model):
+   
+    def __str__(self):
+        return ''
+
+class MonthlyBudgetTrackerReport(MonthlyBudgetTracker):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Monthly Budget Tracker'
+        verbose_name_plural = 'Monthly Budget Trackers'

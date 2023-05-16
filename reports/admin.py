@@ -29,6 +29,7 @@ from reports.models import PipelineMonthlyExpenseReport
 from tools.models import Pipeline
 from tools.models import Client
 
+from reports.models import MonthlyBudgetTrackerReport
 
 def get_months():
     return [
@@ -46,233 +47,8 @@ def get_months():
         {'id': 12, 'value': 'December'}
     ]
 
-
 def get_current_year():
     return datetime.datetime.now().year
-
-
-class ContractorMonthlyExpenseAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/contractor_expense_page.html'
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-    def get_urls(self):
-        urls = super().get_urls()
-        my_urls = [path("edit", self.admin_site.admin_view(contractor_monthly_expense_edit_view))]
-        return my_urls + urls
-
-    @csrf_protect_m
-    def changelist_view(self, request, extra_context=None):
-        """
-        The 'change list' admin view for this model.
-        """
-        if not self.has_view_or_change_permission(request):
-            raise PermissionDenied
-
-        previously_updated_expenses = ContractorMonthlyExpense.objects.all()
-        expenses = dict()
-        for expense in previously_updated_expenses:
-            key = '{}_{}_{}'.format(expense.contractor.id, expense.year, expense.month)
-            expenses[key] = expense.expense
-
-        contractors = Contractor.objects.all()
-        if len(contractors) == 0:
-            context = {
-                **self.admin_site.each_context(request),
-                'title': "Contractors Salary Report",
-                'subtitle': None,
-                'has_add_permission': self.has_add_permission(request),
-                **(extra_context or {}),
-                # page specific
-                'contractor_exists': False
-            }
-            request.current_app = self.admin_site.name
-            return TemplateResponse(request, self.change_list_template, context)
-
-        months = get_months()
-        year = get_current_year()
-        exp = []
-        rows = []
-        for c in contractors:
-            columns = [{'id': c.id, 'name': c.contractor_name}]
-            contractors_total = 0
-            expense_columns = []
-            for m in months:
-                key = '{}_{}_{}'.format(c.id, year, m['id'])
-                if key in expenses:
-                    columns.append({
-                        'year': year,
-                        'month': m['id'],
-                        'expense': expenses[key]
-                    })
-                    expense_columns.append(float(expenses[key]))
-                    contractors_total = contractors_total + float(expenses[key])
-                else:
-                    date = datetime.datetime.strptime('{}-{}-{}'.format(1, m['id'], year), '%d-%m-%Y').date()
-                    start_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
-                                                                                         c.contractor_start_date.month,
-                                                                                         c.contractor_start_date.year),
-                                                                       '%d-%m-%Y').date()
-                    if start_month_first_day <= date:
-                        expense = float(c.contractor_hourly_salary) * float(c.contractor_expected_weekly_hours) * 4
-                    else:
-                        expense = 0
-                    columns.append({
-                        'year': year,
-                        'month': m['id'],
-                        'expense': expense
-                    })
-                    contractors_total = contractors_total + expense
-                    expense_columns.append(expense)
-            columns.append(contractors_total)
-            rows.append(columns)
-            exp.append(expense_columns)
-
-        a = np.array(exp)
-        monthly_total = np.sum(a, axis=0, dtype=float)
-        monthly_total_items = []
-        for idx, mt in enumerate(monthly_total):
-            monthly_total_items.append({
-                'year': year,
-                'month': idx + 1,
-                'total_expense': mt
-            })
-        total = 0
-        for item in monthly_total:
-            total = total + item
-        context = {
-            **self.admin_site.each_context(request),
-            'title': "Contractors Salary Report",
-            'subtitle': None,
-            'has_add_permission': self.has_add_permission(request),
-            **(extra_context or {}),
-
-            # page specific
-            'contractors': contractors,
-            'months': months,
-            'rows': rows,
-            'total_row': monthly_total_items,
-            'total': total,
-            'contractor_exists': True
-        }
-        request.current_app = self.admin_site.name
-        return TemplateResponse(request, self.change_list_template, context)
-
-
-class EmployeeMonthlyExpenseAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/employee_expense_page.html'
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-    def get_urls(self):
-        urls = super().get_urls()
-        my_urls = [path("edit", self.admin_site.admin_view(employee_monthly_expense_edit_view))]
-
-        return my_urls + urls
-
-    @csrf_protect_m
-    def changelist_view(self, request, extra_context=None):
-        """
-        The 'change list' admin view for this model.
-        """
-        if not self.has_view_or_change_permission(request):
-            raise PermissionDenied
-
-        previously_updated_expenses = EmployeeMonthlyExpense.objects.all()
-        expenses = dict()
-        for expense in previously_updated_expenses:
-            key = '{}_{}_{}'.format(expense.employee.id, expense.year, expense.month)
-            expenses[key] = expense.expense
-
-        employees = Employee.objects.all()
-        if len(employees) == 0:
-            context = {
-                **self.admin_site.each_context(request),
-                'title': "Employees Report",
-                'subtitle': None,
-                'has_add_permission': self.has_add_permission(request),
-                **(extra_context or {}),
-                # page specific
-                'employee_exists': False
-            }
-            request.current_app = self.admin_site.name
-            return TemplateResponse(request, self.change_list_template, context)
-        months = get_months()
-        year = get_current_year()
-        exp = []
-        rows = []
-        for c in employees:
-            columns = [{'id': c.id, 'name': c.employee_name}]
-            employees_total = 0
-            expense_columns = []
-            for m in months:
-                key = '{}_{}_{}'.format(c.id, year, m['id'])
-                if key in expenses:
-                    columns.append({
-                        'year': year,
-                        'month': m['id'],
-                        'expense': expenses[key]
-                    })
-                    expense_columns.append(float(expenses[key]))
-                    employees_total = employees_total + float(expenses[key])
-                else:
-                    date = datetime.datetime.strptime('{}-{}-{}'.format(1, m['id'], year), '%d-%m-%Y').date()
-                    start_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
-                                                                                         c.employee_start_date.month,
-                                                                                         c.employee_start_date.year),
-                                                                       '%d-%m-%Y').date()
-                    if start_month_first_day <= date:
-                        if c.payment_structure == 'W':
-                            expense = float(c.employee_monthly_salary) * 4
-                        elif c.payment_structure == 'BM':
-                            expense = float(c.employee_monthly_salary) * 2
-                        else:
-                            expense = float(c.employee_monthly_salary)
-                    else:
-                        expense = 0
-                    columns.append({
-                        'year': year,
-                        'month': m['id'],
-                        'expense': expense
-                    })
-                    employees_total = employees_total + expense
-                    expense_columns.append(expense)
-            columns.append(employees_total)
-            rows.append(columns)
-            exp.append(expense_columns)
-
-        a = np.array(exp)
-        monthly_total = np.sum(a, axis=0, dtype=float)
-        monthly_total_items = []
-        for idx, mt in enumerate(monthly_total):
-            monthly_total_items.append({
-                'year': year,
-                'month': idx + 1,
-                'total_expense': mt
-            })
-        total = 0
-        for item in monthly_total:
-            total = total + item
-        context = {
-            **self.admin_site.each_context(request),
-            'title': "Employees Report",
-            'subtitle': None,
-            'has_add_permission': self.has_add_permission(request),
-            **(extra_context or {}),
-
-            # page specific
-            'employees': employees,
-            'months': months,
-            'rows': rows,
-            'total_row': monthly_total_items,
-            'total': total,
-            'employee_exists': True
-        }
-        request.current_app = self.admin_site.name
-        return TemplateResponse(request, self.change_list_template, context)
-
 
 def get_month_expense(expense, year, month):
     date = datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
@@ -443,6 +219,294 @@ def get_month_invoice(invoice, year, month):
     return float(actual_expense)
 
 
+def get_expense_calc():
+    months = get_months()
+    year = get_current_year()
+
+    grouped_expense = {}
+    type_total_expenses = {}
+    monthly_total_expenses = {}
+    total = 0
+    for m in months:
+        monthly_total_expenses[m['id']] = 0
+
+    for item in ExpenseType.objects.values_list('expense_name'):    
+        type_total_expenses[item[0]] = 0
+        m_dict = {}
+        for m in months:
+            m_dict[m['id']] = 0
+        grouped_expense[item[0]] = {
+            year: m_dict
+        }
+
+    previously_updated_expenses = TypeTotalExpense.objects.all()
+    updated_expenses = dict()
+    for expense_r in previously_updated_expenses:
+        key = '{}_{}_{}'.format(expense_r.expense_type, expense_r.year, expense_r.month)
+        updated_expenses[key] = float(expense_r.expense)
+
+    expenses_list = Expense.objects.all()
+    for e in expenses_list:
+        for m in months:
+            ex = get_month_expense(e, year, m['id'])
+            grouped_expense[e.expense_type.expense_name][year][m['id']] = grouped_expense[e.expense_type.expense_name][year][m['id']] + ex
+
+    for expense_type in ExpenseType.objects.values_list('expense_name'):
+        expense_type_name = expense_type[0]
+        for m in months:
+            key = '{}_{}_{}'.format(expense_type_name, year, m['id'])
+            if key in updated_expenses:
+                grouped_expense[expense_type_name][year][m['id']] = updated_expenses[key]
+
+    for ex_type, value in grouped_expense.items():
+        for year, value2 in value.items():
+            for month, expense_value in value2.items():
+                monthly_total_expenses[month] = monthly_total_expenses[month] + expense_value
+                type_total_expenses[ex_type] = type_total_expenses[ex_type] + expense_value
+                total = total + expense_value
+
+    return year, months, grouped_expense, type_total_expenses, monthly_total_expenses, total
+
+def get_employee_calc():
+    months = get_months()
+    year = get_current_year()
+    exp = []
+    rows = []
+    monthly_total_items = []
+    total = 0
+    employees = Employee.objects.all()
+
+    if len(employees) == 0:
+        pass
+    else:  
+        previously_updated_expenses = EmployeeMonthlyExpense.objects.all()
+        expenses = dict()
+        for expense in previously_updated_expenses:
+            key = '{}_{}_{}'.format(expense.employee.id, expense.year, expense.month)
+            expenses[key] = expense.expense
+
+        for c in employees:
+            columns = [{'id': c.id, 'name': c.employee_name}]
+            employees_total = 0
+            expense_columns = []
+            for m in months:
+                key = '{}_{}_{}'.format(c.id, year, m['id'])
+                if key in expenses:
+                    columns.append({
+                        'year': year,
+                        'month': m['id'],
+                        'expense': expenses[key]
+                    })
+                    expense_columns.append(float(expenses[key]))
+                    employees_total = employees_total + float(expenses[key])
+                else:
+                    date = datetime.datetime.strptime('{}-{}-{}'.format(1, m['id'], year), '%d-%m-%Y').date()
+                    start_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                                         c.employee_start_date.month,
+                                                                                         c.employee_start_date.year),
+                                                                       '%d-%m-%Y').date()
+                    if start_month_first_day <= date:
+                        if c.payment_structure == 'W':
+                            expense = float(c.employee_monthly_salary) * 4
+                        elif c.payment_structure == 'BM':
+                            expense = float(c.employee_monthly_salary) * 2
+                        else:
+                            expense = float(c.employee_monthly_salary)
+                    else:
+                        expense = 0
+                    columns.append({
+                        'year': year,
+                        'month': m['id'],
+                        'expense': expense
+                    })
+                    employees_total = employees_total + expense
+                    expense_columns.append(expense)
+            columns.append(employees_total)
+            rows.append(columns)
+            exp.append(expense_columns)
+
+        a = np.array(exp)
+        monthly_total = np.sum(a, axis=0, dtype=float)
+        
+        for idx, mt in enumerate(monthly_total):
+            monthly_total_items.append({
+                'year': year,
+                'month': idx + 1,
+                'total_expense': mt
+            })
+        
+        for item in monthly_total:
+            total = total + item
+
+    return year, months, employees, rows, monthly_total_items, total
+
+def get_contractor_calc():
+
+    months = get_months()
+    year = get_current_year()
+    exp = []
+    rows = []
+    monthly_total_items = []
+    total = 0
+    contractors = Contractor.objects.all()
+
+    if len(contractors) == 0:
+        pass
+    else:    
+        previously_updated_expenses = ContractorMonthlyExpense.objects.all()
+        expenses = dict()
+        for expense in previously_updated_expenses:
+            key = '{}_{}_{}'.format(expense.contractor.id, expense.year, expense.month)
+            expenses[key] = expense.expense
+
+        for c in contractors:
+            columns = [{'id': c.id, 'name': c.contractor_name}]
+            contractors_total = 0
+            expense_columns = []
+            for m in months:
+                key = '{}_{}_{}'.format(c.id, year, m['id'])
+                if key in expenses:
+                    columns.append({
+                        'year': year,
+                        'month': m['id'],
+                        'expense': expenses[key]
+                    })
+                    expense_columns.append(float(expenses[key]))
+                    contractors_total = contractors_total + float(expenses[key])
+                else:
+                    date = datetime.datetime.strptime('{}-{}-{}'.format(1, m['id'], year), '%d-%m-%Y').date()
+                    start_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
+                                                                                         c.contractor_start_date.month,
+                                                                                         c.contractor_start_date.year),
+                                                                       '%d-%m-%Y').date()
+                    if start_month_first_day <= date:
+                        expense = float(c.contractor_hourly_salary) * float(c.contractor_expected_weekly_hours) * 4
+                    else:
+                        expense = 0
+                    columns.append({
+                        'year': year,
+                        'month': m['id'],
+                        'expense': expense
+                    })
+                    contractors_total = contractors_total + expense
+                    expense_columns.append(expense)
+            columns.append(contractors_total)
+            rows.append(columns)
+            exp.append(expense_columns)
+
+        a = np.array(exp)
+        monthly_total = np.sum(a, axis=0, dtype=float)
+        for idx, mt in enumerate(monthly_total):
+            monthly_total_items.append({
+                'year': year,
+                'month': idx + 1,
+                'total_expense': mt
+            })
+        
+        for item in monthly_total:
+            total = total + item
+
+    return year, months, contractors, rows, monthly_total_items, total    
+
+
+class ContractorMonthlyExpenseAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/contractor_expense_page.html'
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [path("edit", self.admin_site.admin_view(contractor_monthly_expense_edit_view))]
+        return my_urls + urls
+
+    @csrf_protect_m
+    def changelist_view(self, request, extra_context=None):
+        """
+        The 'change list' admin view for this model.
+        """
+        if not self.has_view_or_change_permission(request):
+            raise PermissionDenied
+
+        year, months, contractors, rows, monthly_total_items, total = get_contractor_calc()   
+
+        if len(contractors) == 0:
+            context = {
+                **self.admin_site.each_context(request),
+                'title': "Contractors Salary Report",
+                'subtitle': None,
+                'has_add_permission': self.has_add_permission(request),
+                **(extra_context or {}),
+                # page specific
+                'contractor_exists': False
+            }
+        else:
+            context = {
+                **self.admin_site.each_context(request),
+                'title': "Contractors Salary Report",
+                'subtitle': None,
+                'has_add_permission': self.has_add_permission(request),
+                **(extra_context or {}),
+                # page specific
+                'contractors': contractors,
+                'months': months,
+                'rows': rows,
+                'total_row': monthly_total_items,
+                'total': total,
+                'contractor_exists': True
+            }
+        request.current_app = self.admin_site.name
+        return TemplateResponse(request, self.change_list_template, context)
+
+class EmployeeMonthlyExpenseAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/employee_expense_page.html'
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [path("edit", self.admin_site.admin_view(employee_monthly_expense_edit_view))]
+
+        return my_urls + urls
+
+    @csrf_protect_m
+    def changelist_view(self, request, extra_context=None):
+        """
+        The 'change list' admin view for this model.
+        """
+        if not self.has_view_or_change_permission(request):
+            raise PermissionDenied
+
+        year, months, employees, rows, monthly_total_items, total = get_employee_calc()   
+        
+        if len(employees) == 0:
+            context = {
+                **self.admin_site.each_context(request),
+                'title': "Employees Report",
+                'subtitle': None,
+                'has_add_permission': self.has_add_permission(request),
+                **(extra_context or {}),
+                # page specific
+                'employee_exists': False
+            }
+        else:    
+            context = {
+                **self.admin_site.each_context(request),
+                'title': "Employees Report",
+                'subtitle': None,
+                'has_add_permission': self.has_add_permission(request),
+                **(extra_context or {}),
+                # page specific
+                'employees': employees,
+                'months': months,
+                'rows': rows,
+                'total_row': monthly_total_items,
+                'total': total,
+                'employee_exists': True
+            }
+        request.current_app = self.admin_site.name
+        return TemplateResponse(request, self.change_list_template, context)
 
 class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/expense_expense_page.html'
@@ -464,68 +528,7 @@ class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
         if not self.has_view_or_change_permission(request):
             raise PermissionDenied
 
-        months = get_months()
-        year = get_current_year()
-
-        grouped_expense = {}
-        type_total_expenses = {}
-        monthly_total_expenses = {}
-        total = 0
-        for m in months:
-            monthly_total_expenses[m['id']] = 0
-
-        #for item in Expense.EXPENSE_TYPE:
-        for item in ExpenseType.objects.values_list('expense_name'):    
-            type_total_expenses[item[0]] = 0
-            m_dict = {}
-            for m in months:
-                m_dict[m['id']] = 0
-            grouped_expense[item[0]] = {
-                year: m_dict
-            }
-
-        previously_updated_expenses = TypeTotalExpense.objects.all()
-
-        updated_expenses = dict()
-        for expense_r in previously_updated_expenses:
-            key = '{}_{}_{}'.format(expense_r.expense_type, expense_r.year, expense_r.month)
-            updated_expenses[key] = float(expense_r.expense)
-
-        expenses_list = Expense.objects.all()
-
-        # if len(expenses_list) == 0:
-        #     context = {
-        #         **self.admin_site.each_context(request),
-        #         'title': "Expenses Report",
-        #         'subtitle': None,
-        #         'has_add_permission': self.has_add_permission(request),
-        #         **(extra_context or {}),
-        #         # page specific
-        #         'employee_exists': False
-        #     }
-        #     request.current_app = self.admin_site.name
-        #     return TemplateResponse(request, self.change_list_template, context)
-
-        for e in expenses_list:
-            for m in months:
-                ex = get_month_expense(e, year, m['id'])
-                #grouped_expense[e.expense_type][year][m['id']] = grouped_expense[e.expense_type][year][m['id']] + ex
-                grouped_expense[e.expense_type.expense_name][year][m['id']] = grouped_expense[e.expense_type.expense_name][year][m['id']] + ex
-
-        #for expense_type in Expense.EXPENSE_TYPE:
-        for expense_type in ExpenseType.objects.values_list('expense_name'):
-            expense_type_name = expense_type[0]
-            for m in months:
-                key = '{}_{}_{}'.format(expense_type_name, year, m['id'])
-                if key in updated_expenses:
-                    grouped_expense[expense_type_name][year][m['id']] = updated_expenses[key]
-
-        for ex_type, value in grouped_expense.items():
-            for year, value2 in value.items():
-                for month, expense_value in value2.items():
-                    monthly_total_expenses[month] = monthly_total_expenses[month] + expense_value
-                    type_total_expenses[ex_type] = type_total_expenses[ex_type] + expense_value
-                    total = total + expense_value
+        year, months, grouped_expense, type_total_expenses, monthly_total_expenses, total = get_expense_calc() 
 
         context = {
             **self.admin_site.each_context(request),
@@ -533,9 +536,7 @@ class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
             'subtitle': None,
             'has_add_permission': self.has_add_permission(request),
             **(extra_context or {}),
-
             # page specific
-
             'months': months,
             'total': total,
             'employee_exists': True,
@@ -546,7 +547,6 @@ class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
         }
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
-
 
 class InvoiceMonthlyAdmin(admin.ModelAdmin):
     change_list_template = 'admin/invoice_expense_page.html'
@@ -595,7 +595,6 @@ class InvoiceMonthlyAdmin(admin.ModelAdmin):
         }
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
-
 
 class PipelineMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/pipeline_expense_page.html'
@@ -743,6 +742,133 @@ class IncomeForecastAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+class MonthlyBudgetTrackerAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/monthly_budget_tracker_page.html'
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [path("edit", self.admin_site.admin_view(type_total_expense_edit_view))]
+
+        return my_urls + urls
+
+    @csrf_protect_m
+    def changelist_view(self, request, extra_context=None):
+        """
+        The 'change list' admin view for this model.
+        """
+        if not self.has_view_or_change_permission(request):
+            raise PermissionDenied
+
+        months = get_months()
+        year = get_current_year()
+        
+        ########Income########
+
+        m_dict = {}
+        for m in months:
+            m_dict[m['id']] = 0
+        grouped_invoice = {year:m_dict}
+        type_total_invoices = 0
+
+        invoices_list = Invoice.objects.all()
+        for i in invoices_list:
+            for m in months:
+                inv = get_month_invoice(i, year, m['id'])
+                grouped_invoice[year][m['id']] = grouped_invoice[year][m['id']] + inv
+
+        for year, value in grouped_invoice.items():
+            for month, invoice_value in value.items():
+                type_total_invoices = type_total_invoices + invoice_value
+
+        #######Expense################    
+
+        year_expn, months_expn, grouped_expense, type_total_expenses, monthly_total_exps, total_exps = get_expense_calc() 
+
+        ######Employee Expense#########
+
+        year_emp, months_emp, employees, rows_emp, monthly_total_emps_tmp, total_emp_exps = get_employee_calc()
+        
+        monthly_total_emps = {}
+        for m in months:
+            monthly_total_emps[m['id']] = 0
+        for mtet in monthly_total_emps_tmp:
+            monthly_total_emps[mtet['month']] = mtet['total_expense']
+
+        ######Contractor Expense#########
+            
+        year_con, months_con, contractors, rows_con, monthly_total_cons_tmp, total_con_exps = get_contractor_calc()
+
+        monthly_total_cons = {}
+        for m in months:
+            monthly_total_cons[m['id']] = 0
+        for mtct in monthly_total_cons_tmp:
+            monthly_total_cons[mtct['month']] = mtct['total_expense']
+
+        ########Total Expense#########
+        
+        monthly_total_expenses = {}
+        total_expenses = 0
+
+        for m in months:
+            monthly_total_expenses[m['id']] = monthly_total_exps[m['id']] + monthly_total_emps[m['id']] + monthly_total_cons[m['id']]
+
+        total_expenses =  total_exps + total_emp_exps + total_con_exps
+
+        #########Net Income############
+        m_dict = {}
+        for m in months:
+            m_dict[m['id']] = 0
+        grouped_netincome = {year:m_dict}
+        type_total_netincome = 0
+
+        for m in months:
+            grouped_netincome[year][m['id']] = grouped_invoice[year][m['id']] - monthly_total_expenses[m['id']]
+
+       
+        type_total_netincome = type_total_invoices - total_expenses
+
+       #############Starting Monthly Bal###############
+
+        m_dict = {}
+        for m in months:
+            m_dict[m['id']] = 0
+        grouped_strtmonthlybal = {year:m_dict}
+        type_total_strtmonthlybal = 0
+
+        for m in months:
+            if m['id'] > 1:
+                grouped_strtmonthlybal[year][m['id']] = grouped_strtmonthlybal[year][m['id'] - 1] + grouped_netincome[year][m['id'] - 1] 
+            else:
+                grouped_strtmonthlybal[year][m['id']] = 0
+
+        for year, value in grouped_strtmonthlybal.items():
+            for month, strtmonthlybal_value in value.items():
+                type_total_strtmonthlybal = type_total_strtmonthlybal + strtmonthlybal_value        
+
+        ######################## 
+
+        context = {
+            **self.admin_site.each_context(request),
+            'title': "Monthly Budget Tracker Report",
+            'subtitle': None,
+            'has_add_permission': self.has_add_permission(request),
+            **(extra_context or {}),
+            # page specific
+            'months': months,
+            'grouped_invoices': grouped_invoice,
+            'type_total_invoices': type_total_invoices,
+            'monthly_total_expenses': monthly_total_expenses,
+            'total_expenses': total_expenses,
+            'grouped_netincomes': grouped_netincome,
+            'type_total_netincome': type_total_netincome,
+            'grouped_strtmonthlybals': grouped_strtmonthlybal,
+            'type_total_strtmonthlybal': type_total_strtmonthlybal
+        }
+        request.current_app = self.admin_site.name
+        return TemplateResponse(request, self.change_list_template, context)
 
 # admin.site.register(ContractorMonthlyExpense)
 admin.site.register(ContractorMonthlyExpenseReport, ContractorMonthlyExpenseAdmin)
@@ -757,3 +883,5 @@ admin.site.register(InvoiceMonthlyExpenseReport, InvoiceMonthlyAdmin)
 admin.site.register(PipelineMonthlyExpenseReport, PipelineMonthlyExpenseAdmin)
 
 admin.site.register(IncomeForecastReport, IncomeForecastAdmin)
+
+admin.site.register(MonthlyBudgetTrackerReport, MonthlyBudgetTrackerAdmin)
