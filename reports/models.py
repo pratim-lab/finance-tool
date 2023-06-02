@@ -105,3 +105,15 @@ class MonthlyBudgetTrackerReport(MonthlyBudgetTracker):
         proxy = True
         verbose_name = 'Monthly Budget Tracker'
         verbose_name_plural = 'Monthly Budget Trackers'
+
+class MonthlyBudgetGraph(models.Model):
+   
+    def __str__(self):
+        return ''
+
+class MonthlyBudgetTrackerGraph(MonthlyBudgetGraph):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'Budget Graph'
+        verbose_name_plural = 'Budget Graph'        

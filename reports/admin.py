@@ -1,6 +1,12 @@
 import datetime
 import numpy as np
 import json
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
+
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
@@ -30,6 +36,7 @@ from tools.models import Pipeline
 from tools.models import Client
 
 from reports.models import MonthlyBudgetTrackerReport
+from reports.models import MonthlyBudgetTrackerGraph
 
 def get_months():
     return [
@@ -49,6 +56,11 @@ def get_months():
 
 def get_current_year():
     return datetime.datetime.now().year
+
+def legend_without_duplicate_labels(figure):
+    handles, labels = plt.gca().get_legend_handles_labels()
+    by_label = dict(zip(labels, handles))
+    figure.legend(by_label.values(), by_label.keys(), loc='upper left')
 
 def get_month_expense(expense, year, month):
     date = datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
@@ -408,6 +420,96 @@ def get_contractor_calc():
 
     return year, months, contractors, rows, monthly_total_items, total    
 
+def get_monthly_budget_calc():
+    months = get_months()
+    year = get_current_year()
+
+    ########Income########
+
+    m_dict = {}
+    for m in months:
+        m_dict[m['id']] = 0
+    grouped_invoice = {year:m_dict}
+    type_total_invoices = 0
+
+    invoices_list = Invoice.objects.all()
+    for i in invoices_list:
+        for m in months:
+            inv = get_month_invoice(i, year, m['id'])
+            grouped_invoice[year][m['id']] = grouped_invoice[year][m['id']] + inv
+
+    for year, value in grouped_invoice.items():
+        for month, invoice_value in value.items():
+            type_total_invoices = type_total_invoices + invoice_value
+
+    #######Expense################    
+
+    year_expn, months_expn, grouped_expense, type_total_expenses, monthly_total_exps, total_exps = get_expense_calc() 
+
+    ######Employee Expense#########
+
+    year_emp, months_emp, employees, rows_emp, monthly_total_emps_tmp, total_emp_exps = get_employee_calc()
+
+    monthly_total_emps = {}
+    for m in months:
+        monthly_total_emps[m['id']] = 0
+    for mtet in monthly_total_emps_tmp:
+        monthly_total_emps[mtet['month']] = mtet['total_expense']
+
+    ######Contractor Expense#########
+        
+    year_con, months_con, contractors, rows_con, monthly_total_cons_tmp, total_con_exps = get_contractor_calc()
+
+    monthly_total_cons = {}
+    for m in months:
+        monthly_total_cons[m['id']] = 0
+    for mtct in monthly_total_cons_tmp:
+        monthly_total_cons[mtct['month']] = mtct['total_expense']
+
+    ########Total Expense#########
+
+    monthly_total_expenses = {}
+    total_expenses = 0
+
+    for m in months:
+        monthly_total_expenses[m['id']] = monthly_total_exps[m['id']] + monthly_total_emps[m['id']] + monthly_total_cons[m['id']]
+
+    total_expenses =  total_exps + total_emp_exps + total_con_exps
+
+    #########Net Income############
+    m_dict = {}
+    for m in months:
+        m_dict[m['id']] = 0
+    grouped_netincome = {year:m_dict}
+    type_total_netincome = 0
+
+    for m in months:
+        grouped_netincome[year][m['id']] = grouped_invoice[year][m['id']] - monthly_total_expenses[m['id']]
+
+
+    type_total_netincome = type_total_invoices - total_expenses
+
+    #############Starting Monthly Bal###############
+
+    m_dict = {}
+    for m in months:
+        m_dict[m['id']] = 0
+    grouped_strtmonthlybal = {year:m_dict}
+    type_total_strtmonthlybal = 0
+
+    for m in months:
+        if m['id'] > 1:
+            grouped_strtmonthlybal[year][m['id']] = grouped_strtmonthlybal[year][m['id'] - 1] + grouped_netincome[year][m['id'] - 1] 
+        else:
+            grouped_strtmonthlybal[year][m['id']] = 0
+
+    for year, value in grouped_strtmonthlybal.items():
+        for month, strtmonthlybal_value in value.items():
+            type_total_strtmonthlybal = type_total_strtmonthlybal + strtmonthlybal_value        
+
+    ########################
+
+    return months, grouped_invoice, type_total_invoices, monthly_total_expenses, total_expenses, grouped_netincome, type_total_netincome, grouped_strtmonthlybal, type_total_strtmonthlybal
 
 class ContractorMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/contractor_expense_page.html'
@@ -761,95 +863,9 @@ class MonthlyBudgetTrackerAdmin(admin.ModelAdmin):
         """
         if not self.has_view_or_change_permission(request):
             raise PermissionDenied
-
-        months = get_months()
-        year = get_current_year()
+  
+        months, grouped_invoice, type_total_invoices, monthly_total_expenses, total_expenses, grouped_netincome, type_total_netincome, grouped_strtmonthlybal, type_total_strtmonthlybal = get_monthly_budget_calc() 
         
-        ########Income########
-
-        m_dict = {}
-        for m in months:
-            m_dict[m['id']] = 0
-        grouped_invoice = {year:m_dict}
-        type_total_invoices = 0
-
-        invoices_list = Invoice.objects.all()
-        for i in invoices_list:
-            for m in months:
-                inv = get_month_invoice(i, year, m['id'])
-                grouped_invoice[year][m['id']] = grouped_invoice[year][m['id']] + inv
-
-        for year, value in grouped_invoice.items():
-            for month, invoice_value in value.items():
-                type_total_invoices = type_total_invoices + invoice_value
-
-        #######Expense################    
-
-        year_expn, months_expn, grouped_expense, type_total_expenses, monthly_total_exps, total_exps = get_expense_calc() 
-
-        ######Employee Expense#########
-
-        year_emp, months_emp, employees, rows_emp, monthly_total_emps_tmp, total_emp_exps = get_employee_calc()
-        
-        monthly_total_emps = {}
-        for m in months:
-            monthly_total_emps[m['id']] = 0
-        for mtet in monthly_total_emps_tmp:
-            monthly_total_emps[mtet['month']] = mtet['total_expense']
-
-        ######Contractor Expense#########
-            
-        year_con, months_con, contractors, rows_con, monthly_total_cons_tmp, total_con_exps = get_contractor_calc()
-
-        monthly_total_cons = {}
-        for m in months:
-            monthly_total_cons[m['id']] = 0
-        for mtct in monthly_total_cons_tmp:
-            monthly_total_cons[mtct['month']] = mtct['total_expense']
-
-        ########Total Expense#########
-        
-        monthly_total_expenses = {}
-        total_expenses = 0
-
-        for m in months:
-            monthly_total_expenses[m['id']] = monthly_total_exps[m['id']] + monthly_total_emps[m['id']] + monthly_total_cons[m['id']]
-
-        total_expenses =  total_exps + total_emp_exps + total_con_exps
-
-        #########Net Income############
-        m_dict = {}
-        for m in months:
-            m_dict[m['id']] = 0
-        grouped_netincome = {year:m_dict}
-        type_total_netincome = 0
-
-        for m in months:
-            grouped_netincome[year][m['id']] = grouped_invoice[year][m['id']] - monthly_total_expenses[m['id']]
-
-       
-        type_total_netincome = type_total_invoices - total_expenses
-
-       #############Starting Monthly Bal###############
-
-        m_dict = {}
-        for m in months:
-            m_dict[m['id']] = 0
-        grouped_strtmonthlybal = {year:m_dict}
-        type_total_strtmonthlybal = 0
-
-        for m in months:
-            if m['id'] > 1:
-                grouped_strtmonthlybal[year][m['id']] = grouped_strtmonthlybal[year][m['id'] - 1] + grouped_netincome[year][m['id'] - 1] 
-            else:
-                grouped_strtmonthlybal[year][m['id']] = 0
-
-        for year, value in grouped_strtmonthlybal.items():
-            for month, strtmonthlybal_value in value.items():
-                type_total_strtmonthlybal = type_total_strtmonthlybal + strtmonthlybal_value        
-
-        ######################## 
-
         context = {
             **self.admin_site.each_context(request),
             'title': "Monthly Budget Tracker Report",
@@ -870,6 +886,70 @@ class MonthlyBudgetTrackerAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+class MonthlyBudgetTrackerAdminGraph(admin.ModelAdmin):
+    change_list_template = 'admin/monthly_budget_graph_page.html'
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    @csrf_protect_m
+    def changelist_view(self, request, extra_context=None):
+        """
+        The 'change list' admin view for this model.
+        """
+        if not self.has_view_or_change_permission(request):
+            raise PermissionDenied
+
+        income = []
+        expenses = [] 
+        profit = []
+        show_months = [1,2,3,4,5,6,7,8,9,10,11,12]
+
+        months, grouped_invoice, type_total_invoices, monthly_total_expenses, total_expenses, grouped_netincome, type_total_netincome, grouped_strtmonthlybal, type_total_strtmonthlybal = get_monthly_budget_calc()
+
+        for month, monthly_invoices in  grouped_invoice.items():
+            for month, invoice in  monthly_invoices.items():
+                income.append(invoice)
+        for month, expense in  monthly_total_expenses.items():
+            expenses.append(expense)
+        for month, monthly_netincomes in  grouped_netincome.items():
+            for month, netincome in  monthly_netincomes.items():
+                profit.append(netincome)
+        
+        # plt.rcParams["figure.figsize"] = [9, 4]
+        # plt.rcParams["figure.autolayout"] = True
+
+        # plt.plot(show_months, income, '-g', label='Income')
+        # plt.plot(show_months, expenses, '-r', label='Expenses')
+        # plt.plot(show_months, profit, '-b', label='Profit')
+        
+
+        # plt.title('Account Balance by Month')
+        # plt.xlabel("Month")
+        # plt.ylabel("Amount")
+        # legend_without_duplicate_labels(plt)
+
+        # fig = plt.gcf()
+        # buf = io.BytesIO()
+        # fig.savefig(buf,format='png')
+        # buf.seek(0)
+        # string = base64.b64encode(buf.read())
+        # uri =  urllib.parse.quote(string)
+
+        context = {
+            **self.admin_site.each_context(request),
+            'title': "Budget Graph",
+            'subtitle': None,
+            'has_add_permission': self.has_add_permission(request),
+            **(extra_context or {}),
+            #'chart_image': uri,
+            'income': income,
+            'expenses': expenses,
+            'profit': profit,
+            
+        }
+        request.current_app = self.admin_site.name
+        return TemplateResponse(request, self.change_list_template, context)
+
 # admin.site.register(ContractorMonthlyExpense)
 admin.site.register(ContractorMonthlyExpenseReport, ContractorMonthlyExpenseAdmin)
 
@@ -885,3 +965,5 @@ admin.site.register(PipelineMonthlyExpenseReport, PipelineMonthlyExpenseAdmin)
 admin.site.register(IncomeForecastReport, IncomeForecastAdmin)
 
 admin.site.register(MonthlyBudgetTrackerReport, MonthlyBudgetTrackerAdmin)
+
+admin.site.register(MonthlyBudgetTrackerGraph, MonthlyBudgetTrackerAdminGraph)

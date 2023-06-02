@@ -1,0 +1,79 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+    {% if cl.formset %}
+        <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">
+    {% endif %}
+    {{ media.css }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% if not is_popup %}
+    {% block breadcrumbs %}
+        <div class="breadcrumbs">
+            <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+            &rsaquo; <a href="/admin/reports">Reports</a>
+            &rsaquo; <a href="/admin/reports/monthlybudgettrackerreport/">Monthly Budget Tracker Report</a>
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% block coltype %}{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        <!--<img src="data:image/png;base64,{{ chart_image }}" alt="Chart">-->
+        <canvas id="myChart" style="width:100%;max-width:1000px"></canvas>
+    </div>
+
+
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+
+var myChart = new Chart(ctx, {
+type: 'line',
+data: {
+    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    datasets: [
+      {
+          label: 'Income', // Name the series
+          data: {{ income|safe }} ,
+          fill: false,
+          borderColor: '#7CFC00', 
+          backgroundColor: '#7CFC00', 
+          borderWidth: 2 
+      },
+      {
+          label: 'Expenses', // Name the series
+          data: {{ expenses|safe }},
+          fill: false,
+          borderColor: '#ff0000',
+          backgroundColor: '#ff0000',
+          borderWidth: 2
+      },
+      {
+        label: 'Profit', // Name the series
+        data: {{ profit|safe }},
+        fill: false,
+        borderColor: '#0000FF',
+        backgroundColor: '#0000FF',
+        borderWidth: 2
+      }
+    ]
+},
+options: {
+  responsive: true, // Instruct chart js to respond nicely.
+  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+}
+});
+</script>
+{% endblock %}
