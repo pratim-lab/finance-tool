@@ -1,6 +1,6 @@
 from django.db import models
 import json, os
-
+from django.conf.locale.es import formats as es_formats
 class Client(models.Model):
 	
 	CLIENT_TYPES = (
@@ -239,7 +239,7 @@ class Pipeline(models.Model):
 	expected_date_of_eleventh_payment = models.DateField(null=True, blank=True)
 	expected_date_of_twelfth_payment = models.DateField(null=True, blank=True)
 	total_value_in_forecast = models.CharField(max_length=10,help_text='Please enter price in USD')
-	estimated_payment_amount = models.CharField(max_length=10,help_text='Please enter amount in USD')
+	estimated_payment_amount = models.CharField(max_length=10,help_text='Please enter amount in USD', null=True)
 
 	def __str__(self):
 		return '{}'.format(self.estimated_price)

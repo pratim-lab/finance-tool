@@ -1,13 +1,47 @@
 from django.contrib import admin
+from django.contrib.auth.admin import csrf_protect_m
 from django.shortcuts import redirect
+from django.urls import path
+from django.utils.html import format_html
 
+from .admin_views.client_views import ClientCreateAdminAPIView, ClientRetrieveUpdateDestroyAdminAPIView
+from .forms.client_forms import ClientAddForm
 from .models import Client, Project, Employee, Contractor, ExpenseType, Expense, Invoice, Pipeline
-#from dynamic_admin_forms.admin import DynamicModelAdminMixin
-
+# from dynamic_admin_forms.admin import DynamicModelAdminMixin
 
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('client_name', 'client_type', 'billing_structure', 'created_at')
-    #list_filter = ('client_type', 'billing_structure')
+    change_list_template = 'admin/client/change_list.html'
+    list_display = ('action', 'client_name', 'client_type', 'billing_structure', 'created_at')
+    list_display_links = ('client_name',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path("api/add", self.admin_site.admin_view(ClientCreateAdminAPIView.as_view())),
+            path("api/<pk>", self.admin_site.admin_view(ClientRetrieveUpdateDestroyAdminAPIView.as_view()))
+        ]
+        return my_urls + urls
+
+    def action(self, obj):
+        return format_html(
+            '<div class="btn-group dropend client-id-' + str(obj.id) + '" role="group">'
+                '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown">:</button>'
+                '<ul class="dropdown-menu">'
+                    '<li>'
+                        '<button class="btn btn-client-edit" data-id=' + str(obj.id) + '>Edit</button>'
+                    '</li>'
+            '       <li>'
+                        '<button class="btn btn-client-delete" data-id=' + str(obj.id) + '>Delete</button>'
+                    '</li>'
+                '</ul>'
+            '</div>'
+        )
+    action.allow_tags = True
+    # my_url_field.short_description = 'Action'
+
+    @csrf_protect_m
+    def changelist_view(self, request, extra_context=None):
+        return super().changelist_view(request, extra_context={"client_add_form": ClientAddForm()})
 
     class Media:
         js = (
@@ -29,7 +63,7 @@ class ProjectAdmin(admin.ModelAdmin):
         if obj.project_type == 'A':
             return redirect('/admin/tools/invoice/add')
         else:
-            return redirect('/admin/tools/pipeline/add')   
+            return redirect('/admin/tools/pipeline/add')
 
     #def response_change(self, request, obj):
     #    if obj.project_type == 'A':
@@ -47,7 +81,7 @@ class EmployeeAdmin(admin.ModelAdmin):
         )
 
 class ContractorAdmin(admin.ModelAdmin):
-    list_display = ('contractor_name', 'contractor_start_date', 'contractor_hourly_salary', 'created_at') 
+    list_display = ('contractor_name', 'contractor_start_date', 'contractor_hourly_salary', 'created_at')
 
     class Media:
         js = (
@@ -56,12 +90,12 @@ class ContractorAdmin(admin.ModelAdmin):
         )
 
 class ExpenseTypeAdmin(admin.ModelAdmin):
-    list_display = ('expense_name', 'created_at') 
+    list_display = ('expense_name', 'created_at')
 
-    
+
 class ExpenseAdmin(admin.ModelAdmin):
     list_display = ('expense_type', 'recurring_payment', 'expense_payment_amount', 'date_of_first_payment')
-    #list_filter = ('recurring_payment')   
+    #list_filter = ('recurring_payment')
 
     class Media:
         js = (
@@ -71,7 +105,7 @@ class ExpenseAdmin(admin.ModelAdmin):
 
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('project', 'invoice_number', 'created_at')
-    
+
     class Media:
         js = (
             '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
