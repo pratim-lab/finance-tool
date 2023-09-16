@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure--yk+5&$@2hs!k8t3+kvx4fk=13@)&u)4jtqc-hs9h7!8*+5)gq
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     '34.172.142.82'
 ]
 
@@ -33,7 +34,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
+    'djangoproject.apps.CustomAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'tools.apps.ToolsConfig',
     'reports.apps.ReportsConfig',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -83,14 +86,15 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fbt',
-        'USER': 'root',
-        'PASSWORD': '123',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE'  : 'django.db.backends.mysql',
+        'NAME'    : 'fbt',
+        'USER'    : 'root',
+        'PASSWORD': 'root',
+        'HOST'    : 'localhost',
+        'PORT'    : '3306',
     }
 }
+
 
 
 # Password validation
@@ -110,6 +114,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 
 # Internationalization
@@ -145,3 +155,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATE_INPUT_FORMATS = ['%m-%d-%Y']
 
 DISABLE_DARK_MODE = True
+
+ADMIN_LANDING_PAGE_URL = '/admin/reports/monthlybudgettrackergraph/'
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }

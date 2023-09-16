@@ -4,13 +4,14 @@ from django.shortcuts import redirect
 from django.urls import path
 from django.utils.html import format_html
 
-from .admin_views.client_views import ClientCreateAdminAPIView, ClientRetrieveUpdateDestroyAdminAPIView
+from .admin_views.client_views import ClientCreateAdminAPIView, ClientRetrieveUpdateDestroyAdminAPIView, ClientListView
 from .forms.client_forms import ClientAddForm
 from .models import Client, Project, Employee, Contractor, ExpenseType, Expense, Invoice, Pipeline
 # from dynamic_admin_forms.admin import DynamicModelAdminMixin
 
+
 class ClientAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/client/change_list.html'
+    change_list_template = 'admin/client/custom_change_list.html'
     list_display = ('action', 'client_name', 'client_type', 'billing_structure', 'created_at')
     list_display_links = ('client_name',)
 
@@ -18,7 +19,9 @@ class ClientAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         my_urls = [
             path("api/add", self.admin_site.admin_view(ClientCreateAdminAPIView.as_view())),
-            path("api/<pk>", self.admin_site.admin_view(ClientRetrieveUpdateDestroyAdminAPIView.as_view()))
+            path("api/list", self.admin_site.admin_view(ClientListView.as_view())),
+            path("api/<pk>", self.admin_site.admin_view(ClientRetrieveUpdateDestroyAdminAPIView.as_view())),
+
         ]
         return my_urls + urls
 
@@ -41,7 +44,7 @@ class ClientAdmin(admin.ModelAdmin):
 
     @csrf_protect_m
     def changelist_view(self, request, extra_context=None):
-        return super().changelist_view(request, extra_context={"client_add_form": ClientAddForm()})
+        return super().changelist_view(request, extra_context={"client_add_form": ClientAddForm(), "title": "Clients"})
 
     class Media:
         js = (

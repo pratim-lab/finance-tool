@@ -52,7 +52,7 @@ class Project(models.Model):
 		('PB', 'Project Based'),
 	)
 
-	client = models.ForeignKey(Client, on_delete=models.CASCADE)
+	client = models.ForeignKey(Client, on_delete=models.CASCADE,)
 	project_name = models.CharField(max_length=255)
 	project_type = models.CharField(max_length=2, choices=PROJECT_TYPES)
 	#confidence = models.CharField(max_length=5, null=True, blank=True, help_text='Please assign confidence as %')
