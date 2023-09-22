@@ -12,3 +12,8 @@ class CustomAdminSite(AdminSite):
         if settings.ADMIN_LANDING_PAGE_URL != '':
             extra_context[REDIRECT_FIELD_NAME] = settings.ADMIN_LANDING_PAGE_URL
         return super().login(request, extra_context)
+
+
+custom_admin = CustomAdminSite(name='Custom Admin')
+
+

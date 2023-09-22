@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from djangoproject.admin import custom_admin
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('custom-admin/', custom_admin.urls),
     path('tools/', include('tools.urls'))
 ]
 
-admin.site.site_header  =  "Finance Budget Tool"  
-admin.site.site_title  =  "Finance Budget Tool"
-admin.site.index_title  =  "Finance Budget Tool - Modules"
+admin.site.site_header = "Finance Budget Tool"
+admin.site.site_title = "Finance Budget Tool"
+admin.site.index_title = "Finance Budget Tool - Modules"

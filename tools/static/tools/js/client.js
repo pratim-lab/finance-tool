@@ -1,8 +1,3 @@
-if (!$) {
-    $ = django.jQuery;
-}
-//alert('Client Loaded!');
-
 $(document).ready(function () {
 
     const apiClient = axios.create({
@@ -15,13 +10,14 @@ $(document).ready(function () {
 	let currentSelection = {
 		filters: {
 			clientType: ""
-		}
+		},
+        pageNumber: 1,
+        pageSize: 10
 	};
 
     let clientData = {
 		count: 0,
-		next: null,
-		previous: null,
+		currentPageNumber: 1,
 		results : []
 	};
 
@@ -38,8 +34,10 @@ $(document).ready(function () {
         let pipelineProjects = getProjectNames(client.projects.pipeline_projects);
         return '' +
             '<td class="field-action">' +
-            '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
-            '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">:</button>' +
+            '<div class="btn-group dropend client-id-' + client.id + '">' +
+            '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">' +
+                '<img src="/static/custom_admin_assets/images/primary_fill.svg">' +
+            '</button>'+
             '<ul class="dropdown-menu" style="">' +
             '<li><button class="btn btn-client-edit" data-id="' + client.id + '">Edit</button></li>       ' +
             '<li><button class="btn btn-client-delete" data-id="' + client.id + '">Delete</button></li>' +
@@ -68,36 +66,48 @@ $(document).ready(function () {
     }
 
     function updateTable() {
-		console.log(clientData);
         const clientsRowsHtml = getClientRowsHtml();
         $('#id_client_table').find('tbody').html(clientsRowsHtml);
-		if(clientData.next === null) {
-			$('#id_btn_next_page').addClass('disabled');
-		}
-		else {
-			$('#id_btn_next_page').removeClass('disabled');
-		}
-		if(clientData.previous === null) {
-			$('#id_btn_previous_page').addClass('disabled');
-		}
-		else {
-			$('#id_btn_previous_page').removeClass('disabled');
-		}
     }
 
-    async function getClients(pageLink) {
-		if (pageLink === null) {
-			pageLink = '/admin/tools/client/api/list';
-		}
+    function updatePagination() {
+        const numberOfPages = Math.ceil(clientData.count / currentSelection.pageSize);
+        let paginationHtml = '';
+        for(let i = 1; i <= numberOfPages; i++) {
+            let buttonStateClass = '';
+            if (clientData.currentPageNumber  === i) {
+                buttonStateClass = 'active';
+            }
+            paginationHtml += '<li class="page-item '+ buttonStateClass +'"><a class="page-link page" href="#">' + i + '</a></li>';
+        }
+        paginationHtml = '' +
+            '<li class="page-item">' +
+                '<a class="page-link" href="#" tabindex="-1" aria-disabled="true" id="id_btn_previous_page">' +
+                    '<i class="fa fa-chevron-left" aria-hidden="true"></i>' +
+                '</a>' +
+            '</li>'
+            + paginationHtml +
+            '<li class="page-item">' +
+                '<a class="page-link" href="#" id="id_btn_next_page">' +
+                    '<i class="fa fa-chevron-right" aria-hidden="true"></i>' +
+                '</a>' +
+            '</li>';
+        $('#id_pagination_container').html(paginationHtml);
+    }
+
+    async function getClients() {
+        let path = '/custom-admin/tools/client/api/list?page=' + currentSelection.pageNumber;
 		let params = {};
 		if (currentSelection.filters.clientType !== "") {
 			params.client_type = currentSelection.filters.clientType;
 		}
-        const response = await apiClient.get(pageLink, {
+        const response = await apiClient.get(path, {
 			params: params
 		});
 		clientData = response.data;
+        clientData.currentPageNumber = currentSelection.pageNumber;
 		updateTable();
+        updatePagination();
     }
 
 	function showValidationErrors(errorData) {
@@ -110,7 +120,7 @@ $(document).ready(function () {
 		}
 	}
 
-    getClients(null);
+    getClients();
 
     let currentOperation = 'add';
 
@@ -159,7 +169,7 @@ $(document).ready(function () {
     });
 
     async function addClient(data) {
-		const resp = await apiClient.post('/admin/tools/client/api/add', data, {
+		const resp = await apiClient.post('/custom-admin/tools/client/api/add', data, {
 			validateStatus: (status) => {
             	return status >= 200 && status < 500;
         	},
@@ -177,7 +187,7 @@ $(document).ready(function () {
 
     async function editClient(data) {
 		let clientId = $('#id_selected_client').val();
-		const resp = await apiClient.patch('/admin/tools/client/api/' + clientId, data, {
+		const resp = await apiClient.patch('/custom-admin/tools/client/api/' + clientId, data, {
 			validateStatus: (status) => {
             	return status >= 200 && status < 500;
         	},
@@ -224,7 +234,7 @@ $(document).ready(function () {
     $('tbody').on('click', '.btn-client-edit', async function (e) {
         e.preventDefault();
         let id = $(this).attr('data-id');
-		const response = await apiClient.get('/admin/tools/client/api/' + id);
+		const response = await apiClient.get('/custom-admin/tools/client/api/' + id);
 		$('#id_selected_client').val(id);
 		fillUpForm(response.data);
 		showModal('edit');
@@ -238,7 +248,7 @@ $(document).ready(function () {
 
     $('#modal-delete').on('click', '#btn-confirm-delete', async function () {
 		const clientId =  $('#id_selected_client').val();
-		const response = await apiClient.delete('/admin/tools/client/api/' + clientId);
+		const response = await apiClient.delete('/custom-admin/tools/client/api/' + clientId);
 		$('#modal-delete').modal('hide');
 		for(let i = 0; i < clientData.results.length; i++) {
 			if(clientId == clientData.results[i].id) {
@@ -250,19 +260,40 @@ $(document).ready(function () {
 		updateTable();
     });
 
-	$('#id_filters_container').on('click', '.btn_filter', async function(){
-		console.log("ji");
+	$('#id_filters_container').on('click', '.btn_filter', async function(e){
+        e.preventDefault();
 		currentSelection.filters.clientType = $(this).attr('data-filter');
-		await getClients(null);
+        currentSelection.pageNumber = 1;
+		await getClients();
+        $('#id_filters_container').find('.btn_filter').removeClass("active");
+        $(this).addClass('active');
 	});
 	
-	$('#id_pagination_container').on('click', '#id_btn_next_page', async function(){
-		await getClients(clientData.next);
+	$('#id_pagination_container').on('click', '#id_btn_next_page', async function(e){
+        e.preventDefault();
+        const numberOfPages = Math.ceil(clientData.count / currentSelection.pageSize);
+        if (currentSelection.pageNumber - numberOfPages) {
+            currentSelection.pageNumber += 1;
+            await getClients();
+        }
 	});
 
-	$('#id_pagination_container').on('click', '#id_btn_previous_page', async function(){
-		await getClients(clientData.previous);
+	$('#id_pagination_container').on('click', '#id_btn_previous_page', async function(e){
+        e.preventDefault();
+        if (currentSelection.pageNumber > 1) {
+            currentSelection.pageNumber -= 1;
+            await getClients();
+        }
 	});
+
+    $('#id_pagination_container').on('click', '.page', async function(e){
+        e.preventDefault();
+        const pageNumber = Number($(this).html());
+        if(currentSelection.pageNumber !== pageNumber) {
+            currentSelection.pageNumber = pageNumber;
+            await getClients();
+        }
+    });
 
     if ($("#id_payment_terms").val() != 'OTR') {
         $(".field-payment_terms_other").hide();

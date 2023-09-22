@@ -1,9 +1,8 @@
-from django.forms import ModelForm
-
+from django import forms
 from tools.models import Client
 
 
-class ClientAddForm(ModelForm):
+class ClientAddForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -14,6 +13,11 @@ class ClientAddForm(ModelForm):
 
     class Meta:
         model = Client
+        widgets = {
+            'address1': forms.Textarea(attrs={'rows': 3, }),
+            'address2': forms.Textarea(attrs={'rows': 3, }),
+            'billing_target': forms.Textarea(attrs={'rows': 3, }),
+        }
         fields = [
             'client_name',
             'address1',

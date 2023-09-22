@@ -4,42 +4,43 @@ from django.shortcuts import redirect
 from django.urls import path
 from django.utils.html import format_html
 
-from .admin_views.client_views import ClientCreateAdminAPIView, ClientRetrieveUpdateDestroyAdminAPIView, ClientListView
-from .forms.client_forms import ClientAddForm
-from .models import Client, Project, Employee, Contractor, ExpenseType, Expense, Invoice, Pipeline
+from tools.admin_views.client_views import (ClientCreateAdminAPIView, ClientRetrieveUpdateDestroyAdminAPIView,
+                                            ClientListView)
+from tools.forms.client_forms import ClientAddForm
+from tools.models import Client, Project, Employee, Contractor, ExpenseType, Expense, Invoice, Pipeline
 # from dynamic_admin_forms.admin import DynamicModelAdminMixin
 
 
 class ClientAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/client/custom_change_list.html'
-    list_display = ('action', 'client_name', 'client_type', 'billing_structure', 'created_at')
+    change_list_template = 'admin/client/change_list.html'
+    list_display = ('client_name', 'client_type', 'billing_structure', 'created_at')
     list_display_links = ('client_name',)
 
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
-            path("api/add", self.admin_site.admin_view(ClientCreateAdminAPIView.as_view())),
-            path("api/list", self.admin_site.admin_view(ClientListView.as_view())),
-            path("api/<pk>", self.admin_site.admin_view(ClientRetrieveUpdateDestroyAdminAPIView.as_view())),
+            # path("api/add", self.admin_site.admin_view(ClientCreateAdminAPIView.as_view())),
+            # path("api/list", self.admin_site.admin_view(ClientListView.as_view())),
+            # path("api/<pk>", self.admin_site.admin_view(ClientRetrieveUpdateDestroyAdminAPIView.as_view())),
 
         ]
         return my_urls + urls
 
-    def action(self, obj):
-        return format_html(
-            '<div class="btn-group dropend client-id-' + str(obj.id) + '" role="group">'
-                '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown">:</button>'
-                '<ul class="dropdown-menu">'
-                    '<li>'
-                        '<button class="btn btn-client-edit" data-id=' + str(obj.id) + '>Edit</button>'
-                    '</li>'
-            '       <li>'
-                        '<button class="btn btn-client-delete" data-id=' + str(obj.id) + '>Delete</button>'
-                    '</li>'
-                '</ul>'
-            '</div>'
-        )
-    action.allow_tags = True
+    # def action(self, obj):
+    #     return format_html(
+    #         '<div class="btn-group dropend client-id-' + str(obj.id) + '" role="group">'
+    #             '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown">:</button>'
+    #             '<ul class="dropdown-menu">'
+    #                 '<li>'
+    #                     '<button class="btn btn-client-edit" data-id=' + str(obj.id) + '>Edit</button>'
+    #                 '</li>'
+    #         '       <li>'
+    #                     '<button class="btn btn-client-delete" data-id=' + str(obj.id) + '>Delete</button>'
+    #                 '</li>'
+    #             '</ul>'
+    #         '</div>'
+    #     )
+    # action.allow_tags = True
     # my_url_field.short_description = 'Action'
 
     @csrf_protect_m
@@ -51,6 +52,7 @@ class ClientAdmin(admin.ModelAdmin):
             '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
             'tools/js/client.js',
         )
+        print(js)
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('project_name', 'client', 'project_type', 'billing_structure', 'created_at')
@@ -124,6 +126,7 @@ class PipelineAdmin(admin.ModelAdmin):
             'tools/js/pipeline.js',
         )
 
+
 admin.site.register(Client,ClientAdmin)
 admin.site.register(Project,ProjectAdmin)
 admin.site.register(Employee,EmployeeAdmin)
@@ -132,3 +135,4 @@ admin.site.register(ExpenseType,ExpenseTypeAdmin)
 admin.site.register(Expense,ExpenseAdmin)
 admin.site.register(Invoice,InvoiceAdmin)
 admin.site.register(Pipeline,PipelineAdmin)
+
