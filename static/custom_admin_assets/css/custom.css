@@ -302,7 +302,7 @@ a.viewbtn:hover{
   .slide-list li li a.active{
     background-color: #E8D1F34D;
   }
-  .listing-table ul {
+  .status-ul {
     display: flex;
     align-items: center;
     margin-left: 48px;
@@ -367,6 +367,11 @@ a.viewbtn:hover{
     bottom: 24px;
     left: 24px;
  }
+
+ .list-action-button {
+     border: none !important;
+ }
+
  /* width */
 ::-webkit-scrollbar {
     width: 10px;
@@ -403,6 +408,8 @@ a.viewbtn:hover{
         max-width: 600px;
     }
  }
+
+
 
 
 

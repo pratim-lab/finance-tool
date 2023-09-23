@@ -15,9 +15,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;400;500;600;700&display=swap"
           rel="stylesheet">
     <link href="{% static 'custom_admin_assets/css/font-awesome.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'custom_admin_assets/css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'custom_admin_assets/css/mCustomScrollbar.min.css' %}">
     <script src="{% static 'custom_admin_assets/js/jquery-3.6.3.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'custom_admin_assets/css/custom.css' %}">
 </head>
 
 <body>
@@ -28,15 +28,15 @@
             <img src="{% static 'custom_admin_assets/images/logo.svg' %}" alt=""/>
         </div>
         <ul class="slide-list">
-            <li><a href="#"><img src="{% static 'custom_admin_assets/images/forcust.svg' %}" alt=""/>Forecast</a></li>
-            <li><a href="#"><img src="{% static 'custom_admin_assets/images/profit.svg' %}" alt=""/>Profits and loss</a>
+            <li><a href="#"><img src="{% static 'custom_admin_assets/images/forcust.svg' %}" alt=""/> Forecast</a></li>
+            <li><a href="#"><img src="{% static 'custom_admin_assets/images/profit.svg' %}" alt=""/> Profits and loss</a>
             </li>
         </ul>
         {% if available_apps %}
             <ul class="slide-list slide-list2 mCustomScrollbar">
                 {% for app in available_apps %}
                     <li>
-                        <a href="#" class="accordion">{{ app.name }}</a>
+                        <a href="#" class="accordion">{{ app.name | upper }}</a>
                         <ul class="panel">
                             {% for model in app.models %}
                                 <li>

@@ -21,34 +21,44 @@ $(document).ready(function () {
 		results : []
 	};
 
-    function getProjectNames(projects) {
-        let projectNames = '';
-        for (let i = 0; i < projects.length; i++) {
-            projectNames += projects[i].project_name + ', ';
+    function getProjectsHtml(projects) {
+        if (projects.length === 0) {
+            return '<span>-----</span>';
         }
-        return projectNames;
+        else if (projects.length === 1) {
+            return '<a href="'+ '/admin/tools/project/' + projects[0].id + '/change/' +'" target="_blank">' + projects[0].project_name + '</a>';
+        }
+        else {
+            let optionsHtml = '<option value="-1" selected>' + projects.length  + '</option>';
+            for (let i = 0; i < projects.length; i++) {
+                optionsHtml += '<option value="' + projects[i].id + '">' + projects[i].project_name + '</option>';
+            }
+            const selectHtml = '<select class="form-select form-select-sm project_dropdown" ' +
+                'aria-label=".form-select-sm example">' + optionsHtml + '</select>';
+            return selectHtml;
+        }
     }
 
     function getClientColumnsHtml(client) {
-        let activeProjects = getProjectNames(client.projects.active_projects);
-        let pipelineProjects = getProjectNames(client.projects.pipeline_projects);
+        let activeProjectsHtml = getProjectsHtml(client.projects.active_projects);
+        let pipelineProjectsHtml = getProjectsHtml(client.projects.pipeline_projects);
         return '' +
             '<td class="field-action">' +
-            '<div class="btn-group dropend client-id-' + client.id + '">' +
-            '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">' +
-                '<img src="/static/custom_admin_assets/images/primary_fill.svg">' +
-            '</button>'+
-            '<ul class="dropdown-menu" style="">' +
-            '<li><button class="btn btn-client-edit" data-id="' + client.id + '">Edit</button></li>       ' +
-            '<li><button class="btn btn-client-delete" data-id="' + client.id + '">Delete</button></li>' +
-            '</ul>' +
-            '</div>' +
+                '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
+                    '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
+                        '<img src="/static/custom_admin_assets/images/primary_fill.svg" alt="">' +
+                    '</button>'+
+                    '<ul class="dropdown-menu">' +
+                        '<li><button class="btn btn-client-edit" data-id="' + client.id + '">Edit</button></li>       ' +
+                        '<li><button class="btn btn-client-delete" data-id="' + client.id + '">Delete</button></li>' +
+                    '</ul>' +
+                '</div>' +
             '</td>' +
             '<th class="client_name">' + client.client_name + '</th>' +
             '<td class="client_type">' + client.client_type + '</td>' +
             '<td class="client_status">' + client.client_type + '</td>' +
-            '<td class="active_projects">' + activeProjects + '</td>' +
-            '<td class="pipeline_projects">' + pipelineProjects + '</td>' +
+            '<td class="active_projects">' + activeProjectsHtml + '</td>' +
+            '<td class="pipeline_projects">' + pipelineProjectsHtml + '</td>' +
             '<td class="annual_revenue">' + client.committed_annual_revenue + '</td>' +
             '<td class="projected_revenue">' + client.projected_annual_revenue + '</td>';
     }
@@ -292,6 +302,13 @@ $(document).ready(function () {
         if(currentSelection.pageNumber !== pageNumber) {
             currentSelection.pageNumber = pageNumber;
             await getClients();
+        }
+    });
+
+    $('#id_client_table').on('change', '.project_dropdown', async function(e) {
+        const selectedProjectId = $(this).val();
+        if(selectedProjectId !== "-1") {
+            window.open(`/admin/tools/project/${selectedProjectId}/change/`);
         }
     });
 
