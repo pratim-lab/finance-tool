@@ -43,18 +43,18 @@ $(document).ready(function () {
         let activeProjectsHtml = getProjectsHtml(client.projects.active_projects);
         let pipelineProjectsHtml = getProjectsHtml(client.projects.pipeline_projects);
         return '' +
-            '<td class="field-action">' +
+            '<th class="client_name">' +
                 '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
                     '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
                         '<img src="/static/custom_admin_assets/images/primary_fill.svg" alt="">' +
                     '</button>'+
+                    '<span> ' + client.client_name + '</span>' +
                     '<ul class="dropdown-menu">' +
                         '<li><button class="btn btn-client-edit" data-id="' + client.id + '">Edit</button></li>       ' +
                         '<li><button class="btn btn-client-delete" data-id="' + client.id + '">Delete</button></li>' +
                     '</ul>' +
                 '</div>' +
-            '</td>' +
-            '<th class="client_name">' + client.client_name + '</th>' +
+            '</th>' +
             '<td class="client_type">' + client.client_type + '</td>' +
             '<td class="client_status">' + client.client_type + '</td>' +
             '<td class="active_projects">' + activeProjectsHtml + '</td>' +
