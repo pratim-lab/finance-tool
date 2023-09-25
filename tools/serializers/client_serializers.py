@@ -1,5 +1,3 @@
-import json
-
 from rest_framework import serializers
 from django.utils import dateformat
 from tools.models import Client, Project

@@ -1,8 +1,7 @@
 from django.db import models
-import json, os
-from django.conf.locale.es import formats as es_formats
+
+
 class Client(models.Model):
-	
 	CLIENT_TYPES = (
 		('AC', 'Active Client'),
 		('PC', 'Prospective Client'),
@@ -40,8 +39,8 @@ class Client(models.Model):
 	def __str__(self):
 		return '{}'.format(self.client_name)
 
+
 class Project(models.Model):
-	
 	PROJECT_TYPES = (
 		('A', 'Active'),
 		('P', 'Pipeline'),
@@ -64,8 +63,8 @@ class Project(models.Model):
 	def __str__(self):
 		return '{}'.format(self.project_name)
 
+
 class Employee(models.Model):
-	
 	PAYMENT_STRUCTURE = (
 		('W', 'Weekly'),
 		('BM', 'Bi-Monthly'),
@@ -90,8 +89,8 @@ class Employee(models.Model):
 	def __str__(self):
 		return '{}'.format(self.employee_name)
 
-class Contractor(models.Model):
 
+class Contractor(models.Model):
 	contractor_name = models.CharField(max_length=255)
 	address1 = models.TextField()
 	address2 = models.TextField(null=True, blank=True)
@@ -109,8 +108,8 @@ class Contractor(models.Model):
 	def __str__(self):
 		return '{}'.format(self.contractor_name)
 
-class ExpenseType(models.Model):
 
+class ExpenseType(models.Model):
 	expense_name = models.CharField(max_length=255)
 	expense_description = models.TextField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -119,8 +118,8 @@ class ExpenseType(models.Model):
 	def __str__(self):
 		return '{}'.format(self.expense_name)
 
-class Expense(models.Model):
 
+class Expense(models.Model):
 	EXPENSE_TYPE = (
 		('Advertising', 'Advertising'),
 		('Bank Fees', 'Bank Fees'),
@@ -183,8 +182,8 @@ class Expense(models.Model):
 	def __str__(self):
 		return '{}'.format(self.expense_type)
 
-class Invoice(models.Model):
 
+class Invoice(models.Model):
 	INVOICE_STATUS = (
 		('P', 'Paid'),
 		('S', 'Sent'),
@@ -204,8 +203,8 @@ class Invoice(models.Model):
 	def __str__(self):
 		return '{}'.format(self.invoice_number)
 
-class Pipeline(models.Model):
 
+class Pipeline(models.Model):
 	NO_OF_PAYMENTS = (
 		('1', '1'),
 		('2', '2'),

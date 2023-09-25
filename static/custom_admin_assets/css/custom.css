@@ -6,7 +6,6 @@ body {
     overflow-x: hidden;
     padding: 0;
     margin: 0;
-    background-color: #F4F4F4;
     font-size: 16px;
 }
 
@@ -85,7 +84,9 @@ a{
     color: #CBD4DB;
     text-decoration: none;
     padding: 8px 20px;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 .slide-list li li a{
     padding: 4px 0;
@@ -118,6 +119,7 @@ a{
 article{
     padding: 0;
     padding-left: 240px;
+    height: 100vh;
 }
 article h1{
     font-size: 24px;
@@ -143,7 +145,7 @@ article h1{
 }
 .bottom-box .count.red{
     color: #F24C5A;
-} 
+}
 .bottom-box .count.black{
     color: #1F384C;
 }
@@ -178,7 +180,7 @@ article h1{
 .listing-table{
     background-color: #fff;
     border-radius: 3px;
-    margin: 25px 32px;
+    margin: 0 32px;
     overflow-y: auto;
 }
 
@@ -213,6 +215,7 @@ table thead th:first-child {
     right: 0;
     background-color: #F0F0F0;
   }
+
   table tbody th {
     position: sticky;
     left: 0;
@@ -290,7 +293,7 @@ a.viewbtn:hover{
     font-size: 15px;
     transition: 0.4s;
   }
-  
+
   .panel {
     padding: 0 0;
     display: none;
@@ -302,7 +305,12 @@ a.viewbtn:hover{
   .slide-list li li a.active{
     background-color: #E8D1F34D;
   }
-  .status-ul {
+  /*.listing-table ul {*/
+  /*  display: flex;*/
+  /*  align-items: center;*/
+  /*  margin-left: 48px;*/
+  /*}*/
+.status-ul {
     display: flex;
     align-items: center;
     margin-left: 48px;
@@ -367,8 +375,7 @@ a.viewbtn:hover{
     bottom: 24px;
     left: 24px;
  }
-
- .list-action-button {
+  .list-action-button {
      border: none !important;
  }
 
@@ -378,26 +385,97 @@ a.viewbtn:hover{
     height: 8px;
     border-radius: 8px;
   }
-  
+
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #fff; 
+    background: #fff;
     border-top: 1px solid #F0F0F0;
     border-bottom: 1px solid #F0F0F0;
   }
-   
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #BBBFC3; 
+    background: #BBBFC3;
     border-radius: 8px;
   }
-  
+
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #555;
+  }
+  .client-area{
+    background-color: #F4F4F4;
+    height: calc(100vh - 77px);
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+  .mid-menu.listing-table ul{
+    margin-left: 0;
+  }
+  .mid-menu{
+    margin-top: -30px;
+  }
+  .input-area{
+    width: 92px;
+  }
+  .input-area input[type="text"]{
+    width: 100%;
+    border: 1px solid #0F87FF;
+  }
+  .btn-sec{
+    text-align: right;
+    margin-top: 5px;
+  }
+  .btn-sec input{
+    width: 20px;
+    height: 20px;
+  }
+  .btn-sec input[type="submit"], .btn-sec input[type="reset"]{
+    background: url(../images/tick.svg) 0 0 no-repeat;
+    border: none;
+    text-indent: -3000px;
+  }
+  .btn-sec input[type="reset"]{
+    background: url(../images/reset.svg) 0 0 no-repeat;
+  }
+  .listing-table-contact.listing-table table tr td{
+    text-align: right;
+  }
+  .listing-table-contact.listing-table table tr th{
+    width: 290px;
+  }
+  .totals{
+    width: 180px;
+  }
+  .listing-table-contact.listing-table table tbody tr:first-child td, .listing-table-contact.listing-table table tbody tr:first-child th{
+    background-color: #F4F4F4;
+  }
+  .listing-table-contact.listing-table table th:first-child:after{
+    box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.25);
+  }
+  .listing-table-contact.listing-table table{
+    border: 1px solid #ECECEC;
+  }
+  .locate{
+    display: block;
+    color: #8D8F90;
+    margin-top: -7px;
+  }
+  .namearea{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+  }
+  .status-ul {
+    display: flex;
+    align-items: center;
+    margin-left: 48px;
   }
 
-
+ .list-action-button {
+     border: none !important;
+ }
  @media only screen and (max-width:1600px){
     .listing-table table{
         width: 1400px;
@@ -408,8 +486,3 @@ a.viewbtn:hover{
         max-width: 600px;
     }
  }
-
-
-
-
-

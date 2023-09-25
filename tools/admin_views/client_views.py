@@ -6,11 +6,10 @@ from tools.admin_views.utils import AdminPagination
 from tools.models import Client
 from tools.serializers.client_serializers import ClientAddSerializer, ClientRetrieveSerializer, \
     ListClientRetrieveSerializer
-# from django.db import connection
-# connection.queries
 
 
 class ClientCreateAdminAPIView(generics.CreateAPIView):
+    permission_classes = [IsAdminUser, ]
 
     def get_queryset(self):
         return Client.objects.all()
@@ -20,6 +19,7 @@ class ClientCreateAdminAPIView(generics.CreateAPIView):
 
 
 class ClientRetrieveUpdateDestroyAdminAPIView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminUser, ]
 
     def get_queryset(self):
         return Client.objects.all()
