@@ -5,13 +5,6 @@ if (!$) {
 
 $(document).ready(function() {
 
-	const apiClient = axios.create({
-        headers: {
-			'X-CSRFToken': $('#id_csrf_token').val(),
-			'Content-Type': 'application/json'
-        }
-    });
-
 	let currentSelection = {
 		filters: {},
         pageNumber: 1,

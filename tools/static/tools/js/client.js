@@ -1,35 +1,26 @@
 $(document).ready(function () {
 
-    const apiClient = axios.create({
-        headers: {
-			'X-CSRFToken': $('#id_csrf_token').val(),
-			'Content-Type': 'application/json'
-        }
-    });
-
-	let currentSelection = {
-		filters: {
-			clientType: ""
-		},
+    let currentSelection = {
+        filters: {
+            clientType: ""
+        },
         pageNumber: 1,
         pageSize: 10
-	};
+    };
 
     let clientData = {
-		count: 0,
-		currentPageNumber: 1,
-		results : []
-	};
+        count: 0,
+        currentPageNumber: 1,
+        results: []
+    };
 
     function getProjectsHtml(projects) {
         if (projects.length === 0) {
             return '<span>-----</span>';
-        }
-        else if (projects.length === 1) {
-            return '<a href="'+ '/admin/tools/project/' + projects[0].id + '/change/' +'" target="_blank">' + projects[0].project_name + '</a>';
-        }
-        else {
-            let optionsHtml = '<option value="-1" selected>' + projects.length  + '</option>';
+        } else if (projects.length === 1) {
+            return '<a href="' + '/admin/tools/project/' + projects[0].id + '/change/' + '" target="_blank">' + projects[0].project_name + '</a>';
+        } else {
+            let optionsHtml = '<option value="-1" selected>' + projects.length + '</option>';
             for (let i = 0; i < projects.length; i++) {
                 optionsHtml += '<option value="' + projects[i].id + '">' + projects[i].project_name + '</option>';
             }
@@ -44,16 +35,16 @@ $(document).ready(function () {
         let pipelineProjectsHtml = getProjectsHtml(client.projects.pipeline_projects);
         return '' +
             '<th class="client_name">' +
-                '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
-                    '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
-                        '<img src="/static/custom_admin_assets/images/primary_fill.svg" alt="">' +
-                    '</button>'+
-                    '<span> ' + client.client_name + '</span>' +
-                    '<ul class="dropdown-menu">' +
-                        '<li><button class="btn btn-client-edit" data-id="' + client.id + '">Edit</button></li>       ' +
-                        '<li><button class="btn btn-client-delete" data-id="' + client.id + '">Delete</button></li>' +
-                    '</ul>' +
-                '</div>' +
+            '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
+            '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
+            '<img src="/static/custom_admin_assets/images/primary_fill.svg" alt="">' +
+            '</button>' +
+            '<span> ' + client.client_name + '</span>' +
+            '<ul class="dropdown-menu">' +
+            '<li><button class="btn btn-client-edit" data-id="' + client.id + '">Edit</button></li>       ' +
+            '<li><button class="btn btn-client-delete" data-id="' + client.id + '">Delete</button></li>' +
+            '</ul>' +
+            '</div>' +
             '</th>' +
             '<td class="client_type">' + client.client_type + '</td>' +
             '<td class="client_status">' + client.client_type + '</td>' +
@@ -83,52 +74,52 @@ $(document).ready(function () {
     function updatePagination() {
         const numberOfPages = Math.ceil(clientData.count / currentSelection.pageSize);
         let paginationHtml = '';
-        for(let i = 1; i <= numberOfPages; i++) {
+        for (let i = 1; i <= numberOfPages; i++) {
             let buttonStateClass = '';
-            if (clientData.currentPageNumber  === i) {
+            if (clientData.currentPageNumber === i) {
                 buttonStateClass = 'active';
             }
-            paginationHtml += '<li class="page-item '+ buttonStateClass +'"><a class="page-link page" href="#">' + i + '</a></li>';
+            paginationHtml += '<li class="page-item ' + buttonStateClass + '"><a class="page-link page" href="#">' + i + '</a></li>';
         }
         paginationHtml = '' +
             '<li class="page-item">' +
-                '<a class="page-link" href="#" tabindex="-1" aria-disabled="true" id="id_btn_previous_page">' +
-                    '<i class="fa fa-chevron-left" aria-hidden="true"></i>' +
-                '</a>' +
+            '<a class="page-link" href="#" tabindex="-1" aria-disabled="true" id="id_btn_previous_page">' +
+            '<i class="fa fa-chevron-left" aria-hidden="true"></i>' +
+            '</a>' +
             '</li>'
             + paginationHtml +
             '<li class="page-item">' +
-                '<a class="page-link" href="#" id="id_btn_next_page">' +
-                    '<i class="fa fa-chevron-right" aria-hidden="true"></i>' +
-                '</a>' +
+            '<a class="page-link" href="#" id="id_btn_next_page">' +
+            '<i class="fa fa-chevron-right" aria-hidden="true"></i>' +
+            '</a>' +
             '</li>';
         $('#id_pagination_container').html(paginationHtml);
     }
 
     async function getClients() {
         let path = '/custom-admin/tools/client/api/list?page=' + currentSelection.pageNumber;
-		let params = {};
-		if (currentSelection.filters.clientType !== "") {
-			params.client_type = currentSelection.filters.clientType;
-		}
+        let params = {};
+        if (currentSelection.filters.clientType !== "") {
+            params.client_type = currentSelection.filters.clientType;
+        }
         const response = await apiClient.get(path, {
-			params: params
-		});
-		clientData = response.data;
+            params: params
+        });
+        clientData = response.data;
         clientData.currentPageNumber = currentSelection.pageNumber;
-		updateTable();
+        updateTable();
         updatePagination();
     }
 
-	function showValidationErrors(errorData) {
-		for (let key in errorData) {
-			let errorHtml = '';
-			for (let i = 0; i < errorData[key].length; i++) {
-				errorHtml += '<li>* ' + errorData[key][i] + '</li>';
-			}
-			$('#id_error_' + key).html(errorHtml);
-		}
-	}
+    function showValidationErrors(errorData) {
+        for (let key in errorData) {
+            let errorHtml = '';
+            for (let i = 0; i < errorData[key].length; i++) {
+                errorHtml += '<li>* ' + errorData[key][i] + '</li>';
+            }
+            $('#id_error_' + key).html(errorHtml);
+        }
+    }
 
     getClients();
 
@@ -179,42 +170,40 @@ $(document).ready(function () {
     });
 
     async function addClient(data) {
-		const resp = await apiClient.post('/custom-admin/tools/client/api/add', data, {
-			validateStatus: (status) => {
-            	return status >= 200 && status < 500;
-        	},
-		});
-		if(resp.status === 201) {
-			clientData.results = [resp.data, ...clientData.results];
-			updateTable();
-			$('#modal-client').modal('hide');
-			resetForm();
-		}
-		else if(resp.status === 400) {
-			showValidationErrors(resp.data);
-		}
+        const resp = await apiClient.post('/custom-admin/tools/client/api/add', data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 201) {
+            clientData.results = [resp.data, ...clientData.results];
+            updateTable();
+            $('#modal-client').modal('hide');
+            resetForm();
+        } else if (resp.status === 400) {
+            showValidationErrors(resp.data);
+        }
     }
 
     async function editClient(data) {
-		let clientId = $('#id_selected_client').val();
-		const resp = await apiClient.patch('/custom-admin/tools/client/api/' + clientId, data, {
-			validateStatus: (status) => {
-            	return status >= 200 && status < 500;
-        	},
-		});
-		if(resp.status === 200) {
-			for (let i = 0; i < clientData.results.length; i++) {
-				if(clientData.results[i].id === resp.data.id) {
-					clientData.results[i] = resp.data;
-				}
-			}
-			updateTable();
-			$('#modal-client').modal('hide');
-			resetForm();
-		}
-		else if(resp.status === 400) {
-			showValidationErrors(resp.data);
-		}
+        let clientId = $('#id_selected_client').val();
+        const resp = await apiClient.patch('/custom-admin/tools/client/api/' + clientId, data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 200) {
+            for (let i = 0; i < clientData.results.length; i++) {
+                if (clientData.results[i].id === resp.data.id) {
+                    clientData.results[i] = resp.data;
+                }
+            }
+            updateTable();
+            $('#modal-client').modal('hide');
+            resetForm();
+        } else if (resp.status === 400) {
+            showValidationErrors(resp.data);
+        }
     }
 
     $('#id_btn_client_add').on('click', function () {
@@ -244,10 +233,10 @@ $(document).ready(function () {
     $('tbody').on('click', '.btn-client-edit', async function (e) {
         e.preventDefault();
         let id = $(this).attr('data-id');
-		const response = await apiClient.get('/custom-admin/tools/client/api/' + id);
-		$('#id_selected_client').val(id);
-		fillUpForm(response.data);
-		showModal('edit');
+        const response = await apiClient.get('/custom-admin/tools/client/api/' + id);
+        $('#id_selected_client').val(id);
+        fillUpForm(response.data);
+        showModal('edit');
     });
 
     $('tbody').on('click', '.btn-client-delete', function (e) {
@@ -257,57 +246,57 @@ $(document).ready(function () {
     });
 
     $('#modal-delete').on('click', '#btn-confirm-delete', async function () {
-		const clientId =  $('#id_selected_client').val();
-		const response = await apiClient.delete('/custom-admin/tools/client/api/' + clientId);
-		$('#modal-delete').modal('hide');
-		for(let i = 0; i < clientData.results.length; i++) {
-			if(clientId == clientData.results[i].id) {
-				console.log("matched");
-				clientData.results.splice(i, 1);
-				break;
-			}
-		}
-		updateTable();
+        const clientId = $('#id_selected_client').val();
+        const response = await apiClient.delete('/custom-admin/tools/client/api/' + clientId);
+        $('#modal-delete').modal('hide');
+        for (let i = 0; i < clientData.results.length; i++) {
+            if (clientId == clientData.results[i].id) {
+                console.log("matched");
+                clientData.results.splice(i, 1);
+                break;
+            }
+        }
+        updateTable();
     });
 
-	$('#id_filters_container').on('click', '.btn_filter', async function(e){
+    $('#id_filters_container').on('click', '.btn_filter', async function (e) {
         e.preventDefault();
-		currentSelection.filters.clientType = $(this).attr('data-filter');
+        currentSelection.filters.clientType = $(this).attr('data-filter');
         currentSelection.pageNumber = 1;
-		await getClients();
+        await getClients();
         $('#id_filters_container').find('.btn_filter').removeClass("active");
         $(this).addClass('active');
-	});
-	
-	$('#id_pagination_container').on('click', '#id_btn_next_page', async function(e){
+    });
+
+    $('#id_pagination_container').on('click', '#id_btn_next_page', async function (e) {
         e.preventDefault();
         const numberOfPages = Math.ceil(clientData.count / currentSelection.pageSize);
         if (currentSelection.pageNumber - numberOfPages) {
             currentSelection.pageNumber += 1;
             await getClients();
         }
-	});
+    });
 
-	$('#id_pagination_container').on('click', '#id_btn_previous_page', async function(e){
+    $('#id_pagination_container').on('click', '#id_btn_previous_page', async function (e) {
         e.preventDefault();
         if (currentSelection.pageNumber > 1) {
             currentSelection.pageNumber -= 1;
             await getClients();
         }
-	});
+    });
 
-    $('#id_pagination_container').on('click', '.page', async function(e){
+    $('#id_pagination_container').on('click', '.page', async function (e) {
         e.preventDefault();
         const pageNumber = Number($(this).html());
-        if(currentSelection.pageNumber !== pageNumber) {
+        if (currentSelection.pageNumber !== pageNumber) {
             currentSelection.pageNumber = pageNumber;
             await getClients();
         }
     });
 
-    $('#id_client_table').on('change', '.project_dropdown', async function(e) {
+    $('#id_client_table').on('change', '.project_dropdown', async function (e) {
         const selectedProjectId = $(this).val();
-        if(selectedProjectId !== "-1") {
+        if (selectedProjectId !== "-1") {
             window.open(`/admin/tools/project/${selectedProjectId}/change/`);
         }
     });
