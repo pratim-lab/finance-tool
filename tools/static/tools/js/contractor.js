@@ -57,18 +57,23 @@ $(document).ready(function () {
                 } else if (j === expenseData.rows[i].length - 1) {
                     // tds += '<td id="yearly_total_contractor_"' + expenseData.rows[0].id + '>' + col + '</td>';
                 } else {
+                    let updatedClass = '';
+                    if (col.updated) {
+                        updatedClass = 'updated';
+                    }
                     tds += '' +
                         '<td>' +
-                        '<span class="clickarea">$<span class="val">' + col.expense + '</span></span>' +
-                        '<div class="input-area" style="display: none;">' +
-                        '<input type="text" class="txt_modified" placeholder="$' + col.expense +
-                        '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
-                        '<div class="btn-sec">' +
-                        '<input type="button" class="reset" value="reset"/>' +
-                        '<a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>' +
-                        '<input type="button" class="save" value="submit"/>' +
-                        '</div>' +
-                        '</div>' +
+                            '<span class="clickarea">$<span class="val">' + col.expense + '</span></span>' +
+                            '<span class="' + updatedClass + '"></span>' +
+                            '<div class="input-area" style="display: none;">' +
+                                '<input type="text" class="txt_modified" placeholder="$' + col.expense +
+                                '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
+                                '<div class="btn-sec">' +
+                                    '<input type="button" class="reset" value="reset"/>' +
+                                    '<a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>' +
+                                    '<input type="button" class="save" value="submit"/>' +
+                                '</div>' +
+                            '</div>' +
                         '</td>';
                 }
             }

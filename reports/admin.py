@@ -381,7 +381,8 @@ def get_contractor_calc():
                     columns.append({
                         'year': year,
                         'month': m['id'],
-                        'expense': expenses[key]
+                        'expense': expenses[key],
+                        'updated': True
                     })
                     expense_columns.append(float(expenses[key]))
                     contractors_total = contractors_total + float(expenses[key])
@@ -398,7 +399,8 @@ def get_contractor_calc():
                     columns.append({
                         'year': year,
                         'month': m['id'],
-                        'expense': expense
+                        'expense': expense,
+                        'updated': False
                     })
                     contractors_total = contractors_total + expense
                     expense_columns.append(expense)
