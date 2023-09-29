@@ -20,6 +20,7 @@ def contractor_monthly_expense_edit_view(request):
     contractor = Contractor.objects.filter(id=data['contractor_id']).first()
     if contractor is None:
         return Response({'message': 'Contractor is not found'}, status=status.HTTP_400_BAD_REQUEST)
+
     monthly_expense, created = ContractorMonthlyExpense.objects.update_or_create(
         contractor=contractor,
         year=data['year'],

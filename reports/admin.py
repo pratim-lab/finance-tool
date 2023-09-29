@@ -352,8 +352,8 @@ def get_employee_calc():
 
     return year, months, employees, rows, monthly_total_items, total
 
-def get_contractor_calc():
 
+def get_contractor_calc():
     months = get_months()
     year = get_current_year()
     exp = []

@@ -28,89 +28,114 @@
                         </div>
 
                         <div id="tab2" class="tab-content">
-                            <div class="table-responsive">
-                                <table class="table" id="id_list_table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Start Date</th>
-                                        <th scope="col">Hourly Salary</th>
-                                        <th scope="col">Expected Weekly Hours</th>
-                                        <th scope="col">Estimated Weekly Salary</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                            <div class="info-area">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="white-back left-info">
+                                                <h2>Contractors</h2>
+                                                <div class="divider"></div>
+                                                <ul class="listing" id="id_ul_contractors">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-9">
+                                            <div class="white-back right-info" id="id_contractor_details">
+                                                <div class="commonpadding flexarea">
+                                                    <div class="lft-area flexarea">
+                                                        <span class="no">#2870</span>
+                                                        <span class="namearea">Anna Dawson
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" viewBox="0 0 20 20" fill="none">
+                                                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M6 11H14V9H6V11ZM6 15H14V13H6V15ZM6 7H10V5H6V7ZM15.707 5.293L12.707 2.293C12.52 2.105 12.266 2 12 2H5C4.447 2 4 2.448 4 3V17C4 17.552 4.447 18 5 18H15C15.553 18 16 17.552 16 17V6C16 5.735 15.895 5.48 15.707 5.293Z"
+                                                                fill="#8D9196"/>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="active">Active</span>
+                                                    </div>
+                                                    <div class="rgt-area">
+                                                        <a href="#" id="id_btn_edit">Edit information
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30"
+                                                                 height="30" viewBox="0 0 30 30" fill="none">
+                                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                      d="M11 15C11 16.104 10.104 17 9 17C7.896 17 7 16.104 7 15C7 13.896 7.896 13 9 13C10.104 13 11 13.896 11 15ZM17 15C17 16.104 16.104 17 15 17C13.896 17 13 16.104 13 15C13 13.896 13.896 13 15 13C16.104 13 17 13.896 17 15ZM23 15C23 16.104 22.104 17 21 17C19.896 17 19 16.104 19 15C19 13.896 19.896 13 21 13C22.104 13 23 13.896 23 15Z"
+                                                                      fill="#212B36"/>
+                                                            </svg>
+                                                        </a>
+                                                        <a href="#" id="btn_delete">Delete</a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="divider"></div>
+                                                <div class="commonpadding flexarea">
+                                                    <div class="lft-area">
+                                                        <h6>address</h6>
+                                                        <p id="id_address">
+                                                            Jacob Jones<br/>
+                                                            150 Elgin St, Suite 800, Ottawa, ON, K1R 9C2, Canada
+                                                        </p>
+                                                    </div>
+                                                    <div class="rgt-area">
+                                                        <a href="#">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                 height="20" viewBox="0 0 20 20" fill="none">
+                                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                      d="M15 2C15.553 2 16 2.448 16 3V17C16 17.552 15.553 18 15 18H5C4.447 18 4 17.552 4 17V3C4 2.448 4.447 2 5 2C5.553 2 6 2.448 6 3V4C6 5.104 6.896 6 8 6H12C13.104 6 14 5.104 14 4V3C14 2.448 14.447 2 15 2ZM11 4H9C8.447 4 8 3.552 8 3C8 2.448 8.447 2 9 2H11C11.553 2 12 2.448 12 3C12 3.552 11.553 4 11 4Z"
+                                                                      fill="#5C5F62"/>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="divider"></div>
+
+                                                <div class="commonpadding">
+                                                    <div class="lft-area flexarea ratingarea">
+                                                        <div class="rating">
+                                                            <h6>Cost rate or fee</h6>
+                                                            <p id="id_cost_rate">
+                                                                $00.00
+                                                            </p>
+                                                        </div>
+                                                        <div class="rating">
+                                                            <h6>Hours</h6>
+                                                            <p id="id_hours">
+                                                                00
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="divider"></div>
+
+                                                <div class="commonpadding">
+                                                    <div class="lft-area">
+                                                        <h6>Current projects</h6>
+                                                        <ul class="toollist">
+                                                            <li class="flexarea">
+                                                                <span>BI tool</span> <a href="#">View on projects
+                                                                page</a>
+                                                            </li>
+                                                            <li class="flexarea">
+                                                                <span>BI tool</span> <a href="#">View on projects
+                                                                page</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <ul class="pagination justify-content-center" id="id_pagination_container"></ul>
+
                         </div>
-
-                        <div id="tab3" class="tab-content">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Client Name</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Active projects</th>
-                                        <th scope="col">Pipeline projects</th>
-                                        <th scope="col">Committed Annual Revenue</th>
-                                        <th scope="col">Projected annual revenue</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    <tr>
-                                        <th><a href="#" class="dropmenu"><img src="assets/images/menudot.svg"
-                                                                              alt=""/></a>Name here
-                                        </th>
-                                        <td>Enterprise (?)</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                        <td>
-                                            —
-                                        </td>
-                                        <td>
-                                            —
-                                        </td>
-                                        <td>-----</td>
-                                        <td>-----</td>
-                                    </tr>
-                                    <tr>
-                                        <th><a href="#" class="dropmenu"><img src="assets/images/menudot.svg"
-                                                                              alt=""/></a>Name here
-                                        </th>
-                                        <td>Enterprise (?)</td>
-                                        <td><span class="inactive">Inactive</span></td>
-                                        <td>
-                                            —
-                                        </td>
-                                        <td>
-                                            —
-                                        </td>
-                                        <td>-----</td>
-                                        <td>-----</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><i
-                                            class="fa fa-chevron-left" aria-hidden="true"></i></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-
                     </div>
-
                 </div>
             </div>
 
@@ -166,61 +191,69 @@
                                 <div class="col-12">
                                     <label for="inputAddress2" class="form-label">Country</label>
                                     {{ form.country }}
-                                    <ul id="id_error_{{ form.country.name }}" class="error_container" style="color: red;"></ul>
+                                    <ul id="id_error_{{ form.country.name }}" class="error_container"
+                                        style="color: red;"></ul>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Start Date</label>
+                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Start
+                                        Date</label>
                                     {{ form.contractor_start_date }}
                                     <ul id="id_error_{{ form.contractor_start_date.name }}" class="error_container"
                                         style="color: red;"></ul>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Hourly Salary</label>
+                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Hourly
+                                        Salary</label>
                                     {{ form.contractor_hourly_salary }}
                                     <ul id="id_error_{{ form.contractor_hourly_salary.name }}" class="error_container"
                                         style="color: red;"></ul>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Expected Weekly Hours</label>
+                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Expected
+                                        Weekly Hours</label>
                                     {{ form.contractor_expected_weekly_hours }}
-                                    <ul id="id_error_{{ form.contractor_expected_weekly_hours.name }}" class="error_container"
+                                    <ul id="id_error_{{ form.contractor_expected_weekly_hours.name }}"
+                                        class="error_container"
                                         style="color: red;"></ul>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Estimated Weekly Salary</label>
+                                    <label for="exampleFormControlTextarea1" class="form-label">Contractor Estimated
+                                        Weekly Salary</label>
                                     {{ form.contractor_estimated_weekly_salary }}
-                                    <ul id="id_error_{{ form.contractor_estimated_weekly_salary.name }}" class="error_container"
+                                    <ul id="id_error_{{ form.contractor_estimated_weekly_salary.name }}"
+                                        class="error_container"
                                         style="color: red;"></ul>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
-                            <button type="button" class="btn btn-primary" id="id_btn_contractor_add">Add Contractor</button>
+                            <button type="button" class="btn btn-primary" id="id_btn_contractor_add">Add Contractor
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="modal" id="modal-delete" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <p>Are you sure to delete?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">
-                            Cancel
-                        </button>
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure to delete?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    data-dismiss="modal">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </article>
     </section>
     <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
     <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
     <script src="{% static 'tools/js/contractor.js' %}"></script>
-    <script src="{% static 'tools/js/contractor-expense.js' %}"></script>
 {% endblock %}

@@ -1,11 +1,9 @@
-import json
-
 from rest_framework import generics, filters, views
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 
 from reports.admin import get_contractor_calc
-from tools.admin_views.utils import AdminPagination
+from tools.admin_views.utils import ContractorAdminPagination
 from tools.models import Contractor
 from tools.serializers.contractor_serializers import ListContractorRetrieveSerializer, ContractorAddSerializer, \
     ContractorRetrieveSerializer, ExpenseContractorSerializer
@@ -37,8 +35,10 @@ class ContractorRetrieveUpdateDestroyAdminAPIView(generics.RetrieveUpdateDestroy
 class ContractorListView(generics.ListAPIView):
     permission_classes = [IsAdminUser, ]
     serializer_class = ListContractorRetrieveSerializer
-    pagination_class = AdminPagination
-    ordering = ['-created_at']
+    pagination_class = ContractorAdminPagination
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['created_at']
+    ordering = ['created_at']
 
     def get_queryset(self):
         return Contractor.objects.all()
@@ -55,5 +55,5 @@ class ContractorReportView(views.APIView):
             'total': total,
             'contractors': ExpenseContractorSerializer(contractors, many=True).data
         }
-        # print(json.dumps(get_contractor_calc()))
         return Response(resp_data)
+
