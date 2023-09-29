@@ -102,6 +102,7 @@ class Contractor(models.Model):
 	contractor_hourly_salary = models.CharField(max_length=10,help_text='Please enter salary in USD')
 	contractor_expected_weekly_hours = models.CharField(max_length=5)
 	contractor_estimated_weekly_salary = models.CharField(max_length=10,help_text='in USD')
+	is_active = models.BooleanField(default=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

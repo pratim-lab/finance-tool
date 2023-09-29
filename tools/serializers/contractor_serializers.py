@@ -91,6 +91,7 @@ class ContractorAddSerializer(serializers.ModelSerializer):
             'contractor_hourly_salary',
             'contractor_expected_weekly_hours',
             'contractor_estimated_weekly_salary',
+            'is_active',
             'expense',
         ]
 
@@ -117,6 +118,7 @@ class ContractorRetrieveSerializer(serializers.ModelSerializer):
             'contractor_expected_weekly_hours',
             'contractor_estimated_weekly_salary',
             'created_at',
+            'is_active',
             'expense',
         ]
 
@@ -138,6 +140,7 @@ class ListContractorRetrieveSerializer(serializers.ModelSerializer):
             'contractor_hourly_salary',
             'contractor_expected_weekly_hours',
             'contractor_estimated_weekly_salary',
+            'is_active',
             'created_at',
         ]
 

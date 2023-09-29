@@ -195,9 +195,11 @@ $(document).ready(function () {
         if (type === ADD) {
             currentOperation = ADD;
             $('.modal-title').html(ADD_TITLE);
+            $('#id_btn_contractor_add').html('Add Contractor');
         } else if (type === EDIT) {
             currentOperation = EDIT;
             $('.modal-title').html(EDIT_TITLE);
+            $('#id_btn_contractor_add').html('Update Contractor');
         }
         $formModal.modal('show');
     }
@@ -218,6 +220,7 @@ $(document).ready(function () {
         $('#id_contractor_hourly_salary').val('');
         $('#id_contractor_expected_weekly_hours').val('');
         $('#id_contractor_estimated_weekly_salary').val('');
+        $('#id_is_active').prop('checked', false);
     }
 
     function fillUpForm(contractor) {
@@ -232,6 +235,7 @@ $(document).ready(function () {
         $('#id_contractor_hourly_salary').val(contractor.contractor_hourly_salary);
         $('#id_contractor_expected_weekly_hours').val(contractor.contractor_expected_weekly_hours);
         $('#id_contractor_estimated_weekly_salary').val(contractor.contractor_estimated_weekly_salary);
+        $('#id_is_active').prop('checked', contractor.is_active);
     }
 
     function showValidationErrors(errorData) {
@@ -252,6 +256,12 @@ $(document).ready(function () {
         $('#id_contractor_details').find('#id_address').html(address);
         $('#id_contractor_details').find('#id_cost_rate').html(sc.contractor_hourly_salary);
         $('#id_contractor_details').find('#id_hours').html(sc.contractor_expected_weekly_hours);
+        if (sc.is_active) {
+            $('#id_contractor_details').find('.active').show();
+        }
+        else {
+            $('#id_contractor_details').find('.active').hide();
+        }
     }
 
     function getLiHtml(contractor, index) {
@@ -351,6 +361,7 @@ $(document).ready(function () {
             contractor_hourly_salary: $('#id_contractor_hourly_salary').val(),
             contractor_expected_weekly_hours: $('#id_contractor_expected_weekly_hours').val(),
             contractor_estimated_weekly_salary: $('#id_contractor_estimated_weekly_salary').val(),
+            is_active: $('#id_is_active').is(":checked")
         };
 
         if (currentOperation === ADD) {
@@ -362,12 +373,14 @@ $(document).ready(function () {
     });
 
     $('#btn_modal_contractor').click(function () {
+        resetForm();
         showModal(ADD);
     });
 
     $('#id_contractor_details').on('click', '#id_btn_edit', async function (e) {
         e.preventDefault();
         const response = await apiClient.get('/custom-admin/tools/contractor/api/' + data.results[selectedIndex].id);
+        resetForm();
         fillUpForm(response.data);
         showModal(EDIT);
     });

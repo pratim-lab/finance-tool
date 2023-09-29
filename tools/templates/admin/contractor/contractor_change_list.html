@@ -45,8 +45,8 @@
                                             <div class="white-back right-info" id="id_contractor_details">
                                                 <div class="commonpadding flexarea">
                                                     <div class="lft-area flexarea">
-                                                        <span class="no">#2870</span>
-                                                        <span class="namearea">Anna Dawson
+                                                        <span class="no"></span>
+                                                        <span class="namearea">
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg" width="20"
                                                                 height="20" viewBox="0 0 20 20" fill="none">
@@ -58,7 +58,7 @@
                                                         <span class="active">Active</span>
                                                     </div>
                                                     <div class="rgt-area">
-                                                        <a href="#" id="id_btn_edit">Edit information
+                                                        <a href="" id="id_btn_edit">Edit information
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="30"
                                                                  height="30" viewBox="0 0 30 30" fill="none">
                                                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -66,7 +66,7 @@
                                                                       fill="#212B36"/>
                                                             </svg>
                                                         </a>
-                                                        <a href="#" id="btn_delete">Delete</a>
+                                                        <a href="" id="btn_delete">Delete</a>
                                                     </div>
                                                 </div>
 
@@ -75,12 +75,10 @@
                                                     <div class="lft-area">
                                                         <h6>address</h6>
                                                         <p id="id_address">
-                                                            Jacob Jones<br/>
-                                                            150 Elgin St, Suite 800, Ottawa, ON, K1R 9C2, Canada
                                                         </p>
                                                     </div>
                                                     <div class="rgt-area">
-                                                        <a href="#">
+                                                        <a href="">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20"
                                                                  height="20" viewBox="0 0 20 20" fill="none">
                                                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -98,13 +96,13 @@
                                                         <div class="rating">
                                                             <h6>Cost rate or fee</h6>
                                                             <p id="id_cost_rate">
-                                                                $00.00
+
                                                             </p>
                                                         </div>
                                                         <div class="rating">
                                                             <h6>Hours</h6>
                                                             <p id="id_hours">
-                                                                00
+
                                                             </p>
                                                         </div>
                                                     </div>
@@ -117,11 +115,11 @@
                                                         <h6>Current projects</h6>
                                                         <ul class="toollist">
                                                             <li class="flexarea">
-                                                                <span>BI tool</span> <a href="#">View on projects
+                                                                <span>BI tool</span> <a href="">View on projects
                                                                 page</a>
                                                             </li>
                                                             <li class="flexarea">
-                                                                <span>BI tool</span> <a href="#">View on projects
+                                                                <span>BI tool</span> <a href="">View on projects
                                                                 page</a>
                                                             </li>
                                                         </ul>
@@ -224,6 +222,13 @@
                                         class="error_container"
                                         style="color: red;"></ul>
                                 </div>
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Is Active</label>
+                                    <input type="checkbox" name="is_active" id="id_is_active" value="false">
+                                    <ul id="id_error_{{ form.is_active.name }}"
+                                        class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -235,7 +240,7 @@
                 </div>
             </div>
 
-            <div class="modal" id="modal-delete" tabindex="-1" role="dialog">
+            <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-body">

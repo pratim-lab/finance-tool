@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import BooleanField
 from tools.models import Contractor
 
 
@@ -8,9 +9,10 @@ class ContractorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control'
-            })
+            if not isinstance(self.fields[field], BooleanField):
+                self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+                })
 
     class Meta:
         model = Contractor
@@ -19,6 +21,7 @@ class ContractorForm(forms.ModelForm):
             'address2': forms.Textarea(attrs={'rows': 3, }),
             'contractor_hourly_salary': forms.NumberInput(),
             'contractor_expected_weekly_hours': forms.NumberInput(),
+            'is_active': forms.CheckboxInput(attrs={'checked': ''})
         }
         fields = [
             'contractor_name',
@@ -32,4 +35,5 @@ class ContractorForm(forms.ModelForm):
             'contractor_hourly_salary',
             'contractor_expected_weekly_hours',
             'contractor_estimated_weekly_salary',
+            'is_active',
         ]
