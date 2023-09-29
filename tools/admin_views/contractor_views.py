@@ -1,9 +1,14 @@
-from rest_framework import generics, filters
+import json
+
+from rest_framework import generics, filters, views
+from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
+
+from reports.admin import get_contractor_calc
 from tools.admin_views.utils import AdminPagination
 from tools.models import Contractor
 from tools.serializers.contractor_serializers import ListContractorRetrieveSerializer, ContractorAddSerializer, \
-    ContractorRetrieveSerializer
+    ContractorRetrieveSerializer, ExpenseContractorSerializer
 
 
 class ContractorCreateAdminAPIView(generics.CreateAPIView):
@@ -37,3 +42,18 @@ class ContractorListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Contractor.objects.all()
+
+
+class ContractorReportView(views.APIView):
+    def get(self, request):
+        year, months, contractors, rows, monthly_total_items, total = get_contractor_calc()
+        resp_data = {
+            'year': year,
+            'months': months,
+            'rows': rows,
+            'monthly_total_items': monthly_total_items,
+            'total': total,
+            'contractors': ExpenseContractorSerializer(contractors, many=True).data
+        }
+        # print(json.dumps(get_contractor_calc()))
+        return Response(resp_data)

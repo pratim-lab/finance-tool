@@ -21,112 +21,10 @@
                         <div id="tab1" class="tab-content">
                             <div class="table-responsive listing-table-contact">
                                 <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">Jan</th>
-                                        <th scope="col">Feb</th>
-                                        <th scope="col">Mar</th>
-                                        <th scope="col">Aprl</th>
-                                        <th scope="col">May</th>
-                                        <th scope="col">June</th>
-                                        <th scope="col">July</th>
-                                        <th scope="col">Aug</th>
-                                        <th scope="col">Sep</th>
-                                        <th scope="col">Oct</th>
-                                        <th scope="col">Nov</th>
-                                        <th scope="col">Dec</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th>
-                                            <div class="totals">Total</div>
-                                        </th>
-                                        <td>$000,000</td>
-                                        <td>
-                                            <span class="clickarea">$000,000</span>
-                                            <div class="input-area">
-                                                <input type="text" placeholder="$000,000"/>
-                                                <div class="btn-sec">
-                                                    <input type="reset" value="reset"/>
-                                                    <a href="#"><img src="assets/images/cross.svg" alt=""/></a>
-                                                    <input type="submit" value="submit"/>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Anna Dawson</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>First name, last</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>First name, last</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    </tbody>
+                                    <thead id="id_thead"></thead>
+                                    <tbody id="id_tbody"></tbody>
                                 </table>
                             </div>
-
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><i
-                                            class="fa fa-chevron-left" aria-hidden="true"></i></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                                </li>
-                            </ul>
                         </div>
 
                         <div id="tab2" class="tab-content">
@@ -324,4 +222,5 @@
     <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
     <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
     <script src="{% static 'tools/js/contractor.js' %}"></script>
+    <script src="{% static 'tools/js/contractor-expense.js' %}"></script>
 {% endblock %}

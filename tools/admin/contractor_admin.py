@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from djangoproject.admin import custom_admin
 from tools.admin_views.contractor_views import ContractorListView, ContractorCreateAdminAPIView, \
-    ContractorRetrieveUpdateDestroyAdminAPIView
+    ContractorRetrieveUpdateDestroyAdminAPIView, ContractorReportView
 from tools.forms.contractor_forms import ContractorForm
 from tools.models import Contractor
 from django.contrib.auth.admin import csrf_protect_m
@@ -16,6 +16,7 @@ class ContractorAdmin(admin.ModelAdmin):
         my_urls = [
             path("api/add", self.admin_site.admin_view(ContractorCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(ContractorListView.as_view())),
+            path("api/expense", self.admin_site.admin_view(ContractorReportView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(ContractorRetrieveUpdateDestroyAdminAPIView.as_view())),
         ]
         return my_urls + urls

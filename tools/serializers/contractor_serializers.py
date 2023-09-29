@@ -64,3 +64,12 @@ class ListContractorRetrieveSerializer(serializers.ModelSerializer):
             'contractor_estimated_weekly_salary',
             'created_at',
         ]
+
+
+class ExpenseContractorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contractor
+        fields = [
+            'id',
+            'contractor_name',
+        ]

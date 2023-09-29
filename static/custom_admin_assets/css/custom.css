@@ -517,15 +517,27 @@ span.inactive {
   height: 20px;
 }
 
-.btn-sec input[type="submit"],
-.btn-sec input[type="reset"] {
+/*.btn-sec input[type="submit"],*/
+/*.btn-sec input[type="reset"] {*/
+/*  background: url(../images/tick.svg) 0 0 no-repeat;*/
+/*  border: none;*/
+/*  text-indent: -3000px;*/
+/*}*/
+
+/*.btn-sec input[type="reset"] {*/
+/*  background: url(../images/reset.svg) 0 0 no-repeat;*/
+/*}*/
+
+.btn-sec > .save {
   background: url(../images/tick.svg) 0 0 no-repeat;
   border: none;
   text-indent: -3000px;
 }
 
-.btn-sec input[type="reset"] {
+.btn-sec > .reset {
   background: url(../images/reset.svg) 0 0 no-repeat;
+  border: none;
+  text-indent: -3000px;
 }
 
 .listing-table-contact.listing-table table tr td {

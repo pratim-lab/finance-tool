@@ -1,0 +1,262 @@
+{
+    "year": 2023,
+    "months": [
+        {
+            "id": 1,
+            "value": "January"
+        },
+        {
+            "id": 2,
+            "value": "February"
+        },
+        {
+            "id": 3,
+            "value": "March"
+        },
+        {
+            "id": 4,
+            "value": "April"
+        },
+        {
+            "id": 5,
+            "value": "May"
+        },
+        {
+            "id": 6,
+            "value": "June"
+        },
+        {
+            "id": 7,
+            "value": "July"
+        },
+        {
+            "id": 8,
+            "value": "August"
+        },
+        {
+            "id": 9,
+            "value": "September"
+        },
+        {
+            "id": 10,
+            "value": "October"
+        },
+        {
+            "id": 11,
+            "value": "November"
+        },
+        {
+            "id": 12,
+            "value": "December"
+        }
+    ],
+    "rows": [
+        [
+            {
+                "id": 1,
+                "name": "Contractor 1"
+            },
+            {
+                "year": 2023,
+                "month": 1,
+                "expense": 2401.0
+            },
+            {
+                "year": 2023,
+                "month": 2,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 3,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 4,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 5,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 6,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 7,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 8,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 9,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 10,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 11,
+                "expense": 2400.0
+            },
+            {
+                "year": 2023,
+                "month": 12,
+                "expense": 2400.0
+            },
+            28801.0
+        ],
+        [
+            {
+                "id": 2,
+                "name": "Contractor 2"
+            },
+            {
+                "year": 2023,
+                "month": 1,
+                "expense": 0
+            },
+            {
+                "year": 2023,
+                "month": 2,
+                "expense": 0
+            },
+            {
+                "year": 2023,
+                "month": 3,
+                "expense": 0
+            },
+            {
+                "year": 2023,
+                "month": 4,
+                "expense": 0
+            },
+            {
+                "year": 2023,
+                "month": 5,
+                "expense": 0
+            },
+            {
+                "year": 2023,
+                "month": 6,
+                "expense": 800.0
+            },
+            {
+                "year": 2023,
+                "month": 7,
+                "expense": 800.0
+            },
+            {
+                "year": 2023,
+                "month": 8,
+                "expense": 800.0
+            },
+            {
+                "year": 2023,
+                "month": 9,
+                "expense": 800.0
+            },
+            {
+                "year": 2023,
+                "month": 10,
+                "expense": 800.0
+            },
+            {
+                "year": 2023,
+                "month": 11,
+                "expense": 800.0
+            },
+            {
+                "year": 2023,
+                "month": 12,
+                "expense": 800.0
+            },
+            5600.0
+        ]
+    ],
+    "monthly_total_items": [
+        {
+            "year": 2023,
+            "month": 1,
+            "total_expense": 2401.0
+        },
+        {
+            "year": 2023,
+            "month": 2,
+            "total_expense": 2400.0
+        },
+        {
+            "year": 2023,
+            "month": 3,
+            "total_expense": 2400.0
+        },
+        {
+            "year": 2023,
+            "month": 4,
+            "total_expense": 2400.0
+        },
+        {
+            "year": 2023,
+            "month": 5,
+            "total_expense": 2400.0
+        },
+        {
+            "year": 2023,
+            "month": 6,
+            "total_expense": 3200.0
+        },
+        {
+            "year": 2023,
+            "month": 7,
+            "total_expense": 3200.0
+        },
+        {
+            "year": 2023,
+            "month": 8,
+            "total_expense": 3200.0
+        },
+        {
+            "year": 2023,
+            "month": 9,
+            "total_expense": 3200.0
+        },
+        {
+            "year": 2023,
+            "month": 10,
+            "total_expense": 3200.0
+        },
+        {
+            "year": 2023,
+            "month": 11,
+            "total_expense": 3200.0
+        },
+        {
+            "year": 2023,
+            "month": 12,
+            "total_expense": 3200.0
+        }
+    ],
+    "total": 34401.0,
+    "contractors": [
+        {
+            "id": 1,
+            "contractor_name": "Contractor 1"
+        },
+        {
+            "id": 2,
+            "contractor_name": "Contractor 2"
+        }
+    ]
+}
