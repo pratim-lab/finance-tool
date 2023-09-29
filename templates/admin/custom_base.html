@@ -37,8 +37,8 @@
             <ul class="slide-list slide-list2 mCustomScrollbar">
                 {% for app in available_apps %}
                     <li>
-                        <a href="#" class="accordion">{{ app.name | upper }}</a>
-                        <ul class="panel">
+                        <a href="#" class="accordion active">{{ app.name | upper }}</a>
+                        <ul class="panel" style="display: block;">
                             {% for model in app.models %}
                                 <li>
                                     <a href="{{ model.admin_url }}"{% if model.admin_url in request.path %}
