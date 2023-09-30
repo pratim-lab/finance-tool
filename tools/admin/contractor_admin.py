@@ -13,12 +13,13 @@ class ContractorAdmin(admin.ModelAdmin):
     change_list_template = 'admin/contractor/contractor_change_list.html'
 
     def get_urls(self):
+        info = self.model._meta.app_label, self.model._meta.model_name
         my_urls = [
             path("api/add", self.admin_site.admin_view(ContractorCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(ContractorListView.as_view())),
             path("api/expense", self.admin_site.admin_view(ContractorReportView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(ContractorRetrieveUpdateDestroyAdminAPIView.as_view())),
-            path("", self.admin_site.admin_view(self.contractors))
+            path("", self.admin_site.admin_view(self.contractors), name='%s_%s_changelist' % info)
         ]
         return my_urls
 

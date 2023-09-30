@@ -762,6 +762,11 @@ span.no{
 .customdrop li{
   margin: 5px 0;
 }
+
+.clickarea {
+  cursor: pointer;
+}
+
 /* Info section */
 
 @media only screen and (max-width:1600px) {

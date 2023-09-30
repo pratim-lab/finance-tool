@@ -117,6 +117,7 @@ $(document).ready(function () {
     fetchExpenseData();
 
     $('#id_tbody').on('click', '.clickarea', function () {
+        $(this).hide();
         $(this).parent().find('.txt_modified').val($(this).find('.val').html());
         $(this).parent().find('.input-area').show();
     });
@@ -135,15 +136,18 @@ $(document).ready(function () {
         const resp = await apiClient.post('/admin/reports/contractormonthlyexpensereport/edit', requestData);
         expenseData.rows[i][j].expense = Number(value);
         $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
         updateTable();
     });
 
     $('#id_tbody').on('click', '.cross', function () {
         $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
     });
 
     $('#id_tbody').on('click', '.reset', function () {
         $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
     });
 
     function updateExpenseTable(updatedContractor) {
