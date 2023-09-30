@@ -38,6 +38,12 @@ a {
   text-decoration: none;
   color: #9E3FFD;
 }
+.listing-table table tr td a{
+  color: #212529;
+}
+.listing-table table tr td a:hover{
+  border-bottom: 1px solid;
+}
 
 .btn {
   background-color: #9E3FFD !important;
@@ -419,7 +425,6 @@ span.inactive {
   border-radius: 50px;
   font-size: 12px;
   display: inline-block;
-  cursor: pointer;
 }
 
 .listing-table table tr td span.inactive {
@@ -500,16 +505,30 @@ span.inactive {
 
 .input-area {
   width: 92px;
+  position: relative;
+}
+.input-area:before{
+  position: absolute;
+  content: "$";
+  top: 2px;
+  left: 3px;
 }
 
 .input-area input[type="text"] {
   width: 100%;
   border: 1px solid #0F87FF;
+  padding-left: 12px;
 }
 
 .btn-sec {
   text-align: right;
   margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.btn-sec a{
+  border: none!important;
 }
 
 .btn-sec input {
@@ -765,6 +784,44 @@ span.no{
 
 .clickarea {
   cursor: pointer;
+}
+
+.copy-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.copy-tooltip .copy-tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.copy-tooltip .copy-tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.copy-tooltip:hover .copy-tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Info section */

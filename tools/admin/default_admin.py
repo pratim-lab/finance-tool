@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.auth.admin import csrf_protect_m
 from django.shortcuts import redirect
 
-from tools.forms.client_forms import ClientAddForm
 from tools.models import Client, Project, Employee, Contractor, ExpenseType, Expense, Invoice, Pipeline
 # from dynamic_admin_forms.admin import DynamicModelAdminMixin
 
