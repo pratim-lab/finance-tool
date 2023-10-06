@@ -69,19 +69,26 @@ class Employee(models.Model):
 		('BM', 'Bi-Monthly'),
 		('M', 'Monthly')
 	)
-
+	BENEFITS_YES = 'Y'
+	BENEFITS_NO = 'N'
+	BENEFITS = (
+		(BENEFITS_YES, "Yes"),
+		(BENEFITS_NO, "No"),
+	)
 	employee_name = models.CharField(max_length=255)
 	address1 = models.TextField()
 	address2 = models.TextField(null=True, blank=True)
 	city = models.CharField(max_length=20)
 	state = models.CharField(max_length=20)
-	country = models.CharField(max_length=20)
 	zipcode = models.CharField(max_length=10)
 	employee_start_date = models.DateField()
 	payment_structure = models.CharField(max_length=2, choices=PAYMENT_STRUCTURE)
-	employee_monthly_salary = models.CharField(max_length=10,help_text='Please enter salary in USD')
-	employee_monthly_tax = models.CharField(max_length=10,help_text='Please enter fee as %')
+	employee_monthly_salary = models.CharField(max_length=10, help_text='Please enter salary in USD')
+	employee_monthly_tax = models.CharField(max_length=10, help_text='Please enter fee as %')
 	employee_net_income = models.CharField(max_length=10)
+	project_role = models.CharField(max_length=100, null=True)
+	fte_billable_rate = models.CharField(max_length=10, null=True, blank=True)
+	benefits = models.CharField(max_length=1, null=True, choices=BENEFITS)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

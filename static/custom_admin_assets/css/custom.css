@@ -824,6 +824,15 @@ span.no{
   opacity: 1;
 }
 
+.item-title {
+  margin-bottom: 0px;
+}
+
+.item-subtitle {
+  color: #777777;
+  margin-bottom: 0px;
+}
+
 /* Info section */
 
 @media only screen and (max-width:1600px) {
