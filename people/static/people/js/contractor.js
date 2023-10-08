@@ -1,10 +1,8 @@
 if (!$) {
     $ = django.jQuery;
 }
-//alert('Contractor Loaded!');
 
 $(document).ready(function () {
-
     // Contractor cost tab
 
     function calculateMonthlyTotal() {

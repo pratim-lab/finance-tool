@@ -823,6 +823,9 @@ span.no{
   visibility: visible;
   opacity: 1;
 }
+.listing-table table tr td.updated{
+  background: url(../images/updateicon.svg) 100% 30% no-repeat;
+}
 
 .item-title {
   margin-bottom: 0px;

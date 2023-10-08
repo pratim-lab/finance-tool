@@ -14,7 +14,7 @@
                 <li><a href="#tab2">Costs</a></li>
             </ul>
         </div>
-        <div class="item-area">
+        <div class="client-area">
             <div class="listing-table">
                 <div id="tabs-content">
                     <div id="tab1" class="tab-content">
@@ -37,6 +37,14 @@
 
                         <ul class="pagination justify-content-center" id="id_pagination_container">
                         </ul>
+                    </div>
+                    <div id="tab2" class="tab-content">
+                        <div class="table-responsive listing-table-contact">
+                            <table class="table">
+                                <thead id="id_thead"></thead>
+                                <tbody id="id_tbody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,7 +161,7 @@
         </div>
     </article>
 </section>
-    <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
-    <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
-    <script src="{% static 'people/js/staff.js' %}"></script>
+<input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
+<script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
+<script src="{% static 'people/js/staff.js' %}"></script>
 {% endblock %}

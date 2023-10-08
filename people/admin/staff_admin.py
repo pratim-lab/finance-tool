@@ -3,9 +3,9 @@ from django.urls import path
 from djangoproject.admin import custom_admin
 from django.template.response import TemplateResponse
 
-from people.admin_views.staff_views import StaffListView, StaffCreateAdminAPIView, \
-    StaffRetrieveUpdateDestroyAdminAPIView
-from people.forms.employee_forms import StaffForm
+from people.admin_views.staff_views import (StaffListView, StaffCreateAdminAPIView, EmployeeReportView,
+                                            StaffRetrieveUpdateDestroyAdminAPIView)
+from people.forms.staff_forms import StaffForm
 from people.models import Staff
 
 
@@ -14,14 +14,14 @@ class StaffAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         info = self.model._meta.app_label, self.model._meta.model_name
-        my_urls = [
+        urls = [
             path("api/add", self.admin_site.admin_view(StaffCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(StaffListView.as_view())),
-            # path("api/expense", self.admin_site.admin_view(ContractorReportView.as_view())),
+            path("api/report", self.admin_site.admin_view(EmployeeReportView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(StaffRetrieveUpdateDestroyAdminAPIView.as_view())),
             path("", self.admin_site.admin_view(self.staffs), name='%s_%s_changelist' % info)
         ]
-        return my_urls
+        return urls
 
     def staffs(self, request):
         context = dict(

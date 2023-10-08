@@ -1,10 +1,12 @@
-from rest_framework import generics, filters
+from rest_framework import generics, filters, views
 from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
 
 from people.admin_views.utils import StaffAdminPagination
 from people.models import Staff
 from people.serializers.staff_serializers import ListStaffRetrieveSerializer, StaffAddSerializer, \
-    StaffRetrieveSerializer
+    StaffRetrieveSerializer, ReportStaffRetrieveSerializer
+from reports.admin import get_employee_calc
 
 
 class StaffCreateAdminAPIView(generics.CreateAPIView):
@@ -40,3 +42,17 @@ class StaffListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Staff.objects.all()
+
+
+class EmployeeReportView(views.APIView):
+    def get(self, request):
+        year, months, employees, rows, monthly_total_items, total = get_employee_calc()
+        resp_data = {
+            'year': year,
+            'months': months,
+            'rows': rows,
+            'monthly_total_items': monthly_total_items,
+            'total': total,
+            'contractors': ReportStaffRetrieveSerializer(employees, many=True).data
+        }
+        return Response(resp_data)

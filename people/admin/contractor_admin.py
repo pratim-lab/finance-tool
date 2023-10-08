@@ -14,14 +14,14 @@ class ContractorAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         info = self.model._meta.app_label, self.model._meta.model_name
-        my_urls = [
+        urls = [
             path("api/add", self.admin_site.admin_view(ContractorCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(ContractorListView.as_view())),
             path("api/expense", self.admin_site.admin_view(ContractorReportView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(ContractorRetrieveUpdateDestroyAdminAPIView.as_view())),
             path("", self.admin_site.admin_view(self.contractors), name='%s_%s_changelist' % info)
         ]
-        return my_urls
+        return urls
 
     @csrf_protect_m
     def changelist_view(self, request, extra_context=None):

@@ -4,9 +4,170 @@ if (!$) {
 
 $(document).ready(function () {
     // Cost tab
+    let reportData = {};
 
+    function calculateMonthlyTotal() {
+        const year = reportData.year;
+        let monthlyTotal = {};
+        monthlyTotal[year] = {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0,
+            "10": 0,
+            "11": 0,
+            "12": 0
+        };
+
+        for (let i = 0; i < reportData.rows.length; i++) {
+            for (let j = 0; j < reportData.rows[i].length; j++) {
+                const monthStr = reportData.rows[i][j].month;
+                monthlyTotal[year][monthStr] += Number(reportData.rows[i][j].expense);
+            }
+        }
+        reportData.monthlyTotal = monthlyTotal;
+    }
+
+    function getThRow(){
+        let thTds = '<th scope="col"></th>';
+        for (let i = 0; i < reportData.months.length; i++) {
+            thTds += `<th scope="col">${reportData.months[i].value.substring(0, 3)}</th>`;
+        }
+        // thTds += '<td><b>Yearly Total</b></td>';
+        return `<tr>${thTds}</tr>`;
+    }
+
+    function getRows() {
+        let rows = '';
+        for (let i = 0; i < reportData.rows.length; i++) {
+            let tds = '';
+            for (let j = 0; j < reportData.rows[i].length; j++) {
+                const col = reportData.rows[i][j];
+                if (j === 0) {
+                    tds += '<th>' + col.name + '</th>';
+                } else if (j === reportData.rows[i].length - 1) {
+                    // tds += '<td id="yearly_total_contractor_"' + expenseData.rows[0].id + '>' + col + '</td>';
+                } else {
+                    let updatedClass = '';
+                    if (col.updated) {
+                        updatedClass = 'updated';
+                    }
+                    tds += `
+                        <td class="${updatedClass}">
+                            <span class="clickarea">$<span class="val">${col.expense}</span></span>
+                            <div class="input-area" style="display: none;">
+                                <input type="text" class="txt_modified" placeholder="$${col.expense}" value="${col.expense}" data-i="${i}" data-j="${j}"/>
+                                <div class="btn-sec">
+                                    <input type="button" class="reset" value="reset"/>
+                                    <a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>
+                                    <input type="button" class="save" value="submit"/>
+                                </div>
+                            </div>
+                        </td>
+                        `;
+                }
+            }
+            const row = `<tr>${tds}</tr>`;
+            rows += row;
+        }
+        let lastRowTds = '';
+        lastRowTds += '<th><div class="totals">Total</div></th>';
+        for (let i = 1; i <= 12; i++) {
+            lastRowTds += `
+                <td>
+                    <span>$</span>
+                    <span>${reportData.monthlyTotal[reportData.year][i]}</span>
+                </td>
+                `;
+        }
+        const lastRow = `<tr>${lastRowTds}</tr>`;
+        return lastRow + rows;
+    }
+
+    function updateReportTable() {
+        console.log(reportData);
+        calculateMonthlyTotal();
+        const thRow = getThRow();
+        const rows = getRows();
+        $('#id_thead').html(thRow);
+        $('#id_tbody').html(rows);
+    }
+
+    async function fetchReportData() {
+        let path = '/custom-admin/people/staff/api/report';
+        const response = await apiClient.get(path);
+        reportData = response.data;
+        updateReportTable();
+    }
+
+    fetchReportData();
+
+    $('#id_tbody').on('click', '.clickarea', function () {
+        $(this).hide();
+        $(this).parent().find('.txt_modified').val($(this).find('.val').html());
+        $(this).parent().find('.input-area').show();
+    });
+
+    $('#id_tbody').on('click', '.save', async function () {
+        let $txtField = $(this).parents('.input-area').find('.txt_modified');
+        const value = $txtField.val();
+        const i = $txtField.attr('data-i');
+        const j = $txtField.attr('data-j');
+        let requestData = {
+            employee_id: reportData.rows[i][0].id,
+            year: reportData.rows[i][j].year,
+            month: reportData.rows[i][j].month,
+            expense: value
+        };
+        const resp = await apiClient.post('/admin/reports/employeemonthlyexpensereport/edit', requestData);
+        reportData.rows[i][j].expense = Number(value);
+        reportData.rows[i][j].updated = true;
+        $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
+        updateReportTable();
+    });
+
+    $('#id_tbody').on('click', '.cross', function () {
+        $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
+    });
+
+    $('#id_tbody').on('click', '.reset', function () {
+        $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
+    });
+
+    function updateReportTable2(updatedItem) {
+        let matched = false;
+        for (let i = 0; i < reportData.rows.length; i++) {
+            if (reportData.rows[i][0].id == updatedItem.id) {
+                reportData.rows[i] = updatedItem.expense;
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) {
+            reportData.rows.push(updatedItem.expense);
+        }
+        updateReportTable();
+    }
+
+    function removeDeletedItem(itemId) {
+        for (let i = 0; i < reportData.rows.length; i++) {
+            if (reportData.rows[i][0].id == itemId) {
+                reportData.rows.splice(i, 1);
+            }
+        }
+        updateReportTable();
+    }
 
     // Information tab
+
     let currentSelection = {
         filters: {},
         pageNumber: 1,
@@ -30,7 +191,7 @@ $(document).ready(function () {
                      </button>
                     <div>
                         <p class="item-title">${item.employee_name}</p>
-                        <p class="item-subtitle">${item.city} , ${item.state}</p>
+                        <p class="item-subtitle">${item.city}, ${item.state}</p>
                     </div>
                     <ul class="dropdown-menu">
                         <li><button class="btn btn-item-edit" data-index="${index}">Edit</button></li>
@@ -187,6 +348,7 @@ $(document).ready(function () {
             updateTable();
             $('#modal-item').modal('hide');
             resetForm();
+            updateReportTable2(resp.data);
         } else if (resp.status === 400) {
             showValidationErrors(resp.data);
         }
@@ -208,6 +370,7 @@ $(document).ready(function () {
             updateTable();
             $('#modal-item').modal('hide');
             resetForm();
+            updateReportTable2(resp.data);
         } else if (resp.status === 400) {
             showValidationErrors(resp.data);
         }
@@ -259,12 +422,12 @@ $(document).ready(function () {
         $('#modal-delete').modal('hide');
         for (let i = 0; i < itemData.results.length; i++) {
             if (itemId == itemData.results[i].id) {
-                console.log("matched");
                 itemData.results.splice(i, 1);
                 break;
             }
         }
         updateTable();
+        removeDeletedItem(itemId);
     });
 
     $('#id_pagination_container').on('click', '#id_btn_next_page', async function (e) {
