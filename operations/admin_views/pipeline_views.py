@@ -20,17 +20,31 @@ class PipelineCreateView(APIView):
         return Response(ListPipelineRetrieveSerializer(obj).data, status=status.HTTP_201_CREATED)
 
 
-class PipelineRetrieveUpdateDestroyAdminAPIView(generics.RetrieveUpdateDestroyAPIView):
+class PipelineRetrieveUpdateDestroyAdminAPIView(APIView):
     permission_classes = [IsAdminUser, ]
 
-    def get_queryset(self):
-        return Pipeline.objects.all()
+    def patch(self, request, pk):
+        pipline = Pipeline.objects.filter(pk=pk).first()
+        if pipline is None:
+            return Response({'message': 'Pipeline not found'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = PipelineAddSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        Pipeline.objects.filter(pk=pk).update(**serializer.validated_data)
+        return Response(ListPipelineRetrieveSerializer(Pipeline.objects.filter(pk=pk).first()).data, status=status.HTTP_200_OK)
 
-    def get_serializer_class(self):
-        if self.request.method == "GET":
-            return ListPipelineRetrieveSerializer
-        elif self.request.method == "PATCH":
-            return PipelineAddSerializer
+    def delete(self, request, pk):
+        pipline = Pipeline.objects.filter(id=pk).first()
+        if pipline is None:
+            return Response({'message': 'Pipeline not found'}, status=status.HTTP_404_NOT_FOUND)
+        pipline.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get(self, request, pk):
+        pipline = Pipeline.objects.filter(id=pk).first()
+        if pipline is None:
+            return Response({'message': 'Pipeline not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(ListPipelineRetrieveSerializer(pipline).data, status=status.HTTP_200_OK)
 
 
 class PipelineListView(generics.ListAPIView):

@@ -4,6 +4,19 @@ if (!$) {
 
 $(document).ready(function () {
 
+    const $expectedDateOfFirstPayment = $('#id_expected_date_of_first_payment');
+    const $expectedDateOfSecondPayment = $('#id_expected_date_of_second_payment');
+    const $expectedDateOfThirdPayment = $('#id_expected_date_of_third_payment');
+    const $expectedDateOfFourthPayment = $('#id_expected_date_of_forth_payment');
+    const $expectedDateOfFifthPayment = $('#id_expected_date_of_fifth_payment');
+    const $expectedDateOfSixthPayment = $('#id_expected_date_of_sixth_payment');
+    const $expectedDateOfSeventhPayment = $('#id_expected_date_of_seventh_payment');
+    const $expectedDateOfEighthPayment = $('#id_expected_date_of_eighth_payment');
+    const $expectedDateOfNinthPayment = $('#id_expected_date_of_nineth_payment');
+    const $expectedDateOfTenthPayment = $('#id_expected_date_of_tenth_payment');
+    const $expectedDateOfEleventhPayment = $('#id_expected_date_of_eleventh_payment');
+    const $expectedDateOfTwelfthPayment = $('#id_expected_date_of_twelfth_payment');
+
     let currentSelection = {
         filters: {},
         pageNumber: 1,
@@ -138,18 +151,18 @@ $(document).ready(function () {
         $('#id_estimated_price').val('');
         $('#id_confidence').val('');
         $('#id_no_of_payments').val('');
-        $('#id_expected_date_of_first_payment').val('');
-        $('#id_expected_date_of_second_payment').val('');
-        $('#id_expected_date_of_third_payment').val('');
-        $('#id_expected_date_of_forth_payment').val('');
-        $('#id_expected_date_of_fifth_payment').val('');
-        $('#id_expected_date_of_sixth_payment').val('');
-        $('#id_expected_date_of_seventh_payment').val('');
-        $('#id_expected_date_of_eighth_payment').val('');
-        $('#id_expected_date_of_nineth_payment').val('');
-        $('#id_expected_date_of_tenth_payment').val('');
-        $('#id_expected_date_of_eleventh_payment').val('');
-        $('#id_expected_date_of_twelfth_payment').val('');
+        $expectedDateOfFirstPayment.val('');
+        $expectedDateOfSecondPayment.val('');
+        $expectedDateOfThirdPayment.val('');
+        $expectedDateOfFourthPayment.val('');
+        $expectedDateOfFifthPayment.val('');
+        $expectedDateOfSixthPayment.val('');
+        $expectedDateOfSeventhPayment.val('');
+        $expectedDateOfEighthPayment.val('');
+        $expectedDateOfNinthPayment.val('');
+        $expectedDateOfTenthPayment.val('');
+        $expectedDateOfEleventhPayment.val('');
+        $expectedDateOfTwelfthPayment.val('');
         $('#id_total_value_in_forecast').val('');
         $('#id_estimated_payment_amount').val('');
         hidePaymentDates();
@@ -163,18 +176,18 @@ $(document).ready(function () {
         $('#id_estimated_price').val(item.estimated_price);
         $('#id_confidence').val(item.confidence);
         $('#id_no_of_payments').val(item.no_of_payments);
-        $('#id_expected_date_of_first_payment').val(item.expected_date_of_first_payment);
-        $('#id_expected_date_of_second_payment').val(item.expected_date_of_second_payment);
-        $('#id_expected_date_of_third_payment').val(item.expected_date_of_third_payment);
-        $('#id_expected_date_of_forth_payment').val(item.expected_date_of_forth_payment);
-        $('#id_expected_date_of_fifth_payment').val(item.expected_date_of_fifth_payment);
-        $('#id_expected_date_of_sixth_payment').val(item.expected_date_of_sixth_payment);
-        $('#id_expected_date_of_seventh_payment').val(item.expected_date_of_seventh_payment);
-        $('#id_expected_date_of_eighth_payment').val(item.expected_date_of_eighth_payment);
-        $('#id_expected_date_of_nineth_payment').val(item.expected_date_of_nineth_payment);
-        $('#id_expected_date_of_tenth_payment').val(item.expected_date_of_tenth_payment);
-        $('#id_expected_date_of_eleventh_payment').val(item.expected_date_of_eleventh_payment);
-        $('#id_expected_date_of_twelfth_payment').val(item.expected_date_of_twelfth_payment);
+        $expectedDateOfFirstPayment.val(item.expected_date_of_first_payment);
+        $expectedDateOfSecondPayment.val(item.expected_date_of_second_payment);
+        $expectedDateOfThirdPayment.val(item.expected_date_of_third_payment);
+        $expectedDateOfFourthPayment.val(item.expected_date_of_forth_payment);
+        $expectedDateOfFifthPayment.val(item.expected_date_of_fifth_payment);
+        $expectedDateOfSixthPayment.val(item.expected_date_of_sixth_payment);
+        $expectedDateOfSeventhPayment.val(item.expected_date_of_seventh_payment);
+        $expectedDateOfEighthPayment.val(item.expected_date_of_eighth_payment);
+        $expectedDateOfNinthPayment.val(item.expected_date_of_nineth_payment);
+        $expectedDateOfTenthPayment.val(item.expected_date_of_tenth_payment);
+        $expectedDateOfEleventhPayment.val(item.expected_date_of_eleventh_payment);
+        $expectedDateOfTwelfthPayment.val(item.expected_date_of_twelfth_payment);
         $('#id_total_value_in_forecast').val(item.total_value_in_forecast);
         $('#id_estimated_payment_amount').val(item.estimated_payment_amount);
         hidePaymentDates();
@@ -238,26 +251,31 @@ $(document).ready(function () {
         }
     }
 
+    function getExpectedPaymentDate($element, paymentNo,  noOfPayments) {
+        return ($element.val() === '' || noOfPayments < paymentNo) ? null : $element.val();
+    }
+
     $('#id_btn_item_add').on('click', function () {
         $('.error_container').html('');
+        const noOfPayments = Number($('#id_no_of_payments').val());
         let data = {
             client: $('#id_client').val(),
             project: $('#id_project').val(),
             estimated_price: $('#id_estimated_price').val(),
             confidence: $('#id_confidence').val(),
             no_of_payments: $('#id_no_of_payments').val(),
-            expected_date_of_first_payment: $('#id_expected_date_of_first_payment').val() === '' ? null : $('#id_expected_date_of_first_payment').val(),
-            expected_date_of_second_payment: $('#id_expected_date_of_second_payment').val() === '' ? null : $('#id_expected_date_of_second_payment').val(),
-            expected_date_of_third_payment: $('#id_expected_date_of_third_payment').val() === '' ? null : $('#id_expected_date_of_third_payment').val(),
-            expected_date_of_forth_payment: $('#id_expected_date_of_forth_payment').val() === '' ? null: $('#id_expected_date_of_forth_payment').val(),
-            expected_date_of_fifth_payment: $('#id_expected_date_of_fifth_payment').val() === '' ? null: $('#id_expected_date_of_fifth_payment').val(),
-            expected_date_of_sixth_payment: $('#id_expected_date_of_sixth_payment').val() === '' ? null: $('#id_expected_date_of_sixth_payment').val(),
-            expected_date_of_seventh_payment: $('#id_expected_date_of_seventh_payment').val() === '' ? null: $('#id_expected_date_of_seventh_payment').val(),
-            expected_date_of_eighth_payment: $('#id_expected_date_of_eighth_payment').val() === '' ? null: $('#id_expected_date_of_eighth_payment').val(),
-            expected_date_of_nineth_payment: $('#id_expected_date_of_nineth_payment').val() === '' ? null: $('#id_expected_date_of_nineth_payment').val(),
-            expected_date_of_tenth_payment: $('#id_expected_date_of_tenth_payment').val() === '' ? null: $('#id_expected_date_of_tenth_payment').val(),
-            expected_date_of_eleventh_payment: $('#id_expected_date_of_eleventh_payment').val() === '' ? null: $('#id_expected_date_of_eleventh_payment').val(),
-            expected_date_of_twelfth_payment: $('#id_expected_date_of_twelfth_payment').val() === '' ? null: $('#id_expected_date_of_twelfth_payment').val(),
+            expected_date_of_first_payment: $expectedDateOfFirstPayment.val() === '' ? null : $expectedDateOfFirstPayment.val(),
+            expected_date_of_second_payment: getExpectedPaymentDate($expectedDateOfSecondPayment, 2, noOfPayments),
+            expected_date_of_third_payment: getExpectedPaymentDate($expectedDateOfThirdPayment, 3, noOfPayments),
+            expected_date_of_forth_payment: getExpectedPaymentDate($expectedDateOfFourthPayment, 4, noOfPayments),
+            expected_date_of_fifth_payment: getExpectedPaymentDate($expectedDateOfFifthPayment, 5, noOfPayments),
+            expected_date_of_sixth_payment: getExpectedPaymentDate($expectedDateOfSixthPayment, 6, noOfPayments),
+            expected_date_of_seventh_payment: getExpectedPaymentDate($expectedDateOfSeventhPayment, 7, noOfPayments),
+            expected_date_of_eighth_payment: getExpectedPaymentDate($expectedDateOfEighthPayment, 8, noOfPayments),
+            expected_date_of_nineth_payment: getExpectedPaymentDate($expectedDateOfNinthPayment, 9, noOfPayments),
+            expected_date_of_tenth_payment: getExpectedPaymentDate($expectedDateOfTenthPayment, 10, noOfPayments),
+            expected_date_of_eleventh_payment: getExpectedPaymentDate($expectedDateOfEleventhPayment, 11, noOfPayments),
+            expected_date_of_twelfth_payment: getExpectedPaymentDate($expectedDateOfTwelfthPayment, 12, noOfPayments),
             total_value_in_forecast: $('#id_total_value_in_forecast').val(),
             estimated_payment_amount: $('#id_estimated_payment_amount').val()
         };
@@ -331,7 +349,7 @@ $(document).ready(function () {
         let hours = parseFloat($("#id_confidence").val());
         if (!isNaN(sal) && !isNaN(hours)) {
             let netsal = sal * (hours / 100);
-            $("#id_total_value_in_forecast").val(netsal);
+            $("#id_total_value_in_forecast").val(netsal.toFixed(2));
         } else {
             $("#id_total_value_in_forecast").val('');
         }
@@ -341,7 +359,7 @@ $(document).ready(function () {
         let sal = parseFloat($("#id_total_value_in_forecast").val());
         let hours = parseFloat($("#id_no_of_payments").val());
         if (!isNaN(sal) && !isNaN(hours)) {
-            let netsal = sal / hours;
+            let netsal = (sal / hours).toFixed(2);
             $("#id_estimated_payment_amount").val(netsal);
         } else {
             $("#id_estimated_payment_amount").val('');
@@ -506,4 +524,3 @@ $(document).ready(function () {
     });
 
 });
-
