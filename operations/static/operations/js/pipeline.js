@@ -65,8 +65,8 @@ $(document).ready(function () {
                      </button>
                     ${item.client.client_name}
                     <ul class="dropdown-menu">
-                        <li><button class="btn btn-item-active" data-index="${index}">Mark Active</button></li>
-                        <li><button class="btn btn-item-closed" data-index="${index}">Mark Closed</button></li>
+                        <li><button class="btn btn-item-active" data-index="${index}">Add to active projects</button></li>
+                        <li><button class="btn btn-item-closed" data-index="${index}">Mark as closed/lost</button></li>
                         <li><button class="btn btn-item-edit" data-index="${index}">Edit</button></li>
                         <li><button class="btn btn-item-delete" data-index="${index}">Delete</button></li>
                     </ul>
