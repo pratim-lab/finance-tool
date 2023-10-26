@@ -33,6 +33,29 @@ $(document).ready(function () {
 
     let selectedIndex = null;
 
+    function getConfidenceSelectHtml(item) {
+        let optionsHtml = '';
+        let confidenceValues = ['25', '50', '75', '100'];
+        let matched = false;
+        for (let i = 0; i < confidenceValues.length; i++) {
+            let selected = '';
+            if (confidenceValues[i] === item.confidence) {
+                selected = 'selected';
+                matched = true;
+            }
+            optionsHtml += `<option value="${confidenceValues[i]}" ${selected}>${confidenceValues[i]}%</option>`;
+        }
+        if (!matched) {
+            optionsHtml += `<option value="${item.confidence}" selected>${item.confidence}%</option>`;
+        }
+        return `
+            <select class="form-select form-select-sm" aria-label=".form-select-sm example" 
+                onchange="do_change_confidence(${item.id},this.value)">
+                ${optionsHtml}
+            </select>
+        `;
+    }
+
     function getItemColumnsHtml(item, index) {
         return `
             <th class="employee_name">
@@ -57,12 +80,7 @@ $(document).ready(function () {
             <td>${item.estimated_price}</td>
             <td>
                 <div class="selectpart">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="do_change_confidence(${item.id},this.value)">
-                        <option value="100">100%</option>
-                        <option value="75" selected>75%</option>
-                        <option value="50">50%</option>
-                        <option value="25">25%</option>
-                    </select>
+                    ${getConfidenceSelectHtml(item)}
                 </div>
             </td>
             <td>${item.no_of_payments}</td>
