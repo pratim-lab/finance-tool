@@ -25,6 +25,7 @@ class ContractorForm(forms.ModelForm):
         }
         fields = [
             'contractor_name',
+            'contractor_role',
             'address1',
             'address2',
             'city',

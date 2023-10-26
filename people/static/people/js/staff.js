@@ -38,7 +38,7 @@ $(document).ready(function () {
         for (let i = 0; i < reportData.months.length; i++) {
             thTds += `<th scope="col">${reportData.months[i].value.substring(0, 3)}</th>`;
         }
-        // thTds += '<td><b>Yearly Total</b></td>';
+        thTds += '<td><b>EOY Projection</b></td>';
         return `<tr>${thTds}</tr>`;
     }
 
@@ -85,6 +85,11 @@ $(document).ready(function () {
                 </td>
                 `;
         }
+        lastRowTds += '' +
+        '<td>' +
+            '<span>$</span>' +
+            '<span id="total">' + reportData.total + '</span>' +
+        '</td>';
         const lastRow = `<tr>${lastRowTds}</tr>`;
         return lastRow + rows;
     }

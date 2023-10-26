@@ -76,7 +76,8 @@ class PipelineAddSerializer(serializers.ModelSerializer):
             'expected_date_of_eleventh_payment',
             'expected_date_of_twelfth_payment',
             'total_value_in_forecast',
-            'estimated_payment_amount'
+            'estimated_payment_amount',
+            'note'
         ]
 
 
@@ -107,5 +108,6 @@ class ListPipelineRetrieveSerializer(serializers.ModelSerializer):
             'expected_date_of_eleventh_payment',
             'expected_date_of_twelfth_payment',
             'total_value_in_forecast',
-            'estimated_payment_amount'
+            'estimated_payment_amount',
+            'note'
         ]

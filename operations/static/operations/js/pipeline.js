@@ -18,7 +18,9 @@ $(document).ready(function () {
     const $expectedDateOfTwelfthPayment = $('#id_expected_date_of_twelfth_payment');
 
     let currentSelection = {
-        filters: {},
+        filters: {
+            status: "CUR"
+        },
         pageNumber: 1,
         pageSize: 8
     };
@@ -40,24 +42,26 @@ $(document).ready(function () {
                      </button>
                     ${item.client.client_name}
                     <ul class="dropdown-menu">
+                        <li><button class="btn btn-item-active" data-index="${index}">Mark Active</button></li>
+                        <li><button class="btn btn-item-closed" data-index="${index}">Mark Closed</button></li>
                         <li><button class="btn btn-item-edit" data-index="${index}">Edit</button></li>
                         <li><button class="btn btn-item-delete" data-index="${index}">Delete</button></li>
                     </ul>
                 </div>
             </th>
             <td>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <a href="#" title="${item.note}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M13 10C13 10.5523 13.4477 11 14 11C14.5523 11 15 10.5523 15 10C15 9.44772 14.5523 9 14 9C13.4477 9 13 9.44772 13 10ZM9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10C11 9.44772 10.5523 9 10 9C9.44772 9 9 9.44772 9 10ZM5 10C5 10.5523 5.44772 11 6 11C6.55228 11 7 10.5523 7 10C7 9.44772 6.55228 9 6 9C5.44772 9 5 9.44772 5 10ZM10 2C5.589 2 2 5.589 2 10C2 11.504 2.425 12.908 3.15 14.111L2.081 16.606C1.92 16.981 2.004 17.418 2.293 17.707C2.484 17.898 2.74 18 3 18C3.133 18 3.268 17.974 3.395 17.919L5.889 16.85C7.092 17.575 8.496 18 10 18C14.411 18 18 14.411 18 10C18 5.589 14.411 2 10 2Z" fill="#8C9196"/>
-                </svg> ${item.project.project_name}
+                </svg></a> ${item.project.project_name}
             </td>
             <td>${item.estimated_price}</td>
             <td>
                 <div class="selectpart">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <option value="1">100%</option>
-                        <option value="2">75%</option>
-                        <option value="3">50%</option>
-                        <option value="4">25%</option>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="do_change_confidence(${item.id},this.value)">
+                        <option value="100">100%</option>
+                        <option value="75" selected>75%</option>
+                        <option value="50">50%</option>
+                        <option value="25">25%</option>
                     </select>
                 </div>
             </td>
@@ -124,7 +128,14 @@ $(document).ready(function () {
 
     async function getItems() {
         let path = '/custom-admin/operations/pipeline/api/list?page=' + currentSelection.pageNumber;
-        const response = await apiClient.get(path);
+        //const response = await apiClient.get(path);
+        let params = {};
+        if (currentSelection.filters.status !== "") {
+            params.status = currentSelection.filters.status;
+        }
+        const response = await apiClient.get(path, {
+            params: params
+        });
         itemData = response.data;
         itemData.currentPageNumber = currentSelection.pageNumber;
         updateTable();
@@ -165,6 +176,7 @@ $(document).ready(function () {
         $expectedDateOfTwelfthPayment.val('');
         $('#id_total_value_in_forecast').val('');
         $('#id_estimated_payment_amount').val('');
+        $('#id_note').val('');
         hidePaymentDates();
         let  no_of_payments = $("#id_no_of_payments").val();
         date_of_payments(no_of_payments);
@@ -190,6 +202,7 @@ $(document).ready(function () {
         $expectedDateOfTwelfthPayment.val(item.expected_date_of_twelfth_payment);
         $('#id_total_value_in_forecast').val(item.total_value_in_forecast);
         $('#id_estimated_payment_amount').val(item.estimated_payment_amount);
+        $('#id_note').val(item.note);
         hidePaymentDates();
         let  no_of_payments = $("#id_no_of_payments").val();
         date_of_payments(no_of_payments);
@@ -277,7 +290,8 @@ $(document).ready(function () {
             expected_date_of_eleventh_payment: getExpectedPaymentDate($expectedDateOfEleventhPayment, 11, noOfPayments),
             expected_date_of_twelfth_payment: getExpectedPaymentDate($expectedDateOfTwelfthPayment, 12, noOfPayments),
             total_value_in_forecast: $('#id_total_value_in_forecast').val(),
-            estimated_payment_amount: $('#id_estimated_payment_amount').val()
+            estimated_payment_amount: $('#id_estimated_payment_amount').val(),
+            note: $('#id_note').val()
         };
         console.log(data);
         if (currentOperation === 'add') {
@@ -287,6 +301,55 @@ $(document).ready(function () {
         }
 
     });
+
+    $('tbody').on('click', '.btn-item-active', async function (e) {
+        e.preventDefault();
+        selectedIndex = $(this).attr('data-index');
+        //alert(itemData.results[selectedIndex].id);
+
+        $.ajax({
+            url: "/tools/update_status_of_pipeline",
+            type: "get",
+            data: {
+                pipeline_id: itemData.results[selectedIndex].id,
+                make_status: 'WON'
+
+            },
+            success: function (response) {
+                //alert(response.data);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+
+        updateTable();
+    });
+
+    $('tbody').on('click', '.btn-item-closed', async function (e) {
+        e.preventDefault();
+        selectedIndex = $(this).attr('data-index');
+        //alert(itemData.results[selectedIndex].id);
+
+        $.ajax({
+            url: "/tools/update_status_of_pipeline",
+            type: "get",
+            data: {
+                pipeline_id: itemData.results[selectedIndex].id,
+                make_status: 'LOST'
+            },
+            success: function (response) {
+                //alert(response.data);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+
+        updateTable();
+        
+    });
+
 
     $('tbody').on('click', '.btn-item-edit', async function (e) {
         e.preventDefault();
@@ -313,6 +376,15 @@ $(document).ready(function () {
             }
         }
         updateTable();
+    });
+
+    $('#id_filters_container').on('click', '.btn_filter', async function (e) {
+        e.preventDefault();
+        currentSelection.filters.status = $(this).attr('data-filter');
+        currentSelection.pageNumber = 1;
+        await getItems();
+        $('#id_filters_container').find('.btn_filter').removeClass("active");
+        $(this).addClass('active');
     });
 
     $('#id_pagination_container').on('click', '#id_btn_next_page', async function (e) {
@@ -523,4 +595,27 @@ $(document).ready(function () {
         calculate_net2();
     });
 
+    $("#change_confidence").change(function () {
+        var client_val = $(this).val();
+        alert(client_val);
+    });
+
 });
+
+function do_change_confidence(itemId,itemVal){
+
+    $.ajax({
+        url: "/tools/update_confidence_of_pipeline",
+        type: "get",
+        data: {
+            pipeline_id: itemId,
+            confidence_val: itemVal
+        },
+        success: function (response) {
+            //alert(response.data);
+        },
+        error: function (xhr) {
+            //Do Something to handle error
+        }
+    });
+}

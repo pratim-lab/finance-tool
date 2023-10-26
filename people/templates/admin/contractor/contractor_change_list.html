@@ -55,6 +55,15 @@
                                                                 fill="#8D9196"/>
                                                             </svg>
                                                         </span>
+                                                        <span class="namearea2">
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                height="20" viewBox="0 0 20 20" fill="none">
+                                                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M6 11H14V9H6V11ZM6 15H14V13H6V15ZM6 7H10V5H6V7ZM15.707 5.293L12.707 2.293C12.52 2.105 12.266 2 12 2H5C4.447 2 4 2.448 4 3V17C4 17.552 4.447 18 5 18H15C15.553 18 16 17.552 16 17V6C16 5.735 15.895 5.48 15.707 5.293Z"
+                                                                fill="#8D9196"/>
+                                                            </svg>
+                                                        </span>
                                                         <span class="active">Active</span>
                                                     </div>
                                                     <div class="rgt-area">
@@ -154,6 +163,12 @@
                                     <label for="inputAddress2" class="form-label">Contractor Name</label>
                                     {{ form.contractor_name }}
                                     <ul id="id_error_{{ form.contractor_name.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Contractor Role</label>
+                                    {{ form.contractor_role }}
+                                    <ul id="id_error_{{ form.contractor_role.name }}" class="error_container"
                                         style="color: red;"></ul>
                                 </div>
                                 <div class="col-md-12">

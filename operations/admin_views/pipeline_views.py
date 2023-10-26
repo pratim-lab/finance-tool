@@ -52,6 +52,7 @@ class PipelineListView(generics.ListAPIView):
     serializer_class = ListPipelineRetrieveSerializer
     pagination_class = AdminPagination
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ['status']
     ordering_fields = ['created_at']
     ordering = ['-created_at']
 

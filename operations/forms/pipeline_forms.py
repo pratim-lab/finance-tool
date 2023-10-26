@@ -47,5 +47,6 @@ class PipelineAddForm(forms.ModelForm):
             'expected_date_of_eleventh_payment',
             'expected_date_of_twelfth_payment',
             'total_value_in_forecast',
-            'estimated_payment_amount'
+            'estimated_payment_amount',
+            'note'
         ]

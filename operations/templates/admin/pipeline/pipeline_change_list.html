@@ -10,10 +10,10 @@
         </div>
         <div class="client-area">
             <div class="listing-table">
-                <ul id="tabs-nav" class="new-tabs">
-                    <li class="active"><a href="#tab1">Current pipeline</a></li>
-                    <li><a href="#tab2">Previously lost</a></li>
-                    <li><a href="#tab3">Previously won</a></li>
+                <ul id="id_filters_container" class="new-tabs">
+                    <li class="active btn_filter" data-filter="CUR"><a href="#tab1">Current pipeline</a></li>
+                    <li class="btn_filter" data-filter="LOST"><a href="#tab2">Previously lost</a></li>
+                    <li class="btn_filter" data-filter="WON"><a href="#tab3">Previously won</a></li>
                 </ul>
                 <div id="tabs-content">
                     <div id="tab1" class="tab-content">
@@ -158,6 +158,11 @@
                                 <label for="inputState" class="form-label">Estimated Payment Amount</label>
                                 {{ form.estimated_payment_amount }}
                                 <ul id="id_error_{{ form.estimated_payment_amount.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Note</label>
+                                {{ form.note }}
+                                <ul id="id_error_{{ form.note.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                         </form>
                     </div>

@@ -98,6 +98,7 @@ class Employee(models.Model):
 
 class Contractor(models.Model):
 	contractor_name = models.CharField(max_length=255)
+	contractor_role = models.CharField(max_length=20, null=True, blank=True)
 	address1 = models.TextField()
 	address2 = models.TextField(null=True, blank=True)
 	city = models.CharField(max_length=20)
@@ -211,6 +212,13 @@ class Invoice(models.Model):
 
 
 class Pipeline(models.Model):
+	CONFIDENCE = (
+		('25', '25%'),
+		('50', '50%'),
+		('75', '75%'),
+		('100', '100%')
+	)
+
 	NO_OF_PAYMENTS = (
 		('1', '1'),
 		('2', '2'),
@@ -226,10 +234,16 @@ class Pipeline(models.Model):
 		('12', '12')
 	)
 
+	STATUS = (
+		('CUR', 'CUR'),
+		('WON', 'WON'),
+		('LOST', 'LOST')
+	)
+
 	client = models.ForeignKey(Client, on_delete=models.CASCADE)
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)
 	estimated_price = models.CharField(max_length=10,help_text='Please enter price in USD')
-	confidence = models.CharField(max_length=5, help_text='Please assign confidence as %')
+	confidence = models.CharField(max_length=5, choices=CONFIDENCE)
 	no_of_payments = models.CharField(max_length=2, choices=NO_OF_PAYMENTS)
 	expected_date_of_first_payment = models.DateField()
 	expected_date_of_second_payment = models.DateField(null=True, blank=True)
@@ -245,6 +259,8 @@ class Pipeline(models.Model):
 	expected_date_of_twelfth_payment = models.DateField(null=True, blank=True)
 	total_value_in_forecast = models.CharField(max_length=10,help_text='Please enter price in USD')
 	estimated_payment_amount = models.CharField(max_length=10,help_text='Please enter amount in USD', null=True)
+	note = models.TextField(null=True, blank=True)
+	status = models.CharField(max_length=4, choices=STATUS, default='CUR')
 
 	def __str__(self):
 		return '{}'.format(self.estimated_price)

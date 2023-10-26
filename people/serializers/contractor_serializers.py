@@ -63,6 +63,7 @@ class ContractorAddSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'contractor_name',
+            'contractor_role',
             'address1',
             'address2',
             'city',
@@ -88,6 +89,7 @@ class ContractorRetrieveSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'contractor_name',
+            'contractor_role',
             'address1',
             'address2',
             'city',
@@ -110,6 +112,7 @@ class ListContractorRetrieveSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'contractor_name',
+            'contractor_role',
             'address1',
             'address2',
             'city',

@@ -666,6 +666,7 @@ span.inactive {
 /* Info section */
 .info-area {
   background-color: #F4F4F4;
+  overflow: hidden;
 }
 .white-back{
   background-color: #fff;

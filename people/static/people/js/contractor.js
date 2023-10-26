@@ -40,7 +40,7 @@ $(document).ready(function () {
         for (let i = 0; i < expenseData.months.length; i++) {
             thTds += '<th scope="col">' + expenseData.months[i].value.substring(0, 3) + '</th>';
         }
-        // thTds += '<td><b>Yearly Total</b></td>';
+        thTds += '<td><b>EOY Projection</b></td>';
         return '<tr>' + thTds + '</tr>';
     }
 
@@ -48,6 +48,7 @@ $(document).ready(function () {
         let rows = '';
         for (let i = 0; i < expenseData.rows.length; i++) {
             let tds = '';
+            let expenseRowTotal = 0;
             for (let j = 0; j < expenseData.rows[i].length; j++) {
                 const col = expenseData.rows[i][j];
                 if (j === 0) {
@@ -72,9 +73,18 @@ $(document).ready(function () {
                                 '</div>' +
                             '</div>' +
                         '</td>';
+                expenseRowTotal += Number(col.expense);
                 }
+                
             }
+            tds += '' +
+            '<td>' +
+                '<span>$</span>' +
+                '<span id="total">'+ expenseRowTotal +'</span>' +
+            '</td>';
+
             const row = '<tr>' + tds + '</tr>';
+            
             rows += row;
         }
         let lastRowTds = '';
@@ -87,11 +97,11 @@ $(document).ready(function () {
                 '<span>' + expenseData.monthlyTotal[expenseData.year][i] + '</span>' +
                 '</td>';
         }
-        // lastRowTds += '' +
-        //     '<td>' +
-        //         '<span>$</span>' +
-        //         '<span id="total">' + expenseData.total + '</span>' +
-        //     '</td>';
+        lastRowTds += '' +
+            '<td>' +
+                '<span>$</span>' +
+                '<span id="total">' + expenseData.total + '</span>' +
+            '</td>';
         const lastRow = '<tr>' + lastRowTds + '</tr>';
         return lastRow + rows;
     }
@@ -218,6 +228,7 @@ $(document).ready(function () {
 
     function resetForm() {
         $('#id_contractor_name').val('');
+        $('#id_contractor_role').val('');
         $('#id_address1').val('');
         $('#id_address2').val('');
         $('#id_city').val('');
@@ -232,6 +243,7 @@ $(document).ready(function () {
 
     function fillUpForm(contractor) {
         $('#id_contractor_name').val(contractor.contractor_name);
+        $('#id_contractor_role').val(contractor.contractor_role);
         $('#id_address1').val(contractor.address1);
         $('#id_address2').val(contractor.address2);
         $('#id_city').val(contractor.city);
@@ -259,6 +271,7 @@ $(document).ready(function () {
         const address = `${sc.address1}, ${sc.city}, ${sc.zipcode}, ${sc.state}`;
         $('#id_contractor_details').find('.no').html(`#${sc.id}`);
         $('#id_contractor_details').find('.namearea').html(sc.contractor_name);
+        $('#id_contractor_details').find('.namearea2').html(sc.contractor_role);
         $('#id_contractor_details').find('#id_address').html(address);
         $('#id_contractor_details').find('#id_cost_rate').html(sc.contractor_hourly_salary);
         $('#id_contractor_details').find('#id_hours').html(sc.contractor_expected_weekly_hours);
@@ -278,7 +291,7 @@ $(document).ready(function () {
         return `
             <li class="${statusClass}" data-index="${index}">
                 <a href="#">
-                    <label>${contractor.id}</label> · ${contractor.contractor_name}
+                    <label>${contractor.contractor_name}</label><br/>
                     <span>${contractor.city}, ${contractor.state}</span>
                 </a>
             </li>
@@ -357,6 +370,7 @@ $(document).ready(function () {
         $('.error_container').html('');
         let contractorData = {
             contractor_name: $('#id_contractor_name').val(),
+            contractor_role: $('#id_contractor_role').val(),
             address1: $('#id_address1').val(),
             address2: $('#id_address2').val(),
             city: $('#id_city').val(),
