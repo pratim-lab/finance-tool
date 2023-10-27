@@ -4,6 +4,8 @@ if (!$) {
 
 $(document).ready(function () {
 
+    const $pipelineModal = $('#modal-item');
+    const $pipelineClient = $pipelineModal.find('#id_client');
     const $expectedDateOfFirstPayment = $('#id_expected_date_of_first_payment');
     const $expectedDateOfSecondPayment = $('#id_expected_date_of_second_payment');
     const $expectedDateOfThirdPayment = $('#id_expected_date_of_third_payment');
@@ -75,7 +77,8 @@ $(document).ready(function () {
             <td>
                 <a href="#" title="${item.note}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M13 10C13 10.5523 13.4477 11 14 11C14.5523 11 15 10.5523 15 10C15 9.44772 14.5523 9 14 9C13.4477 9 13 9.44772 13 10ZM9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10C11 9.44772 10.5523 9 10 9C9.44772 9 9 9.44772 9 10ZM5 10C5 10.5523 5.44772 11 6 11C6.55228 11 7 10.5523 7 10C7 9.44772 6.55228 9 6 9C5.44772 9 5 9.44772 5 10ZM10 2C5.589 2 2 5.589 2 10C2 11.504 2.425 12.908 3.15 14.111L2.081 16.606C1.92 16.981 2.004 17.418 2.293 17.707C2.484 17.898 2.74 18 3 18C3.133 18 3.268 17.974 3.395 17.919L5.889 16.85C7.092 17.575 8.496 18 10 18C14.411 18 18 14.411 18 10C18 5.589 14.411 2 10 2Z" fill="#8C9196"/>
-                </svg></a> ${item.project.project_name}
+                </svg>
+                </a>${item.project.project_name}
             </td>
             <td>${item.estimated_price}</td>
             <td>
@@ -174,8 +177,9 @@ $(document).ready(function () {
 
     let currentOperation = 'add';
 
+
     function resetForm() {
-        $('#id_client').val('');
+        $pipelineClient.val('');
         $('#id_project').val('');
         $('#id_estimated_price').val('');
         $('#id_confidence').val('');
@@ -201,7 +205,7 @@ $(document).ready(function () {
     }
 
     function fillUpForm(item) {
-        $('#id_client').val(item.client.id);
+        $pipelineClient.val(item.client.id);
         $('#id_project').val(item.project.id);
         $('#id_estimated_price').val(item.estimated_price);
         $('#id_confidence').val(item.confidence);
@@ -290,7 +294,7 @@ $(document).ready(function () {
         $('.error_container').html('');
         const noOfPayments = Number($('#id_no_of_payments').val());
         let data = {
-            client: $('#id_client').val(),
+            client: $pipelineClient.val(),
             project: $('#id_project').val(),
             estimated_price: $('#id_estimated_price').val(),
             confidence: $('#id_confidence').val(),
@@ -566,7 +570,7 @@ $(document).ready(function () {
 
 
     //$('#id_project').empty();
-    $("#id_client").change(function () {
+    $pipelineClient.change(function () {
         var client_val = $(this).val();
         //alert(client_val);
 
@@ -618,10 +622,157 @@ $(document).ready(function () {
         alert(client_val);
     });
 
+    // Client -----------------------------------------------
+
+    const $clientModal = $('#modal-client');
+    const $clientName = $clientModal.find('#id_client_name');
+    const $clientAddress1 = $clientModal.find('#id_address1');
+    const $clientAddress2 = $clientModal.find('#id_address2');
+    const $clientCity = $clientModal.find('#id_city');
+    const $clientState = $clientModal.find('#id_state');
+    const $clientZipcode = $clientModal.find('#id_zipcode');
+    const $clientClientType = $clientModal.find('#id_client_type');
+    const $clientBillingStructure = $clientModal.find('#id_billing_structure');
+    const $clientBillingTarget = $clientModal.find('#id_billing_target');
+    const $clientPaymentTerms = $clientModal.find('#id_payment_terms');
+
+    let clientOperation = 'add';
+
+    function resetClientForm() {
+        $clientName.val('');
+        $clientAddress1.val('');
+        $clientAddress2.val('');
+        $clientCity.val('');
+        $clientState.val('');
+        $clientZipcode.val('');
+        $clientClientType.val('');
+        $clientBillingStructure.val('');
+        $clientBillingTarget.val('');
+        $clientPaymentTerms.val('');
+    }
+
+    function showClientModal(type) {
+        $clientModal.find('.error_container').html('');
+        if (type === 'add') {
+            clientOperation = 'add';
+            $clientModal.find('.modal-title').html('Add New Client');
+            $clientModal.find('#id_btn_client_add').html('Add Client');
+        } else if (type === 'edit') {
+            clientOperation = 'edit';
+            $clientModal.find('.modal-title').html('Edit Client');
+            $clientModal.find('#id_btn_client_add').html('Update Client');
+        }
+        $clientModal.modal('show');
+    }
+
+    function showClientValidationErrors(errorData) {
+        for (let key in errorData) {
+            let errorHtml = '';
+            for (let i = 0; i < errorData[key].length; i++) {
+                errorHtml += '<li>* ' + errorData[key][i] + '</li>';
+            }
+            $clientModal.find('#id_error_' + key).html(errorHtml);
+        }
+    }
+
+    $('#btn-add-client').on('click', function () {
+        showClientModal('add');
+    });
+
+    function fillUpClientForm(client) {
+        $clientName.val(client.client_name);
+        $clientAddress1.val(client.address1);
+        $clientAddress2.val(client.address2);
+        $clientCity.val(client.city);
+        $clientState.val(client.state);
+        $clientZipcode.val(client.zipcode);
+        $clientClientType.val(client.client_type);
+        $clientBillingStructure.val(client.billing_structure);
+        $clientBillingTarget.val(client.billing_target);
+        $clientPaymentTerms.val(client.payment_terms);
+    }
+
+    $('#btn-edit-client').on('click', async function () {
+        const selectedClientId = $pipelineClient.val();
+        if (!selectedClientId) {
+            return;
+        }
+        const response = await apiClient.get('/custom-admin/operations/client/api/' + selectedClientId);
+        fillUpClientForm(response.data);
+        showClientModal('edit');
+    });
+
+    function repopulateClientSelectOptions(newClient) {
+        const optionHtml = `<option value="${newClient.id}">${newClient.client_name}</option>`;
+        $pipelineClient.append(optionHtml);
+        setTimeout(function (){
+            const size = $pipelineClient.find("option").length;
+            $pipelineClient.prop('selectedIndex', (size - 1));
+        }, 200);
+        $('#id_project').empty();
+    }
+
+    async function addClient(data) {
+        const resp = await apiClient.post('/custom-admin/operations/client/api/add', data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 201) {
+            $clientModal.modal('hide');
+            repopulateClientSelectOptions(resp.data);
+            resetClientForm();
+        } else if (resp.status === 400) {
+            showClientValidationErrors(resp.data);
+        }
+    }
+
+    function updateSelectedClientName(updatedClient) {
+        $pipelineClient.find(`option[value="${updatedClient.id}"]`).html(updatedClient.client_name);
+    }
+
+    async function editClient(data) {
+        const selectedClientId = $pipelineClient.val();
+        const resp = await apiClient.patch('/custom-admin/operations/client/api/' + selectedClientId, data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 200) {
+            $clientModal.modal('hide');
+            updateSelectedClientName(resp.data);
+            resetClientForm();
+        } else if (resp.status === 400) {
+            showClientValidationErrors(resp.data);
+        }
+    }
+
+    $clientModal.find('#id_btn_client_add').on('click', async function () {
+        $clientModal.find('.error_container').html('');
+        let data = {
+            client_name: $clientName.val(),
+            address1: $clientAddress1.val(),
+            address2: $clientAddress2.val(),
+            city: $clientCity.val(),
+            state: $clientState.val(),
+            zipcode: $clientZipcode.val(),
+            client_type: $clientClientType.val(),
+            billing_structure: $clientBillingStructure.val(),
+            billing_target: $clientBillingTarget.val(),
+            payment_terms: $clientPaymentTerms.val()
+        };
+        if (clientOperation === 'add') {
+            addClient(data);
+        } else if (clientOperation === 'edit') {
+            editClient(data);
+        }
+    });
+
+    // End Client ----------------------------------
+
 });
 
 function do_change_confidence(itemId,itemVal){
-
     $.ajax({
         url: "/tools/update_confidence_of_pipeline",
         type: "get",

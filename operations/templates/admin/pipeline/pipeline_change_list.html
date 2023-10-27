@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Pipeline Modal -->
         <div class="modal fade" id="modal-item" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -66,6 +66,8 @@
                             <div class="col-md-12 {{ form.client.css_classes }}">
                                 <label for="inputAddress2" class="form-label">Client</label>
                                 {{ form.client }}
+                                <button type="button" class="btn" id="btn-edit-client">Edit</button>
+                                <button type="button" class="btn" id="btn-add-client">+</button>
                                 <ul id="id_error_{{ form.client.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
@@ -185,6 +187,83 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">
                             Cancel
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Client Modal -->
+        <div class="modal fade" id="modal-client" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add new client</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 custom-form">
+                            <input type="hidden" value="-1" id="id_selected_client"/>
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label">Client Name</label>
+                                {{ client_form.client_name }}
+                                <ul id="id_error_{{ client_form.client_name.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Address 1</label>
+                                {{ client_form.address1 }}
+                                <ul id="id_error_{{ client_form.address1.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Address 2</label>
+                                {{ client_form.address2 }}
+                                <ul id="id_error_{{ client_form.address2.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputAddress2" class="form-label">City</label>
+                                {{ client_form.city }}
+                                <ul id="id_error_{{ client_form.city.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-4">
+                                <label for="inputAddress2" class="form-label">State</label>
+                                {{ client_form.state }}
+                                <ul id="id_error_{{ client_form.state.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-2">
+                                <label for="inputAddress2" class="form-label">Zipcode</label>
+                                {{ client_form.zipcode }}
+                                <ul id="id_error_{{ client_form.zipcode.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Client Type</label>
+                                {{ client_form.client_type }}
+                                <ul id="id_error_{{ client_form.client_type.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Billing Structure</label>
+                                {{ client_form.billing_structure }}
+                                <ul id="id_error_{{ client_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Billing Target</label>
+                                {{ client_form.billing_target }}
+                                <ul id="id_error_{{ client_form.billing_target.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Payment Terms</label>
+                                {{ client_form.payment_terms }}
+                                <ul id="id_error_{{ client_form.payment_terms.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                        <button type="button" id="id_btn_client_add" class="btn btn-primary">Add client</button>
                     </div>
                 </div>
             </div>

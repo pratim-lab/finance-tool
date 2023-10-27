@@ -5,6 +5,7 @@ from django.urls import path
 from djangoproject.admin import custom_admin
 from operations.admin_views.pipeline_views import PipelineListView, PipelineCreateView, \
     PipelineRetrieveUpdateDestroyAdminAPIView
+from operations.forms.client_forms import ClientAddForm
 from operations.forms.pipeline_forms import PipelineAddForm
 from operations.models import Pipeline
 
@@ -25,7 +26,8 @@ class PipelineAdmin(admin.ModelAdmin):
     def pipelines(self, request):
         context = dict(
             self.admin_site.each_context(request),
-            form=PipelineAddForm()
+            form=PipelineAddForm(),
+            client_form=ClientAddForm()
         )
         return TemplateResponse(request, 'admin/pipeline/pipeline_change_list.html', context)
 
