@@ -1,0 +1,197 @@
+{% extends "admin/custom_base.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+<section>
+    <article>
+        <div class="top-head">
+            <h1>Pipeline</h1>
+            <button id="btn-item-modal-show" class="btn btn-primary">Add Pipeline</button>
+        </div>
+        <div class="client-area">
+            <div class="listing-table">
+                <ul id="id_filters_container" class="new-tabs">
+                    <li class="active btn_filter" data-filter="CUR"><a href="#tab1">Current pipeline</a></li>
+                    <li class="btn_filter" data-filter="LOST"><a href="#tab2">Previously lost</a></li>
+                    <li class="btn_filter" data-filter="WON"><a href="#tab3">Previously won</a></li>
+                </ul>
+                <div id="tabs-content">
+                    <div id="tab1" class="tab-content">
+                        <div class="table-responsive">
+                            <p id="id_no_content" style="text-align: center; display: none;">No Pipelines to show</p>
+                            <table class="table" id="id_item_table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Client</th>
+                                        <th scope="col">Project Name</th>
+                                        <th scope="col">Estimated price</th>
+                                        <th scope="col">Likelihood of winning</th>
+                                        <th scope="col">Payments</th>
+                                        <th scope="col">Total value in forecast	</th>
+                                        <th scope="col">Payment amount (with confidence)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <ul class="pagination justify-content-center" id="id_pagination_container">
+                        </ul>
+                    </div>
+                    <div id="tab2" class="tab-content">
+                        <div class="table-responsive listing-table-contact">
+                            <table class="table">
+                                <thead id="id_thead"></thead>
+                                <tbody id="id_tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-item" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add a pipeline</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 custom-form">
+                            <div class="col-md-12 {{ form.client.css_classes }}">
+                                <label for="inputAddress2" class="form-label">Client</label>
+                                {{ form.client }}
+                                <ul id="id_error_{{ form.client.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Project</label>
+                                {{ form.project }}
+                                <ul id="id_error_{{ form.project.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Estimated Price</label>
+                                {{ form.estimated_price }}
+                                <ul id="id_error_{{ form.estimated_price.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputAddress2" class="form-label">Confidence</label>
+                                {{ form.confidence }}
+                                <ul id="id_error_{{ form.confidence.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputAddress2" class="form-label">No of Payments</label>
+                                {{ form.no_of_payments }}
+                                <ul id="id_error_{{ form.no_of_payments.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputAddress2" class="form-label">Expected Date of First Payment</label>
+                                {{ form.expected_date_of_first_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_first_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_second_payment">
+                                <label for="inputState" class="form-label">Expected Date of Second Payment</label>
+                                {{ form.expected_date_of_second_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_second_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12 field-expected_date_of_third_payment">
+                                <label for="inputState" class="form-label">Expected Date of Third Payment</label>
+                                {{ form.expected_date_of_third_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_third_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_forth_payment">
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Fourth Payment</label>
+                                {{ form.expected_date_of_forth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_forth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_fifth_payment">
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Fifth Payment</label>
+                                {{ form.expected_date_of_fifth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_fifth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_sixth_payment">
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Sixth Payment</label>
+                                {{ form.expected_date_of_sixth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_sixth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_seventh_payment">
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Seventh Payment</label>
+                                {{ form.expected_date_of_seventh_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_seventh_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_eighth_payment">
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Eighth Payment</label>
+                                {{ form.expected_date_of_eighth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_eighth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_nineth_payment">
+                                <label for="inputState" class="form-label">Expected Date of Ninth Payment</label>
+                                {{ form.expected_date_of_nineth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_nineth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_tenth_payment">
+                                <label for="inputState" class="form-label">Expected Date of Tenth Payment</label>
+                                {{ form.expected_date_of_tenth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_tenth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_eleventh_payment">
+                                <label for="inputState" class="form-label">Expected Date of Eleventh Payment</label>
+                                {{ form.expected_date_of_eleventh_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_eleventh_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12 field-expected_date_of_twelfth_payment">
+                                <label for="inputState" class="form-label">Expected Date of Twelfth Payment</label>
+                                {{ form.expected_date_of_twelfth_payment }}
+                                <ul id="id_error_{{ form.expected_date_of_twelfth_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Total Value in Forecast</label>
+                                {{ form.total_value_in_forecast }}
+                                <ul id="id_error_{{ form.total_value_in_forecast.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Estimated Payment Amount</label>
+                                {{ form.estimated_payment_amount }}
+                                <ul id="id_error_{{ form.estimated_payment_amount.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Note</label>
+                                {{ form.note }}
+                                <ul id="id_error_{{ form.note.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                        <button type="button" id="id_btn_item_add" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="modal-delete" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Are you sure to delete?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
+<script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
+<script src="{% static 'operations/js/pipeline.js' %}"></script>
+{% endblock %}

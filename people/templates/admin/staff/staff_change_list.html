@@ -1,0 +1,167 @@
+{% extends "admin/custom_base.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+<section>
+    <article>
+        <div class="top-head">
+            <h1>Staff</h1>
+            <button id="btn-item-modal-show" class="btn btn-primary">Add Staff</button>
+        </div>
+        <div class="listing-table mid-menu">
+            <ul id="tabs-nav" class="new-tabs status-ul">
+                <li class="active" id="id_btn_tab_information"><a href="#tab1">Information</a></li>
+                <li><a href="#tab2">Costs</a></li>
+            </ul>
+        </div>
+        <div class="client-area">
+            <div class="listing-table">
+                <div id="tabs-content">
+                    <div id="tab1" class="tab-content">
+                        <div class="table-responsive">
+                            <p id="id_no_content" style="text-align: center; display: none;">No staffs to show</p>
+                            <table class="table" id="id_item_table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Salary</th>
+                                        <th scope="col">FTE Billable Rate</th>
+                                        <th scope="col">Benefits</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <ul class="pagination justify-content-center" id="id_pagination_container">
+                        </ul>
+                    </div>
+                    <div id="tab2" class="tab-content">
+                        <div class="table-responsive listing-table-contact">
+                            <table class="table">
+                                <thead id="id_thead"></thead>
+                                <tbody id="id_tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-item" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add a staff member</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 custom-form">
+                            <input type="hidden" value="-1" id="id_selected_item"/>
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label">Name</label>
+                                {{ form.employee_name }}
+                                <ul id="id_error_{{ form.employee_name.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Address 1</label>
+                                {{ form.address1 }}
+                                <ul id="id_error_{{ form.address1.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Address 2</label>
+                                {{ form.address2 }}
+                                <ul id="id_error_{{ form.address2.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputAddress2" class="form-label">City</label>
+                                {{ form.city }}
+                                <ul id="id_error_{{ form.city.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-4">
+                                <label for="inputAddress2" class="form-label">State</label>
+                                {{ form.state }}
+                                <ul id="id_error_{{ form.state.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-2">
+                                <label for="inputAddress2" class="form-label">Zipcode</label>
+                                {{ form.zipcode }}
+                                <ul id="id_error_{{ form.zipcode.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Start Date</label>
+                                {{ form.employee_start_date }}
+                                <ul id="id_error_{{ form.employee_start_date.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Payment Structure</label>
+                                {{ form.payment_structure }}
+                                <ul id="id_error_{{ form.payment_structure.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleFormControlTextarea1" class="form-label">Salary</label>
+                                {{ form.employee_monthly_salary }}
+                                <ul id="id_error_{{ form.employee_monthly_salary.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleFormControlTextarea1" class="form-label">Tax</label>
+                                {{ form.employee_monthly_tax }}
+                                <ul id="id_error_{{ form.employee_monthly_tax.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleFormControlTextarea1" class="form-label">Net Income</label>
+                                {{ form.employee_net_income }}
+                                <ul id="id_error_{{ form.employee_net_income.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Project Role</label>
+                                {{ form.project_role }}
+                                <ul id="id_error_{{ form.project_role.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exampleFormControlTextarea1" class="form-label">FTE Billable Rate</label>
+                                {{ form.fte_billable_rate }}
+                                <ul id="id_error_{{ form.fte_billable_rate.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputState" class="form-label">Benefits</label>
+                                {{ form.benefits }}
+                                <ul id="id_error_{{ form.benefits.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                        <button type="button" id="id_btn_item_add" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="modal-delete" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Are you sure to delete?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
+<script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
+<script src="{% static 'people/js/staff.js' %}"></script>
+{% endblock %}

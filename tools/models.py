@@ -1,8 +1,7 @@
 from django.db import models
-import json, os
+
 
 class Client(models.Model):
-	
 	CLIENT_TYPES = (
 		('AC', 'Active Client'),
 		('PC', 'Prospective Client'),
@@ -27,7 +26,6 @@ class Client(models.Model):
 	address2 = models.TextField(null=True, blank=True)
 	city = models.CharField(max_length=20)
 	state = models.CharField(max_length=20)
-	country = models.CharField(max_length=20)
 	zipcode = models.CharField(max_length=10)
 	client_type = models.CharField(max_length=2, choices=CLIENT_TYPES)
 	billing_structure = models.CharField(max_length=2, choices=BILLING_STRUCTURE)
@@ -40,8 +38,8 @@ class Client(models.Model):
 	def __str__(self):
 		return '{}'.format(self.client_name)
 
+
 class Project(models.Model):
-	
 	PROJECT_TYPES = (
 		('A', 'Active'),
 		('P', 'Pipeline'),
@@ -52,7 +50,7 @@ class Project(models.Model):
 		('PB', 'Project Based'),
 	)
 
-	client = models.ForeignKey(Client, on_delete=models.CASCADE)
+	client = models.ForeignKey(Client, on_delete=models.CASCADE,)
 	project_name = models.CharField(max_length=255)
 	project_type = models.CharField(max_length=2, choices=PROJECT_TYPES)
 	#confidence = models.CharField(max_length=5, null=True, blank=True, help_text='Please assign confidence as %')
@@ -64,53 +62,61 @@ class Project(models.Model):
 	def __str__(self):
 		return '{}'.format(self.project_name)
 
+
 class Employee(models.Model):
-	
 	PAYMENT_STRUCTURE = (
 		('W', 'Weekly'),
 		('BM', 'Bi-Monthly'),
 		('M', 'Monthly')
 	)
-
+	BENEFITS_YES = 'Y'
+	BENEFITS_NO = 'N'
+	BENEFITS = (
+		(BENEFITS_YES, "Yes"),
+		(BENEFITS_NO, "No"),
+	)
 	employee_name = models.CharField(max_length=255)
 	address1 = models.TextField()
 	address2 = models.TextField(null=True, blank=True)
 	city = models.CharField(max_length=20)
 	state = models.CharField(max_length=20)
-	country = models.CharField(max_length=20)
 	zipcode = models.CharField(max_length=10)
 	employee_start_date = models.DateField()
 	payment_structure = models.CharField(max_length=2, choices=PAYMENT_STRUCTURE)
-	employee_monthly_salary = models.CharField(max_length=10,help_text='Please enter salary in USD')
-	employee_monthly_tax = models.CharField(max_length=10,help_text='Please enter fee as %')
+	employee_monthly_salary = models.CharField(max_length=10, help_text='Please enter salary in USD')
+	employee_monthly_tax = models.CharField(max_length=10, help_text='Please enter fee as %')
 	employee_net_income = models.CharField(max_length=10)
+	project_role = models.CharField(max_length=100, null=True)
+	fte_billable_rate = models.CharField(max_length=10, null=True, blank=True)
+	benefits = models.CharField(max_length=1, null=True, choices=BENEFITS)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '{}'.format(self.employee_name)
 
-class Contractor(models.Model):
 
+class Contractor(models.Model):
 	contractor_name = models.CharField(max_length=255)
+	contractor_role = models.CharField(max_length=20, null=True, blank=True)
 	address1 = models.TextField()
 	address2 = models.TextField(null=True, blank=True)
 	city = models.CharField(max_length=20)
 	state = models.CharField(max_length=20)
-	country = models.CharField(max_length=20)
 	zipcode = models.CharField(max_length=10)
 	contractor_start_date = models.DateField()
 	contractor_hourly_salary = models.CharField(max_length=10,help_text='Please enter salary in USD')
 	contractor_expected_weekly_hours = models.CharField(max_length=5)
 	contractor_estimated_weekly_salary = models.CharField(max_length=10,help_text='in USD')
+	is_active = models.BooleanField(default=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '{}'.format(self.contractor_name)
 
-class ExpenseType(models.Model):
 
+class ExpenseType(models.Model):
 	expense_name = models.CharField(max_length=255)
 	expense_description = models.TextField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -119,8 +125,8 @@ class ExpenseType(models.Model):
 	def __str__(self):
 		return '{}'.format(self.expense_name)
 
-class Expense(models.Model):
 
+class Expense(models.Model):
 	EXPENSE_TYPE = (
 		('Advertising', 'Advertising'),
 		('Bank Fees', 'Bank Fees'),
@@ -183,8 +189,8 @@ class Expense(models.Model):
 	def __str__(self):
 		return '{}'.format(self.expense_type)
 
-class Invoice(models.Model):
 
+class Invoice(models.Model):
 	INVOICE_STATUS = (
 		('P', 'Paid'),
 		('S', 'Sent'),
@@ -204,7 +210,14 @@ class Invoice(models.Model):
 	def __str__(self):
 		return '{}'.format(self.invoice_number)
 
+
 class Pipeline(models.Model):
+	CONFIDENCE = (
+		('25', '25%'),
+		('50', '50%'),
+		('75', '75%'),
+		('100', '100%')
+	)
 
 	NO_OF_PAYMENTS = (
 		('1', '1'),
@@ -221,10 +234,16 @@ class Pipeline(models.Model):
 		('12', '12')
 	)
 
+	STATUS = (
+		('CUR', 'CUR'),
+		('WON', 'WON'),
+		('LOST', 'LOST')
+	)
+
 	client = models.ForeignKey(Client, on_delete=models.CASCADE)
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)
 	estimated_price = models.CharField(max_length=10,help_text='Please enter price in USD')
-	confidence = models.CharField(max_length=5, help_text='Please assign confidence as %')
+	confidence = models.CharField(max_length=5, choices=CONFIDENCE)
 	no_of_payments = models.CharField(max_length=2, choices=NO_OF_PAYMENTS)
 	expected_date_of_first_payment = models.DateField()
 	expected_date_of_second_payment = models.DateField(null=True, blank=True)
@@ -239,7 +258,9 @@ class Pipeline(models.Model):
 	expected_date_of_eleventh_payment = models.DateField(null=True, blank=True)
 	expected_date_of_twelfth_payment = models.DateField(null=True, blank=True)
 	total_value_in_forecast = models.CharField(max_length=10,help_text='Please enter price in USD')
-	estimated_payment_amount = models.CharField(max_length=10,help_text='Please enter amount in USD')
+	estimated_payment_amount = models.CharField(max_length=10,help_text='Please enter amount in USD', null=True)
+	note = models.TextField(null=True, blank=True)
+	status = models.CharField(max_length=4, choices=STATUS, default='CUR')
 
 	def __str__(self):
 		return '{}'.format(self.estimated_price)

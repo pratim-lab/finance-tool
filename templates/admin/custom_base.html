@@ -1,0 +1,72 @@
+{% load i18n static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FWD</title>
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'custom_admin_assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link href="{% static 'custom_admin_assets/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'custom_admin_assets/css/mCustomScrollbar.min.css' %}">
+    <script src="{% static 'custom_admin_assets/js/jquery-3.6.3.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'custom_admin_assets/css/custom.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+<section>
+    <aside id="sidebar">
+        <div class="logo">
+            <img src="{% static 'custom_admin_assets/images/logo.svg' %}" alt=""/>
+        </div>
+        <ul class="slide-list">
+            <li><a href="#"><img src="{% static 'custom_admin_assets/images/forcust.svg' %}" alt=""/> Forecast</a></li>
+            <li><a href="#"><img src="{% static 'custom_admin_assets/images/profit.svg' %}" alt=""/> Profits and loss</a>
+            </li>
+        </ul>
+        {% if available_apps %}
+            <ul class="slide-list slide-list2 mCustomScrollbar">
+                {% for app in available_apps %}
+                    <li>
+                        <a href="#" class="accordion active">{{ app.name | upper }}</a>
+                        <ul class="panel" style="display: block;">
+                            {% for model in app.models %}
+                                <li>
+                                    <a href="{{ model.admin_url }}"{% if model.admin_url in request.path %}
+                                       class="active" {% endif %}>{{ model.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+        {% endif %}
+        <div class="setting-icon"><a href="#"><img src="{% static 'custom_admin_assets/images/settings_minor.svg' %}"
+                                                   alt=""/></a></div>
+    </aside>
+    <div>
+        {% block content %}
+            {{ content }}
+        {% endblock %}
+        {% include "admin/loader.html" %}
+    </div>
+</section>
+<script src="{% static 'custom_admin_assets/js/bootstrap_popper.min.js' %}"></script>
+<script src="{% static 'custom_admin_assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'custom_admin_assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'custom_admin_assets/js/mCustomScrollbar.min.js' %}"></script>
+<script src="{% static 'custom_admin_assets/js/custom.js' %}"></script>
+
+</body>
+</html>

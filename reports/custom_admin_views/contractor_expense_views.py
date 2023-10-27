@@ -2,9 +2,13 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from reports.models import ContractorMonthlyExpense, EmployeeMonthlyExpense, TypeTotalExpense
-from reports.serializers import ContractorMonthlyExpenseEditSerializer, EmployeeMonthlyExpenseEditSerializer, TypeTotalExpenseEditSerializer
-from tools.models import Contractor, Expense, Employee
+from reports.models import ContractorMonthlyExpense, TypeTotalExpense
+from reports.serializers import ContractorMonthlyExpenseEditSerializer, TypeTotalExpenseEditSerializer
+from tools.models import Contractor, Expense
+
+from reports.models import EmployeeMonthlyExpense
+from reports.serializers import EmployeeMonthlyExpenseEditSerializer
+from tools.models import Employee
 
 
 @api_view(['POST'])
@@ -16,6 +20,7 @@ def contractor_monthly_expense_edit_view(request):
     contractor = Contractor.objects.filter(id=data['contractor_id']).first()
     if contractor is None:
         return Response({'message': 'Contractor is not found'}, status=status.HTTP_400_BAD_REQUEST)
+
     monthly_expense, created = ContractorMonthlyExpense.objects.update_or_create(
         contractor=contractor,
         year=data['year'],

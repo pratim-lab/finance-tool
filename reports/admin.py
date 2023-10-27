@@ -1,12 +1,6 @@
 import datetime
 import numpy as np
-import json
 import matplotlib.pyplot as plt
-import io
-import urllib, base64
-
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
@@ -38,6 +32,7 @@ from tools.models import Client
 from reports.models import MonthlyBudgetTrackerReport
 from reports.models import MonthlyBudgetTrackerGraph
 
+
 def get_months():
     return [
         {'id': 1, 'value': 'January'},
@@ -54,13 +49,16 @@ def get_months():
         {'id': 12, 'value': 'December'}
     ]
 
+
 def get_current_year():
     return datetime.datetime.now().year
+
 
 def legend_without_duplicate_labels(figure):
     handles, labels = plt.gca().get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
     figure.legend(by_label.values(), by_label.keys(), loc='upper left')
+
 
 def get_month_expense(expense, year, month):
     date = datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
@@ -93,6 +91,7 @@ def get_month_expense(expense, year, month):
             actual_expense = 0
 
     return float(actual_expense)
+
 
 def get_month_pipeline(pipeline, year, month):
     date = datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
@@ -216,6 +215,7 @@ def get_month_pipeline(pipeline, year, month):
 
     return float(actual_expense)
 
+
 def get_month_invoice(invoice, year, month):
     date = datetime.datetime.strptime('{}-{}-{}'.format(1, month, year), '%d-%m-%Y').date()
     start_month_first_day = datetime.datetime.strptime('{}-{}-{}'.format(1,
@@ -279,6 +279,7 @@ def get_expense_calc():
 
     return year, months, grouped_expense, type_total_expenses, monthly_total_expenses, total
 
+
 def get_employee_calc():
     months = get_months()
     year = get_current_year()
@@ -286,7 +287,7 @@ def get_employee_calc():
     rows = []
     monthly_total_items = []
     total = 0
-    employees = Employee.objects.all()
+    employees = Employee.objects.all().order_by('-created_at')
 
     if len(employees) == 0:
         pass
@@ -307,7 +308,8 @@ def get_employee_calc():
                     columns.append({
                         'year': year,
                         'month': m['id'],
-                        'expense': expenses[key]
+                        'expense': expenses[key],
+                        'updated': True
                     })
                     expense_columns.append(float(expenses[key]))
                     employees_total = employees_total + float(expenses[key])
@@ -329,7 +331,8 @@ def get_employee_calc():
                     columns.append({
                         'year': year,
                         'month': m['id'],
-                        'expense': expense
+                        'expense': expense,
+                        'updated': False
                     })
                     employees_total = employees_total + expense
                     expense_columns.append(expense)
@@ -352,8 +355,8 @@ def get_employee_calc():
 
     return year, months, employees, rows, monthly_total_items, total
 
-def get_contractor_calc():
 
+def get_contractor_calc():
     months = get_months()
     year = get_current_year()
     exp = []
@@ -381,7 +384,8 @@ def get_contractor_calc():
                     columns.append({
                         'year': year,
                         'month': m['id'],
-                        'expense': expenses[key]
+                        'expense': expenses[key],
+                        'updated': True
                     })
                     expense_columns.append(float(expenses[key]))
                     contractors_total = contractors_total + float(expenses[key])
@@ -398,7 +402,8 @@ def get_contractor_calc():
                     columns.append({
                         'year': year,
                         'month': m['id'],
-                        'expense': expense
+                        'expense': expense,
+                        'updated': False
                     })
                     contractors_total = contractors_total + expense
                     expense_columns.append(expense)
@@ -650,6 +655,7 @@ class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+
 class InvoiceMonthlyAdmin(admin.ModelAdmin):
     change_list_template = 'admin/invoice_expense_page.html'
 
@@ -697,6 +703,7 @@ class InvoiceMonthlyAdmin(admin.ModelAdmin):
         }
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
+
 
 class PipelineMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/pipeline_expense_page.html'
@@ -844,6 +851,7 @@ class IncomeForecastAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+
 class MonthlyBudgetTrackerAdmin(admin.ModelAdmin):
     change_list_template = 'admin/monthly_budget_tracker_page.html'
 
@@ -885,6 +893,7 @@ class MonthlyBudgetTrackerAdmin(admin.ModelAdmin):
         }
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
+
 
 class MonthlyBudgetTrackerAdminGraph(admin.ModelAdmin):
     change_list_template = 'admin/monthly_budget_graph_page.html'

@@ -380,7 +380,7 @@ input[type=text].expense-txt:focus-visible{
     padding: 0;
 }
 #content-main table thead{
-    background-color: #E8D1FE;
+    background-color: #fff;
     border-radius: 8px 8px 0 0;
 }
 #content-main table thead tr, #content-main table thead th{
@@ -504,6 +504,16 @@ div.breadcrumbs{
 }
 #changelist{
     background-color: transparent;
+}
+
+#header a:link, #header a:visited, #user-tools, div.breadcrumbs a, .breadcrumbs{
+    color: #000;
+}
+#header, div.breadcrumbs{
+    background-color: #fff;
+}
+div.breadcrumbs{
+    border-top:1px solid #F4F4F4;
 }
 
 @media only screen and (max-width:1100px){
