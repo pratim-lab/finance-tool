@@ -4,6 +4,9 @@ from tools.models import Project
 
 class ProjectAddForm(forms.ModelForm):
 
+    start_date = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}))
+    end_date = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}))
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
@@ -22,5 +25,8 @@ class ProjectAddForm(forms.ModelForm):
             'client',
             'project_name',
             'project_type',
+            'start_date',
+            'end_date',
+            'project_budget',
             'billing_structure',
         ]
