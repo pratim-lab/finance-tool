@@ -12,7 +12,7 @@ from operations.models import Project
 
 class ProjectAdmin(admin.ModelAdmin):
     change_list_template = 'admin/project/project_change_list.html'
-    list_display = ('action', 'project_name', 'project_type', 'billing_structure', 'created_at')
+    list_display = ('action', 'project_name', 'project_type', 'start_date', 'end_date', 'project_budget', 'billing_structure', 'created_at')
     list_display_links = ('project_name',)
 
     def get_urls(self):

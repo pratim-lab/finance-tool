@@ -23,9 +23,10 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Project Name</th>
-                                        <th scope="col">Client</th>
-                                        <th scope="col">Project Type</th>
-                                        <th scope="col">Billing Structure</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                        <th scope="col">Project Budget</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,23 +68,39 @@
                         <form class="row g-3 custom-form">
                             <input type="hidden" value="-1" id="id_selected_project"/>
                             <div class="col-12">
-                                <label for="inputClient" class="form-label">Client</label>
-                                {{ project_add_form.client }}
-                                <ul id="id_error_{{ project_add_form.client.name }}" class="error_container" style="color: red;"></ul>
-                            </div>
-
-                            <div class="col-12">
                                 <label for="inputProjectName" class="form-label">Project Name</label>
                                 {{ project_add_form.project_name }}
                                 <ul id="id_error_{{ project_add_form.project_name.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-                            
                             <div class="col-md-12">
                                 <label for="inputProjectType" class="form-label">Project Type</label>
                                 {{ project_add_form.project_type }}
                                 <ul id="id_error_{{ project_add_form.project_type.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
+                            <div class="col-12">
+                                <label for="inputClient" class="form-label">Client</label>
+                                {{ project_add_form.client }}
+                                <ul id="id_error_{{ project_add_form.client.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Start
+                                    Date</label>
+                                {{ project_add_form.start_date }}
+                                <ul id="id_error_{{ project_add_form.start_date.name }}" class="error_container"
+                                    style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">End
+                                    Date</label>
+                                {{ project_add_form.end_date }}
+                                <ul id="id_error_{{ project_add_form.end_date.name }}" class="error_container"
+                                    style="color: red;"></ul>
+                            </div>
+                            <div class="col-12">
+                                <label for="inputProjectName" class="form-label">Project Budget</label>
+                                {{ project_add_form.project_budget }}
+                                <ul id="id_error_{{ project_add_form.project_budget.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
                             <div class="col-md-12">
                                 <label for="inputBillingStructure" class="form-label">Billing Structure</label>
                                 {{ project_add_form.billing_structure }}

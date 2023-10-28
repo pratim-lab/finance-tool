@@ -30,9 +30,10 @@ $(document).ready(function () {
                     '</ul>' +
                 '</div>' +
             '</th>' +
-            '<td class="client_type">' + project.client_id + '</td>' +
-            '<td class="client_status">' + project.project_type + '</td>' +
-            '<td class="projected_revenue">' + project.billing_structure + '</td>';
+            '<td class="client_type">' + project.project_type + '</td>' +
+            '<td class="client_status">' + project.start_date + '</td>' +
+            '<td class="client_status">' + project.end_date + '</td>' +
+            '<td class="projected_revenue">' + project.project_budget + '</td>';
     }
 
     function getProjectRowHtml(project) {
@@ -122,6 +123,9 @@ $(document).ready(function () {
         $('#id_project_name').val('');
         $('#id_client').val('');
         $('#id_project_type').val('');
+        $('#id_start_date').val('');
+        $('#id_end_date').val('');
+        $('#id_project_budget').val('');
         $('#id_billing_structure').val('');
     }
 
@@ -129,6 +133,9 @@ $(document).ready(function () {
         $('#id_client').val(project.client_id);
         $('#id_project_name').val(project.project_name);
         $('#id_project_type').val(project.project_type);
+        $('#id_start_date').val(project.start_date);
+        $('#id_end_date').val(project.end_date);
+        $('#id_project_budget').val(project.project_budget);
         $('#id_billing_structure').val(project.billing_structure);
     }
 
@@ -194,6 +201,9 @@ $(document).ready(function () {
             client_id: $('#id_client').val(),
             project_name: $('#id_project_name').val(),
             project_type: $('#id_project_type').val(),
+            start_date: $('#id_start_date').val(),
+            end_date: $('#id_end_date').val(),
+            project_budget: $('#id_project_budget').val(),
             billing_structure: $('#id_billing_structure').val()
         };
         if (currentOperation === 'add') {
