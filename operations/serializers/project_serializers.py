@@ -34,6 +34,9 @@ class ProjectAddSerializer(serializers.ModelSerializer):
             'client_id',
             'project_name',
             'project_type',
+            'start_date',
+            'end_date',
+            'project_budget',
             'billing_structure'
         ]
 
@@ -51,6 +54,9 @@ class ProjectRetrieveSerializer(serializers.ModelSerializer):
             'client_id',
             'project_name',
             'project_type',
+            'start_date',
+            'end_date',
+            'project_budget',
             'billing_structure',
             'created_at'
         ]
@@ -65,6 +71,9 @@ class ProjectProjectSerializer(serializers.ModelSerializer):
             'client_id',
             'project_name',
             'project_type',
+            'start_date',
+            'end_date',
+            'project_budget',
             'billing_structure',
         ]
 
@@ -81,5 +90,8 @@ class ListProjectRetrieveSerializer(serializers.ModelSerializer):
             'client_id',
             'project_name',
             'project_type',
+            'start_date',
+            'end_date',
+            'project_budget',
             'billing_structure',
         ]

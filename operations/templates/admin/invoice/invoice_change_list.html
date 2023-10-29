@@ -5,28 +5,31 @@
 <section>
     <article>
         <div class="top-head">
-            <h1>Projects</h1>
-            <button id="btn-project-modal-show" class="btn btn-primary">Add Project</button>
+            <h1>Invoices</h1>
+            <button id="btn-invoice-modal-show" class="btn btn-primary">Add Invoice</button>
         </div>
         <div class="client-area">
             <div class="listing-table">
                 <ul id="id_filters_container" class="status-ul new-tabs">
                     <li class="active btn_filter" data-filter=""><a href="#">All</a></li>
-                    <li class="btn_filter" data-filter="AC"><a href="#">Active</a></li>
-                    <li class="btn_filter" data-filter="PC"><a href="#">Inactive</a></li>
+                    <li class="btn_filter" data-filter="P"><a href="#">Paid</a></li>
+                    <li class="btn_filter" data-filter="S"><a href="#">Sent</a></li>
+                    <li class="btn_filter" data-filter="TBI"><a href="#">To be sent</a></li>
                 </ul>
                 <div id="tabs-content">
                     <div id="tab1" class="tab-content">
                         <div class="table-responsive">
-                            <p id="id_no_content" style="text-align: center; display: none;">No projects to show</p>
-                            <table class="table" id="id_project_table">
+                            <p id="id_no_content" style="text-align: center; display: none;">No invoices to show</p>
+                            <table class="table" id="id_invoice_table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Project Name</th>
+                                        <th scope="col">Client</th>
+                                        <th scope="col">Project</th>
+                                        <th scope="col">Invoice Date</th>
+                                        <th scope="col">Number</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Start Date</th>
-                                        <th scope="col">End Date</th>
-                                        <th scope="col">Project Budget</th>
+                                        <th scope="col">Expected Month of Paymrnt</th>
+                                        <th scope="col">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,63 +58,58 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="modal-project" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal fade" id="modal-invoice" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add new project</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add new Invoice</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 custom-form">
-                            <input type="hidden" value="-1" id="id_selected_project"/>
-                            <div class="col-12">
-                                <label for="inputProjectName" class="form-label">Project Name</label>
-                                {{ project_add_form.project_name }}
-                                <ul id="id_error_{{ project_add_form.project_name.name }}" class="error_container" style="color: red;"></ul>
+                            <input type="hidden" value="-1" id="id_selected_invoice"/>
+                             <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Client</label>
+                                {{ invoice_add_form.client }}
+                                <ul id="id_error_{{ invoice_add_form.client.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
-                                <label for="inputProjectType" class="form-label">Project Type</label>
-                                {{ project_add_form.project_type }}
-                                <ul id="id_error_{{ project_add_form.project_type.name }}" class="error_container" style="color: red;"></ul>
-                            </div>
-                            <div class="col-12">
-                                <label for="inputClient" class="form-label">Client</label>
-                                {{ project_add_form.client }}
-                                <ul id="id_error_{{ project_add_form.client.name }}" class="error_container" style="color: red;"></ul>
+                                <label for="exampleFormControlTextarea1" class="form-label">Project</label>
+                                {{ invoice_add_form.project }}
+                                <ul id="id_error_{{ invoice_add_form.project.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
-                                <label for="exampleFormControlTextarea1" class="form-label">Start
-                                    Date</label>
-                                {{ project_add_form.start_date }}
-                                <ul id="id_error_{{ project_add_form.start_date.name }}" class="error_container"
-                                    style="color: red;"></ul>
+                                <label for="inputState" class="form-label">Invoice Date</label>
+                                {{ invoice_add_form.invoice_date }}
+                                <ul id="id_error_{{ invoice_add_form.invoice_date.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
-                                <label for="exampleFormControlTextarea1" class="form-label">End
-                                    Date</label>
-                                {{ project_add_form.end_date }}
-                                <ul id="id_error_{{ project_add_form.end_date.name }}" class="error_container"
-                                    style="color: red;"></ul>
-                            </div>
-                            <div class="col-12">
-                                <label for="inputProjectName" class="form-label">Project Budget</label>
-                                {{ project_add_form.project_budget }}
-                                <ul id="id_error_{{ project_add_form.project_budget.name }}" class="error_container" style="color: red;"></ul>
+                                <label for="inputState" class="form-label">Invoice Number</label>
+                                {{ invoice_add_form.invoice_number }}
+                                <ul id="id_error_{{ invoice_add_form.invoice_number.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
-                                <label for="inputBillingStructure" class="form-label">Billing Structure</label>
-                                {{ project_add_form.billing_structure }}
-                                <ul id="id_error_{{ project_add_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
+                                <label for="inputState" class="form-label">Invoice Amount</label>
+                                {{ invoice_add_form.invoice_amount }}
+                                <ul id="id_error_{{ invoice_add_form.invoice_amount.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected  Date of Payment</label>
+                                {{ invoice_add_form.expected_date_of_payment }}
+                                <ul id="id_error_{{ invoice_add_form.expected_date_of_payment.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputState" class="form-label">Status</label>
+                                {{ invoice_add_form.invoice_status }}
+                                <ul id="id_error_{{ invoice_add_form.invoice_status.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="button" id="id_btn_project_add" class="btn btn-primary">Add project</button>
+                        <button type="button" id="id_btn_invoice_add" class="btn btn-primary">Add invoice</button>
                     </div>
                 </div>
             </div>
@@ -136,5 +134,5 @@
 </section>
     <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
     <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
-    <script src="{% static 'operations/js/project.js' %}"></script>
+    <script src="{% static 'operations/js/invoice.js' %}"></script>
 {% endblock %}
