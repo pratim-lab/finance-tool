@@ -6,6 +6,7 @@ $(document).ready(function () {
 
     const $pipelineModal = $('#modal-item');
     const $pipelineClient = $pipelineModal.find('#id_client');
+    const $pipelineProject = $pipelineModal.find('#id_project');
     const $expectedDateOfFirstPayment = $('#id_expected_date_of_first_payment');
     const $expectedDateOfSecondPayment = $('#id_expected_date_of_second_payment');
     const $expectedDateOfThirdPayment = $('#id_expected_date_of_third_payment');
@@ -78,7 +79,7 @@ $(document).ready(function () {
                 <a href="#" title="${item.note}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M13 10C13 10.5523 13.4477 11 14 11C14.5523 11 15 10.5523 15 10C15 9.44772 14.5523 9 14 9C13.4477 9 13 9.44772 13 10ZM9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10C11 9.44772 10.5523 9 10 9C9.44772 9 9 9.44772 9 10ZM5 10C5 10.5523 5.44772 11 6 11C6.55228 11 7 10.5523 7 10C7 9.44772 6.55228 9 6 9C5.44772 9 5 9.44772 5 10ZM10 2C5.589 2 2 5.589 2 10C2 11.504 2.425 12.908 3.15 14.111L2.081 16.606C1.92 16.981 2.004 17.418 2.293 17.707C2.484 17.898 2.74 18 3 18C3.133 18 3.268 17.974 3.395 17.919L5.889 16.85C7.092 17.575 8.496 18 10 18C14.411 18 18 14.411 18 10C18 5.589 14.411 2 10 2Z" fill="#8C9196"/>
                 </svg>
-                </a>${item.project.project_name}
+                </a>${ item.project ? item.project.project_name: ''}
             </td>
             <td>${item.estimated_price}</td>
             <td>
@@ -206,7 +207,9 @@ $(document).ready(function () {
 
     function fillUpForm(item) {
         $pipelineClient.val(item.client.id);
-        $('#id_project').val(item.project.id);
+        if (item.project) {
+            $('#id_project').val(item.project.id);
+        }
         $('#id_estimated_price').val(item.estimated_price);
         $('#id_confidence').val(item.confidence);
         $('#id_no_of_payments').val(item.no_of_payments);
@@ -652,6 +655,7 @@ $(document).ready(function () {
     }
 
     function showClientModal(type) {
+        $pipelineModal.modal('hide');
         $clientModal.find('.error_container').html('');
         if (type === 'add') {
             clientOperation = 'add';
@@ -676,10 +680,12 @@ $(document).ready(function () {
     }
 
     $('#btn-add-client').on('click', function () {
+        resetClientForm();
         showClientModal('add');
     });
 
     function fillUpClientForm(client) {
+        resetClientForm();
         $clientName.val(client.client_name);
         $clientAddress1.val(client.address1);
         $clientAddress2.val(client.address2);
@@ -709,7 +715,7 @@ $(document).ready(function () {
             const size = $pipelineClient.find("option").length;
             $pipelineClient.prop('selectedIndex', (size - 1));
         }, 200);
-        $('#id_project').empty();
+        $pipelineProject.empty();
     }
 
     async function addClient(data) {
@@ -768,7 +774,147 @@ $(document).ready(function () {
         }
     });
 
+    $clientModal.on('hide.bs.modal', function(){
+        $pipelineModal.modal('show');
+    });
+
     // End Client ----------------------------------
+
+    // Project -------------------------------------
+
+    const $projectModal = $('#modal-project');
+    const $projectClient = $projectModal.find('#id_client');
+    const $projectProjectName = $projectModal.find('#id_project_name');
+    const $projectProjectType = $projectModal.find('#id_project_type');
+    const $projectBillingStructure = $projectModal.find('#id_billing_structure');
+
+    let projectOperation = 'add';
+
+    function resetProjectForm() {
+        $projectClient.val('');
+        $projectProjectName.val('');
+        $projectProjectType.val('');
+        $projectBillingStructure.val('');
+    }
+
+    function fillUpProjectForm(project) {
+        setTimeout(function (){
+            $projectClient.val(project.client_id);
+        }, 50);
+        $projectProjectName.val(project.project_name);
+        $projectProjectType.val(project.project_type);
+        $projectBillingStructure.val(project.billing_structure);
+    }
+
+    function showProjectModal(type) {
+        $pipelineModal.modal('hide');
+        $projectModal.find('.error_container').html('');
+        if (type === 'add') {
+            projectOperation = 'add';
+            $projectModal.find('.modal-title').html('Add New Project');
+            $projectModal.find('#id_btn_project_add').html('Add Project');
+        } else if (type === 'edit') {
+            projectOperation = 'edit';
+            $projectModal.find('.modal-title').html('Edit Project');
+            $projectModal.find('#id_btn_project_add').html('Update Project');
+        }
+        $projectModal.modal('show');
+    }
+
+    function showProjectValidationErrors(errorData) {
+        for (let key in errorData) {
+            let errorHtml = '';
+            for (let i = 0; i < errorData[key].length; i++) {
+                errorHtml += '<li>* ' + errorData[key][i] + '</li>';
+            }
+            $projectModal.find('#id_error_' + key).html(errorHtml);
+        }
+    }
+
+    $('#btn-add-project').on('click', function () {
+        resetProjectForm();
+        showProjectModal('add');
+    });
+
+    $('#btn-edit-project').on('click', async function () {
+        const selectedProjectId = $pipelineProject.val();
+        if (!selectedProjectId) {
+            return;
+        }
+        const response = await apiClient.get('/custom-admin/operations/project/api/' + selectedProjectId);
+        fillUpProjectForm(response.data);
+        showProjectModal('edit');
+    });
+
+    function repopulateProjectSelectOptions(newProject) {
+        if ($pipelineClient.val() == newProject.client_id) {
+            const optionHtml = `<option value="${newProject.id}">${newProject.project_name}</option>`;
+            $pipelineProject.append(optionHtml);
+            setTimeout(function () {
+                const size = $pipelineProject.find("option").length;
+                $pipelineProject.prop('selectedIndex', (size - 1));
+            }, 200);
+        }
+        else {
+            // $pipelineProject.empty();
+        }
+    }
+
+    async function addProject(data) {
+        const resp = await apiClient.post('/custom-admin/operations/project/api/add', data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 201) {
+            $projectModal.modal('hide');
+            repopulateProjectSelectOptions(resp.data);
+            resetProjectForm();
+        } else if (resp.status === 400) {
+            showProjectValidationErrors(resp.data);
+        }
+    }
+
+    function updateSelectedProjectName(updatedProject) {
+        $pipelineProject.find(`option[value="${updatedProject.id}"]`).html(updatedProject.project_name);
+    }
+
+    async function editProject(data) {
+        const selectedProjectId = $pipelineProject.val();
+        const resp = await apiClient.patch('/custom-admin/operations/project/api/' + selectedProjectId, data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 200) {
+            $projectModal.modal('hide');
+            updateSelectedProjectName(resp.data);
+            resetProjectForm();
+        } else if (resp.status === 400) {
+            showProjectValidationErrors(resp.data);
+        }
+    }
+
+    $projectModal.find('#id_btn_project_add').on('click', async function () {
+        $projectModal.find('.error_container').html('');
+        let data = {
+            client_id: $projectClient.val(),
+            project_name: $projectProjectName.val(),
+            project_type: $projectProjectType.val(),
+            billing_structure: $projectBillingStructure.val()
+        };
+        if (projectOperation === 'add') {
+            addProject(data);
+        } else if (projectOperation === 'edit') {
+            editProject(data);
+        }
+    });
+
+    $projectModal.on('hide.bs.modal', function(){
+        $pipelineModal.modal('show');
+    });
+
+    // End Project -----------------------------------
 
 });
 

@@ -241,7 +241,7 @@ class Pipeline(models.Model):
 	)
 
 	client = models.ForeignKey(Client, on_delete=models.CASCADE)
-	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
 	estimated_price = models.CharField(max_length=10,help_text='Please enter price in USD')
 	confidence = models.CharField(max_length=5, choices=CONFIDENCE)
 	no_of_payments = models.CharField(max_length=2, choices=NO_OF_PAYMENTS)

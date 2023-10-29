@@ -7,6 +7,7 @@ from operations.admin_views.pipeline_views import PipelineListView, PipelineCrea
     PipelineRetrieveUpdateDestroyAdminAPIView
 from operations.forms.client_forms import ClientAddForm
 from operations.forms.pipeline_forms import PipelineAddForm
+from operations.forms.project_forms import ProjectAddForm
 from operations.models import Pipeline
 
 
@@ -27,7 +28,8 @@ class PipelineAdmin(admin.ModelAdmin):
         context = dict(
             self.admin_site.each_context(request),
             form=PipelineAddForm(),
-            client_form=ClientAddForm()
+            client_form=ClientAddForm(),
+            project_form=ProjectAddForm()
         )
         return TemplateResponse(request, 'admin/pipeline/pipeline_change_list.html', context)
 

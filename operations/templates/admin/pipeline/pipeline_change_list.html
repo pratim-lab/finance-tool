@@ -73,6 +73,8 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Project</label>
                                 {{ form.project }}
+                                <button type="button" class="btn" id="btn-edit-project">Edit</button>
+                                <button type="button" class="btn" id="btn-add-project">+</button>
                                 <ul id="id_error_{{ form.project.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
@@ -268,6 +270,54 @@
                 </div>
             </div>
         </div>
+
+        <!-- Project Modal -->
+        <div class="modal fade" id="modal-project" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add new project</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 custom-form">
+                            <input type="hidden" value="-1" id="id_selected_project"/>
+                            <div class="col-12">
+                                <label for="inputClient" class="form-label">Client</label>
+                                {{ project_form.client }}
+                                <ul id="id_error_{{ project_form.client.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="inputProjectName" class="form-label">Project Name</label>
+                                {{ project_form.project_name }}
+                                <ul id="id_error_{{ project_form.project_name.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="inputProjectType" class="form-label">Project Type</label>
+                                {{ project_form.project_type }}
+                                <ul id="id_error_{{ project_form.project_type.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="inputBillingStructure" class="form-label">Billing Structure</label>
+                                {{ project_form.billing_structure }}
+                                <ul id="id_error_{{ project_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                        <button type="button" id="id_btn_project_add" class="btn btn-primary">Add project</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </article>
 </section>
 <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
