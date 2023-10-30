@@ -786,6 +786,9 @@ $(document).ready(function () {
     const $projectClient = $projectModal.find('#id_client');
     const $projectProjectName = $projectModal.find('#id_project_name');
     const $projectProjectType = $projectModal.find('#id_project_type');
+    const $projectStarDate = $projectModal.find('#id_start_date');
+    const $projectEndDate = $projectModal.find('#id_end_date');
+    const $projectBudget = $projectModal.find('#id_project_budget');
     const $projectBillingStructure = $projectModal.find('#id_billing_structure');
 
     let projectOperation = 'add';
@@ -794,6 +797,9 @@ $(document).ready(function () {
         $projectClient.val('');
         $projectProjectName.val('');
         $projectProjectType.val('');
+        $projectStarDate.val();
+        $projectEndDate.val();
+        $projectBudget.val();
         $projectBillingStructure.val('');
     }
 
@@ -803,6 +809,9 @@ $(document).ready(function () {
         }, 50);
         $projectProjectName.val(project.project_name);
         $projectProjectType.val(project.project_type);
+        $projectStarDate.val(project.start_date);
+        $projectEndDate.val(project.end_date);
+        $projectBudget.val(project.project_budget);
         $projectBillingStructure.val(project.billing_structure);
     }
 
@@ -901,6 +910,9 @@ $(document).ready(function () {
             client_id: $projectClient.val(),
             project_name: $projectProjectName.val(),
             project_type: $projectProjectType.val(),
+            start_date: $projectStarDate.val(),
+            end_date: $projectEndDate.val(),
+            project_budget: $projectBudget.val(),
             billing_structure: $projectBillingStructure.val()
         };
         if (projectOperation === 'add') {

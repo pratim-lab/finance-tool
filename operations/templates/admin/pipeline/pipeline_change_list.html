@@ -102,7 +102,6 @@
                                 {{ form.expected_date_of_second_payment }}
                                 <ul id="id_error_{{ form.expected_date_of_second_payment.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
                             <div class="col-md-12 field-expected_date_of_third_payment">
                                 <label for="inputState" class="form-label">Expected Date of Third Payment</label>
                                 {{ form.expected_date_of_third_payment }}
@@ -289,25 +288,40 @@
                                 {{ project_form.client }}
                                 <ul id="id_error_{{ project_form.client.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
                             <div class="col-12">
                                 <label for="inputProjectName" class="form-label">Project Name</label>
                                 {{ project_form.project_name }}
                                 <ul id="id_error_{{ project_form.project_name.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
                             <div class="col-md-12">
                                 <label for="inputProjectType" class="form-label">Project Type</label>
                                 {{ project_form.project_type }}
                                 <ul id="id_error_{{ project_form.project_type.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">Start
+                                    Date</label>
+                                {{ project_form.start_date }}
+                                <ul id="id_error_{{ project_add_form.start_date.name }}" class="error_container"
+                                    style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="exampleFormControlTextarea1" class="form-label">End
+                                    Date</label>
+                                {{ project_form.end_date }}
+                                <ul id="id_error_{{ project_add_form.end_date.name }}" class="error_container"
+                                    style="color: red;"></ul>
+                            </div>
+                            <div class="col-12">
+                                <label for="inputProjectName" class="form-label">Project Budget</label>
+                                {{ project_form.project_budget }}
+                                <ul id="id_error_{{ project_add_form.project_budget.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
                             <div class="col-md-12">
                                 <label for="inputBillingStructure" class="form-label">Billing Structure</label>
                                 {{ project_form.billing_structure }}
                                 <ul id="id_error_{{ project_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -317,7 +331,6 @@
                 </div>
             </div>
         </div>
-
     </article>
 </section>
 <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
