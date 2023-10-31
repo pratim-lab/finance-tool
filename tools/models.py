@@ -33,6 +33,7 @@ class Client(models.Model):
 	city = models.CharField(max_length=20)
 	state = models.CharField(max_length=20)
 	zipcode = models.CharField(max_length=10)
+	client_type = models.ForeignKey(ClientType, null=True, on_delete=models.CASCADE)
 	client_status = models.CharField(max_length=2, choices=CLIENT_STATUSES)
 	billing_structure = models.CharField(max_length=2, choices=BILLING_STRUCTURE)
 	billing_target = models.TextField()

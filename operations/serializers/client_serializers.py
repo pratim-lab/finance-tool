@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils import dateformat
-from tools.models import Client, Project
+from tools.models import Client, Project, ClientType
 
 
 class ChoiceField(serializers.ChoiceField):
@@ -21,9 +21,19 @@ class ChoiceField(serializers.ChoiceField):
     #     self.fail('invalid_choice', input=data)
 
 
+class ClientTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientType
+        fields = [
+            'id',
+            'name',
+        ]
+
+
 class ClientAddSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     client_status = ChoiceField(choices=Client.CLIENT_STATUSES)
+    c_type = ClientTypeSerializer(read_only=True, source='client_type')
     billing_structure = ChoiceField(choices=Client.BILLING_STRUCTURE)
     payment_terms = ChoiceField(choices=Client.PAYMENT_TERMS)
     projects = serializers.SerializerMethodField()
@@ -60,6 +70,8 @@ class ClientAddSerializer(serializers.ModelSerializer):
             'city',
             'state',
             'zipcode',
+            'c_type',
+            'client_type',
             'client_status',
             'billing_structure',
             'billing_target',
@@ -73,6 +85,7 @@ class ClientAddSerializer(serializers.ModelSerializer):
 
 
 class ClientRetrieveSerializer(serializers.ModelSerializer):
+    client_type = ClientTypeSerializer()
     created_at = serializers.SerializerMethodField()
 
     def get_created_at(self, obj):
@@ -88,6 +101,7 @@ class ClientRetrieveSerializer(serializers.ModelSerializer):
             'city',
             'state',
             'zipcode',
+            'client_type',
             'client_status',
             'billing_structure',
             'billing_target',
@@ -108,6 +122,7 @@ class ClientProjectSerializer(serializers.ModelSerializer):
 
 
 class ListClientRetrieveSerializer(serializers.ModelSerializer):
+    client_type = ClientTypeSerializer()
     client_status = ChoiceField(choices=Client.CLIENT_STATUSES)
     projects = serializers.SerializerMethodField()
     committed_annual_revenue = serializers.SerializerMethodField()
@@ -123,6 +138,7 @@ class ListClientRetrieveSerializer(serializers.ModelSerializer):
             'city',
             'state',
             'zipcode',
+            'client_type',
             'client_status',
             'billing_structure',
             'billing_target',

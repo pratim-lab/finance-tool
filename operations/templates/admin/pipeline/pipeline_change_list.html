@@ -244,6 +244,12 @@
                             </div>
 
                             <div class="col-md-12">
+                                <label for="inputState" class="form-label">Client Status</label>
+                                {{ client_form.client_status }}
+                                <ul id="id_error_{{ client_form.client_status.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+
+                            <div class="col-md-12">
                                 <label for="inputState" class="form-label">Billing Structure</label>
                                 {{ client_form.billing_structure }}
                                 <ul id="id_error_{{ client_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>

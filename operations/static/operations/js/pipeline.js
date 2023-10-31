@@ -627,6 +627,7 @@ $(document).ready(function () {
     const $clientState = $clientModal.find('#id_state');
     const $clientZipcode = $clientModal.find('#id_zipcode');
     const $clientClientType = $clientModal.find('#id_client_type');
+    const $clientClientStatus = $clientModal.find('#id_client_status');
     const $clientBillingStructure = $clientModal.find('#id_billing_structure');
     const $clientBillingTarget = $clientModal.find('#id_billing_target');
     const $clientPaymentTerms = $clientModal.find('#id_payment_terms');
@@ -641,6 +642,7 @@ $(document).ready(function () {
         $clientState.val('');
         $clientZipcode.val('');
         $clientClientType.val('');
+        $clientClientStatus.val('');
         $clientBillingStructure.val('');
         $clientBillingTarget.val('');
         $clientPaymentTerms.val('');
@@ -684,7 +686,9 @@ $(document).ready(function () {
         $clientCity.val(client.city);
         $clientState.val(client.state);
         $clientZipcode.val(client.zipcode);
-        $clientClientType.val(client.client_type);
+        const clientType = client.client_type ? client.client_type.id : null;
+        $clientClientType.val(clientType);
+        $clientClientStatus.val(client.client_status)
         $clientBillingStructure.val(client.billing_structure);
         $clientBillingTarget.val(client.billing_target);
         $clientPaymentTerms.val(client.payment_terms);
@@ -755,6 +759,7 @@ $(document).ready(function () {
             state: $clientState.val(),
             zipcode: $clientZipcode.val(),
             client_type: $clientClientType.val(),
+            client_status: $clientClientStatus.val(),
             billing_structure: $clientBillingStructure.val(),
             billing_target: $clientBillingTarget.val(),
             payment_terms: $clientPaymentTerms.val()

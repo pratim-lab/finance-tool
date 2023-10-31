@@ -33,6 +33,7 @@ $(document).ready(function () {
     function getClientColumnsHtml(client) {
         let activeProjectsHtml = getProjectsHtml(client.projects.active_projects);
         let pipelineProjectsHtml = getProjectsHtml(client.projects.pipeline_projects);
+        const clientType = client.client_type !== null ? client.client_type.name : null;
         return '' +
             '<th class="client_name">' +
                 '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
@@ -46,7 +47,7 @@ $(document).ready(function () {
                     '</ul>' +
                 '</div>' +
             '</th>' +
-            // '<td class="client_type">' + client.client_type + '</td>' +
+            '<td class="client_type">' + clientType + '</td>' +
             '<td class="client_status">' + client.client_status + '</td>' +
             '<td class="active_projects">' + activeProjectsHtml + '</td>' +
             '<td class="pipeline_projects">' + pipelineProjectsHtml + '</td>' +
@@ -145,6 +146,7 @@ $(document).ready(function () {
         $('#id_state').val('');
         $('#id_zipcode').val('');
         $('#id_client_type').val('');
+        $('#id_client_status').val('');
         $('#id_billing_structure').val('');
         $('#id_billing_target').val('');
         $('#id_payment_terms').val('');
@@ -157,7 +159,9 @@ $(document).ready(function () {
         $('#id_city').val(client.city);
         $('#id_state').val(client.state);
         $('#id_zipcode').val(client.zipcode);
-        $('#id_client_type').val(client.client_type);
+        const clientType = client.client_type ? client.client_type.id : null;
+        $('#id_client_type').val(clientType);
+        $('#id_client_status').val(client.client_status);
         $('#id_billing_structure').val(client.billing_structure);
         $('#id_billing_target').val(client.billing_target);
         $('#id_payment_terms').val(client.payment_terms);
@@ -189,6 +193,7 @@ $(document).ready(function () {
             },
         });
         if (resp.status === 201) {
+            resp.data.client_type = resp.data.c_type;
             clientData.results = [resp.data, ...clientData.results];
             updateTable();
             $('#modal-client').modal('hide');
@@ -206,6 +211,7 @@ $(document).ready(function () {
             },
         });
         if (resp.status === 200) {
+            resp.data.client_type = resp.data.c_type;
             for (let i = 0; i < clientData.results.length; i++) {
                 if (clientData.results[i].id === resp.data.id) {
                     clientData.results[i] = resp.data;
@@ -228,6 +234,7 @@ $(document).ready(function () {
             city: $('#id_city').val(),
             state: $('#id_state').val(),
             zipcode: $('#id_zipcode').val(),
+            client_type: $('#id_client_type').val(),
             client_status: $('#id_client_status').val(),
             billing_structure: $('#id_billing_structure').val(),
             billing_target: $('#id_billing_target').val(),

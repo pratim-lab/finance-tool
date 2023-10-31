@@ -37,7 +37,6 @@ class ClientListView(generics.ListAPIView):
     pagination_class = AdminPagination
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_fields = ['client_status', 'city']
-    # filterset_fields = ['client_type', 'city']
     ordering_fields = ['client_name', 'created_at']
     ordering = ['-created_at']
 

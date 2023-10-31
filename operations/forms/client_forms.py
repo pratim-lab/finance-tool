@@ -25,6 +25,7 @@ class ClientAddForm(forms.ModelForm):
             'city',
             'state',
             'zipcode',
+            'client_type',
             'client_status',
             'billing_structure',
             'billing_target',
