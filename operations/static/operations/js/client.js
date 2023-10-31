@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     let currentSelection = {
         filters: {
-            clientType: ""
+            clientStatus: ""
         },
         pageNumber: 1,
         pageSize: 8
@@ -46,8 +46,8 @@ $(document).ready(function () {
                     '</ul>' +
                 '</div>' +
             '</th>' +
-            '<td class="client_type">' + client.client_type + '</td>' +
-            '<td class="client_status">' + client.client_type + '</td>' +
+            // '<td class="client_type">' + client.client_type + '</td>' +
+            '<td class="client_status">' + client.client_status + '</td>' +
             '<td class="active_projects">' + activeProjectsHtml + '</td>' +
             '<td class="pipeline_projects">' + pipelineProjectsHtml + '</td>' +
             '<td class="annual_revenue">' + client.committed_annual_revenue + '</td>' +
@@ -111,8 +111,8 @@ $(document).ready(function () {
     async function getClients() {
         let path = '/custom-admin/operations/client/api/list?page=' + currentSelection.pageNumber;
         let params = {};
-        if (currentSelection.filters.clientType !== "") {
-            params.client_type = currentSelection.filters.clientType;
+        if (currentSelection.filters.clientStatus !== "") {
+            params.client_status = currentSelection.filters.clientStatus;
         }
         const response = await apiClient.get(path, {
             params: params
@@ -228,7 +228,7 @@ $(document).ready(function () {
             city: $('#id_city').val(),
             state: $('#id_state').val(),
             zipcode: $('#id_zipcode').val(),
-            client_type: $('#id_client_type').val(),
+            client_status: $('#id_client_status').val(),
             billing_structure: $('#id_billing_structure').val(),
             billing_target: $('#id_billing_target').val(),
             payment_terms: $('#id_payment_terms').val()
@@ -272,7 +272,7 @@ $(document).ready(function () {
 
     $('#id_filters_container').on('click', '.btn_filter', async function (e) {
         e.preventDefault();
-        currentSelection.filters.clientType = $(this).attr('data-filter');
+        currentSelection.filters.clientStatus = $(this).attr('data-filter');
         currentSelection.pageNumber = 1;
         await getClients();
         $('#id_filters_container').find('.btn_filter').removeClass("active");

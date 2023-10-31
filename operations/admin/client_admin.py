@@ -12,7 +12,7 @@ from operations.models import Client
 
 class ClientAdmin(admin.ModelAdmin):
     change_list_template = 'admin/client/client_change_list.html'
-    list_display = ('action', 'client_name', 'client_type', 'billing_structure', 'created_at')
+    list_display = ('action', 'client_name', 'client_status', 'billing_structure', 'created_at')
     list_display_links = ('client_name',)
 
     def get_urls(self):

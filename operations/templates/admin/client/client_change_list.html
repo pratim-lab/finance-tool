@@ -23,7 +23,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Client Name</th>
-                                        <th scope="col">Type</th>
+{#                                        <th scope="col">Type</th>#}
                                         <th scope="col">Status</th>
                                         <th scope="col">Active projects</th>
                                         <th scope="col">Pipeline projects</th>
@@ -101,9 +101,9 @@
                             </div>
 
                             <div class="col-md-12">
-                                <label for="inputState" class="form-label">Client Type</label>
-                                {{ client_add_form.client_type }}
-                                <ul id="id_error_{{ client_add_form.client_type.name }}" class="error_container" style="color: red;"></ul>
+                                <label for="inputState" class="form-label">Client Status</label>
+                                {{ client_add_form.client_status }}
+                                <ul id="id_error_{{ client_add_form.client_status.name }}" class="error_container" style="color: red;"></ul>
                             </div>
 
                             <div class="col-md-12">

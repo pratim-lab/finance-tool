@@ -8,7 +8,7 @@ from tools.models import Client, Project, Employee, Contractor, ExpenseType, Exp
 
 class ClientAdmin(admin.ModelAdmin):
     change_list_template = 'admin/client/change_list.html'
-    list_display = ('client_name', 'client_type', 'billing_structure', 'created_at')
+    list_display = ('client_name', 'client_status', 'billing_structure', 'created_at')
     list_display_links = ('client_name',)
 
     class Media:

@@ -1,4 +1,3 @@
-from django.db import models
 from tools.models import Contractor as ToolsContractor, Employee as ToolsEmployee
 
 

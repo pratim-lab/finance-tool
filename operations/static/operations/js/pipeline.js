@@ -330,15 +330,12 @@ $(document).ready(function () {
     $('tbody').on('click', '.btn-item-active', async function (e) {
         e.preventDefault();
         selectedIndex = $(this).attr('data-index');
-        //alert(itemData.results[selectedIndex].id);
-
         $.ajax({
             url: "/tools/update_status_of_pipeline",
             type: "get",
             data: {
                 pipeline_id: itemData.results[selectedIndex].id,
                 make_status: 'WON'
-
             },
             success: function (response) {
                 //alert(response.data);
@@ -370,9 +367,7 @@ $(document).ready(function () {
                 //Do Something to handle error
             }
         });
-
         updateTable();
-        
     });
 
 
@@ -437,9 +432,6 @@ $(document).ready(function () {
             await getItems();
         }
     });
-
-    ///////////////////////////
-
 
     function calculate_net() {
         let sal = parseFloat($("#id_estimated_price").val());

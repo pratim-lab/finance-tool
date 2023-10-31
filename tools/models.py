@@ -1,18 +1,25 @@
 from django.db import models
 
 
+class ClientType(models.Model):
+	name = models.CharField(max_length=100)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return '{}'.format(self.name)
+
+
 class Client(models.Model):
-	CLIENT_TYPES = (
+	CLIENT_STATUSES = (
 		('AC', 'Active Client'),
 		('PC', 'Prospective Client'),
 	)
-
 	BILLING_STRUCTURE = (
 		('R', 'Retainer'),
 		('PB', 'Project Based'),
 		('MX', 'Mixed'),
 	)
-
 	PAYMENT_TERMS = (
 		('N07', 'Net 7'),
 		('N15', 'Net 15'),
@@ -20,14 +27,13 @@ class Client(models.Model):
 		('N45', 'Net 45'),
 		('OTR', 'Other'),
 	)
-
 	client_name = models.CharField(max_length=255)
 	address1 = models.TextField()
 	address2 = models.TextField(null=True, blank=True)
 	city = models.CharField(max_length=20)
 	state = models.CharField(max_length=20)
 	zipcode = models.CharField(max_length=10)
-	client_type = models.CharField(max_length=2, choices=CLIENT_TYPES)
+	client_status = models.CharField(max_length=2, choices=CLIENT_STATUSES)
 	billing_structure = models.CharField(max_length=2, choices=BILLING_STRUCTURE)
 	billing_target = models.TextField()
 	payment_terms = models.CharField(max_length=50, choices=PAYMENT_TERMS)

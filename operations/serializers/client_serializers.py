@@ -23,7 +23,7 @@ class ChoiceField(serializers.ChoiceField):
 
 class ClientAddSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    client_type = ChoiceField(choices=Client.CLIENT_TYPES)
+    client_status = ChoiceField(choices=Client.CLIENT_STATUSES)
     billing_structure = ChoiceField(choices=Client.BILLING_STRUCTURE)
     payment_terms = ChoiceField(choices=Client.PAYMENT_TERMS)
     projects = serializers.SerializerMethodField()
@@ -60,7 +60,7 @@ class ClientAddSerializer(serializers.ModelSerializer):
             'city',
             'state',
             'zipcode',
-            'client_type',
+            'client_status',
             'billing_structure',
             'billing_target',
             'payment_terms',
@@ -88,7 +88,7 @@ class ClientRetrieveSerializer(serializers.ModelSerializer):
             'city',
             'state',
             'zipcode',
-            'client_type',
+            'client_status',
             'billing_structure',
             'billing_target',
             'payment_terms',
@@ -108,7 +108,7 @@ class ClientProjectSerializer(serializers.ModelSerializer):
 
 
 class ListClientRetrieveSerializer(serializers.ModelSerializer):
-    client_type = ChoiceField(choices=Client.CLIENT_TYPES)
+    client_status = ChoiceField(choices=Client.CLIENT_STATUSES)
     projects = serializers.SerializerMethodField()
     committed_annual_revenue = serializers.SerializerMethodField()
     projected_annual_revenue = serializers.SerializerMethodField()
@@ -123,7 +123,7 @@ class ListClientRetrieveSerializer(serializers.ModelSerializer):
             'city',
             'state',
             'zipcode',
-            'client_type',
+            'client_status',
             'billing_structure',
             'billing_target',
             'payment_terms',
