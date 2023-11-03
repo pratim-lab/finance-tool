@@ -4,9 +4,11 @@ from django.urls import path
 from django.utils.html import format_html
 
 from djangoproject.admin import custom_admin
+from operations.admin_views.client_type_views import ClientTypeCreateAdminAPIView, \
+    ClientTypeRetrieveUpdateDestroyAdminAPIView
 from operations.admin_views.client_views import (ClientCreateAdminAPIView, ClientRetrieveUpdateDestroyAdminAPIView,
                                                  ClientListView)
-from operations.forms.client_forms import ClientAddForm
+from operations.forms.client_forms import ClientAddForm, ClientTypeForm
 from operations.models import Client
 
 
@@ -18,34 +20,44 @@ class ClientAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [
+            # client
             path("api/add", self.admin_site.admin_view(ClientCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(ClientListView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(ClientRetrieveUpdateDestroyAdminAPIView.as_view())),
-
+            # client type
+            path("client-type/api/add", self.admin_site.admin_view(ClientTypeCreateAdminAPIView.as_view())),
+            path("client-type/api/<pk>",
+                 self.admin_site.admin_view(ClientTypeRetrieveUpdateDestroyAdminAPIView.as_view())),
         ]
         return my_urls + urls
 
     def action(self, obj):
         return format_html(
             '<div class="btn-group dropend client-id-' + str(obj.id) + '" role="group">'
-                '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown">:</button>'
-                '<ul class="dropdown-menu">'
-                    '<li>'
-                        '<button class="btn btn-client-edit" data-id=' + str(obj.id) + '>Edit</button>'
-                    '</li>'
-                    '<li>'
-                        '<button class="btn btn-client-delete" data-id=' + str(obj.id) + '>Delete</button>'
-                    '</li>'
-                '</ul>'
-            '</div>'
+                                                                       '<button type="button" class="btn btn-secondary" data-bs-toggle="dropdown">:</button>'
+                                                                       '<ul class="dropdown-menu">'
+                                                                       '<li>'
+                                                                       '<button class="btn btn-client-edit" data-id=' + str(
+                obj.id) + '>Edit</button>'
+                          '</li>'
+                          '<li>'
+                          '<button class="btn btn-client-delete" data-id=' + str(obj.id) + '>Delete</button>'
+                                                                                           '</li>'
+                                                                                           '</ul>'
+                                                                                           '</div>'
         )
 
     action.allow_tags = True
+
     # my_url_field.short_description = 'Action'
 
     @csrf_protect_m
     def changelist_view(self, request, extra_context=None):
-        return super().changelist_view(request, extra_context={"client_add_form": ClientAddForm(), "title": "Clients"})
+        return super().changelist_view(request, extra_context={
+            "client_add_form": ClientAddForm(),
+            "client_type_form": ClientTypeForm(),
+            "title": "Clients"
+        })
 
 
 custom_admin.register(Client, ClientAdmin)

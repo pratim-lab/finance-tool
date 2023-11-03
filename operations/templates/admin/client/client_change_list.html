@@ -102,6 +102,8 @@
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Client Type</label>
                                 {{ client_add_form.client_type }}
+                                <button type="button" class="btn" id="btn-edit-client-type">Edit</button>
+                                <button type="button" class="btn" id="btn-add-client-type">+</button>
                                 <ul id="id_error_{{ client_add_form.client_type.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
@@ -129,6 +131,35 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
                         <button type="button" id="id_btn_client_add" class="btn btn-primary">Add client</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Client Type Modal -->
+        <div class="modal fade" id="modal-client-type" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add new client type</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 custom-form">
+                            <input type="hidden" value="-1" id="id_selected_client"/>
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label">Client Type Name</label>
+                                {{ client_type_form.name }}
+                                <ul id="id_error_{{ client_type_form.name.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                        <button type="button" id="id_btn_client_type_add" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </div>

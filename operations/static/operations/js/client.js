@@ -1,5 +1,18 @@
 $(document).ready(function () {
 
+    const $clientModal = $('#modal-client');
+    const $clientName = $clientModal.find('#id_client_name');
+    const $clientAddress1 = $clientModal.find('#id_address1');
+    const $clientAddress2 = $clientModal.find('#id_address2');
+    const $clientCity = $clientModal.find('#id_city');
+    const $clientState = $clientModal.find('#id_state');
+    const $clientZipcode = $clientModal.find('#id_zipcode');
+    const $clientClientType = $clientModal.find('#id_client_type');
+    const $clientStatus = $clientModal.find('#id_client_status');
+    const $clientBillingStructure = $clientModal.find('#id_billing_structure');
+    const $clientBillingTarget = $clientModal.find('#id_billing_target');
+    const $clientPaymentTerms = $clientModal.find('#id_payment_terms');
+
     let currentSelection = {
         filters: {
             clientStatus: ""
@@ -130,7 +143,7 @@ $(document).ready(function () {
             for (let i = 0; i < errorData[key].length; i++) {
                 errorHtml += '<li>* ' + errorData[key][i] + '</li>';
             }
-            $('#id_error_' + key).html(errorHtml);
+            $clientModal.find('#id_error_' + key).html(errorHtml);
         }
     }
 
@@ -139,46 +152,46 @@ $(document).ready(function () {
     let currentOperation = 'add';
 
     function resetForm() {
-        $('#id_client_name').val('');
-        $('#id_address1').val('');
-        $('#id_address2').val('');
-        $('#id_city').val('');
-        $('#id_state').val('');
-        $('#id_zipcode').val('');
-        $('#id_client_type').val('');
-        $('#id_client_status').val('');
-        $('#id_billing_structure').val('');
-        $('#id_billing_target').val('');
-        $('#id_payment_terms').val('');
+        $clientName.val('');
+        $clientAddress1.val('');
+        $clientAddress2.val('');
+        $clientCity.val('');
+        $clientState.val('');
+        $clientZipcode.val('');
+        $clientClientType.val('');
+        $clientStatus.val('');
+        $clientBillingStructure.val('');
+        $clientBillingTarget.val('');
+        $clientPaymentTerms.val('');
     }
 
     function fillUpForm(client) {
-        $('#id_client_name').val(client.client_name);
-        $('#id_address1').val(client.address1);
-        $('#id_address2').val(client.address2);
-        $('#id_city').val(client.city);
-        $('#id_state').val(client.state);
-        $('#id_zipcode').val(client.zipcode);
+        $clientName.val(client.client_name);
+        $clientAddress1.val(client.address1);
+        $clientAddress2.val(client.address2);
+        $clientCity.val(client.city);
+        $clientState.val(client.state);
+        $clientZipcode.val(client.zipcode);
         const clientType = client.client_type ? client.client_type.id : null;
-        $('#id_client_type').val(clientType);
-        $('#id_client_status').val(client.client_status);
-        $('#id_billing_structure').val(client.billing_structure);
-        $('#id_billing_target').val(client.billing_target);
-        $('#id_payment_terms').val(client.payment_terms);
+        $clientClientType.val(clientType);
+        $clientStatus.val(client.client_status);
+        $clientBillingStructure.val(client.billing_structure);
+        $clientBillingTarget.val(client.billing_target);
+        $clientPaymentTerms.val(client.payment_terms);
     }
 
     function showModal(type) {
-        $('.error_container').html('');
+        $clientModal.find('.error_container').html('');
         if (type === 'add') {
             currentOperation = 'add';
-            $('.modal-title').html('Add New Client');
-            $('#id_btn_client_add').html('Add Client');
+            $clientModal.find('.modal-title').html('Add New Client');
+            $clientModal.find('#id_btn_client_add').html('Add Client');
         } else if (type === 'edit') {
             currentOperation = 'edit';
-            $('.modal-title').html('Edit Client');
-            $('#id_btn_client_add').html('Update Client');
+            $clientModal.find('.modal-title').html('Edit Client');
+            $clientModal.find('#id_btn_client_add').html('Update Client');
         }
-        $('#modal-client').modal('show');
+        $clientModal.modal('show');
     }
 
     $('#btn-client-modal-show').on('click', function () {
@@ -196,7 +209,7 @@ $(document).ready(function () {
             resp.data.client_type = resp.data.c_type;
             clientData.results = [resp.data, ...clientData.results];
             updateTable();
-            $('#modal-client').modal('hide');
+            $clientModal.modal('hide');
             resetForm();
         } else if (resp.status === 400) {
             showValidationErrors(resp.data);
@@ -218,34 +231,33 @@ $(document).ready(function () {
                 }
             }
             updateTable();
-            $('#modal-client').modal('hide');
+            $clientModal.modal('hide');
             resetForm();
         } else if (resp.status === 400) {
             showValidationErrors(resp.data);
         }
     }
 
-    $('#id_btn_client_add').on('click', function () {
+    $clientModal.find('#id_btn_client_add').on('click', function () {
         $('.error_container').html('');
         let data = {
-            client_name: $('#id_client_name').val(),
-            address1: $('#id_address1').val(),
-            address2: $('#id_address2').val(),
-            city: $('#id_city').val(),
-            state: $('#id_state').val(),
-            zipcode: $('#id_zipcode').val(),
-            client_type: $('#id_client_type').val(),
-            client_status: $('#id_client_status').val(),
-            billing_structure: $('#id_billing_structure').val(),
-            billing_target: $('#id_billing_target').val(),
-            payment_terms: $('#id_payment_terms').val()
+            client_name: $clientModal.find('#id_client_name').val(),
+            address1: $clientModal.find('#id_address1').val(),
+            address2: $clientModal.find('#id_address2').val(),
+            city: $clientModal.find('#id_city').val(),
+            state: $clientModal.find('#id_state').val(),
+            zipcode: $clientModal.find('#id_zipcode').val(),
+            client_type: $clientModal.find('#id_client_type').val(),
+            client_status: $clientModal.find('#id_client_status').val(),
+            billing_structure: $clientModal.find('#id_billing_structure').val(),
+            billing_target: $clientModal.find('#id_billing_target').val(),
+            payment_terms: $clientModal.find('#id_payment_terms').val()
         };
         if (currentOperation === 'add') {
             addClient(data);
         } else if (currentOperation === 'edit') {
             editClient(data);
         }
-
     });
 
     $('tbody').on('click', '.btn-client-edit', async function (e) {
@@ -331,5 +343,123 @@ $(document).ready(function () {
             $(".field-payment_terms_other").hide();
         }
     });
+
+    // Client Type ---------------------------
+
+    const $clientTypeModal = $('#modal-client-type');
+    const $clientTypeName = $clientTypeModal.find('#id_name');
+
+    let clientTypeOperation = 'add';
+
+    function resetClientTypeForm() {
+        $clientTypeName.val('');
+    }
+
+    function showClientTypeModal(type) {
+        $clientModal.modal('hide');
+        $clientTypeModal.find('.error_container').html('');
+        if (type === 'add') {
+            clientTypeOperation = 'add';
+            $clientTypeModal.find('.modal-title').html('Add New Client Type');
+            $clientTypeModal.find('#id_btn_client_type_add').html('Add');
+        } else if (type === 'edit') {
+            clientTypeOperation = 'edit';
+            $clientTypeModal.find('.modal-title').html('Edit Client Type');
+            $clientTypeModal.find('#id_btn_client_type_add').html('Update');
+        }
+        $clientTypeModal.modal('show');
+    }
+
+    function showClientTypeValidationErrors(errorData) {
+        for (let key in errorData) {
+            let errorHtml = '';
+            for (let i = 0; i < errorData[key].length; i++) {
+                errorHtml += '<li>* ' + errorData[key][i] + '</li>';
+            }
+            $clientTypeModal.find('#id_error_' + key).html(errorHtml);
+        }
+    }
+
+    $('#btn-add-client-type').on('click', function () {
+        resetClientTypeForm();
+        showClientTypeModal('add');
+    });
+
+    function fillUpClientTypeForm(clientType) {
+        resetClientTypeForm();
+        $clientTypeName.val(clientType.name);
+    }
+
+    $('#btn-edit-client-type').on('click', async function () {
+        const selectedClientTypeId = $clientClientType.val();
+        if (!selectedClientTypeId) {
+            return;
+        }
+        const response = await apiClient.get('/custom-admin/operations/client/client-type/api/' + selectedClientTypeId);
+        fillUpClientTypeForm(response.data);
+        showClientTypeModal('edit');
+    });
+
+    function repopulateClientTypeSelectOptions(newClientType) {
+        const optionHtml = `<option value="${newClientType.id}">${newClientType.name}</option>`;
+        $clientClientType.append(optionHtml);
+        setTimeout(function (){
+            const size = $clientClientType.find("option").length;
+            $clientClientType.prop('selectedIndex', (size - 1));
+        }, 200);
+    }
+
+    async function addClientType(data) {
+        const resp = await apiClient.post('/custom-admin/operations/client/client-type/api/add', data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 201) {
+            $clientTypeModal.modal('hide');
+            repopulateClientTypeSelectOptions(resp.data);
+            resetClientTypeForm();
+        } else if (resp.status === 400) {
+            showClientTypeValidationErrors(resp.data);
+        }
+    }
+
+    function updateSelectedClientTypeName(updatedClientType) {
+        $clientModal.find(`option[value="${updatedClientType.id}"]`).html(updatedClientType.name);
+    }
+
+    async function editClientType(data) {
+        const selectedClientTypeId = $clientClientType.val();
+        const resp = await apiClient.patch('/custom-admin/operations/client/client-type/api/' + selectedClientTypeId, data, {
+            validateStatus: (status) => {
+                return status >= 200 && status < 500;
+            },
+        });
+        if (resp.status === 200) {
+            $clientTypeModal.modal('hide');
+            updateSelectedClientTypeName(resp.data);
+            resetClientTypeForm();
+        } else if (resp.status === 400) {
+            showClientTypeValidationErrors(resp.data);
+        }
+    }
+
+    $clientTypeModal.find('#id_btn_client_type_add').on('click', async function () {
+        $clientTypeModal.find('.error_container').html('');
+        let data = {
+            name: $clientTypeName.val(),
+        };
+        if (clientTypeOperation === 'add') {
+            addClientType(data);
+        } else if (clientTypeOperation === 'edit') {
+            editClientType(data);
+        }
+    });
+
+    $clientTypeModal.on('hide.bs.modal', function(){
+        $clientModal.modal('show');
+    });
+
+    // End Client Type
 
 });

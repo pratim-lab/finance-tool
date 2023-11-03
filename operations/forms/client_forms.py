@@ -1,5 +1,5 @@
 from django import forms
-from tools.models import Client
+from tools.models import Client, ClientType
 
 
 class ClientAddForm(forms.ModelForm):
@@ -30,4 +30,20 @@ class ClientAddForm(forms.ModelForm):
             'billing_structure',
             'billing_target',
             'payment_terms',
+        ]
+
+
+class ClientTypeForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+
+    class Meta:
+        model = ClientType
+        fields = [
+            'name',
         ]
