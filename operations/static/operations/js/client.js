@@ -239,7 +239,7 @@ $(document).ready(function () {
     }
 
     $clientModal.find('#id_btn_client_add').on('click', function () {
-        $('.error_container').html('');
+        $clientModal.find('.error_container').html('');
         let data = {
             client_name: $clientModal.find('#id_client_name').val(),
             address1: $clientModal.find('#id_address1').val(),
