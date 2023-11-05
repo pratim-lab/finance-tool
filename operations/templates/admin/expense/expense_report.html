@@ -1,0 +1,244 @@
+{% extends "admin/custom_base.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+    <section>
+        <article>
+            <div class="top-head">
+                <h1>Business expenses</h1>
+            </div>
+            <div class="client-area">
+                <div class="top-part">
+                    <select>
+                        <option>Months</option>
+                    </select>
+                    <a href="#" class="editbtn" id="btn-show-expense-type" >
+                        <img src="assets/images/edit_minor.svg" alt=""/> Edit
+                    </a>
+                </div>
+                <div class="listing-table">
+                    <div id="tabs-content">
+                        <div id="tab1" class="tab-content">
+                            <div class="table-responsive listing-table-contact business-table">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Jan</th>
+                                        <th scope="col">Feb</th>
+                                        <th scope="col">Mar</th>
+                                        <th scope="col">Aprl</th>
+                                        <th scope="col">May</th>
+                                        <th scope="col">June</th>
+                                        <th scope="col">July</th>
+                                        <th scope="col"><img src="assets/images/eoy.svg" alt=""> EOY Projection</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th>
+                                            <div class="totals">Total</div>
+                                        </th>
+                                        <td>$000,000</td>
+                                        <td>
+                                            $000,000
+                                        </td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Advertising</th>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Office expenses</th>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Travel</th>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Utilities</th>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>(expense)</th>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                        <td>$000,000</td>
+                                    </tr>
+                                    <tr>
+                                        <th>(expense)</th>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/darkline.svg" alt=""></td>
+                                        <td><img src="assets/images/lightline.svg" alt=""></td>
+                                        <td><img src="assets/images/lightline.svg" alt=""></td>
+                                        <td><img src="assets/images/lightline.svg" alt=""></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modal-expense-type" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Edit expenses</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="editsec">
+                                <li class="addcat">
+                                    <a href="#" class="editbtn" id="btn-add-expense-type">
+                                        <img src="assets/images/plus-icon.svg" alt=""> Add expense category</a>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            Advertising
+                                            <input type="text" placeholder="(new expense)" class="fieldinput"/>
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/tick-icon.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            Office expenses
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            Travel
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            (expense)
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            (expense)
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#warningModalCenter">Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="modal-expense-type-delete-confirmation" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Removing an expense category will remove any existing expenses from all finance and
+                                budget palges.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary">Back</button>
+                            <button type="button" class="btn btn-danger" id="btn-confirm-delete-expense-type">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
+    <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
+    <script src="{% static 'operations/js/expense.js' %}"></script>
+{% endblock %}

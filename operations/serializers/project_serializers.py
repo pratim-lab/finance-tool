@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils import dateformat
-from tools.models import Client, Project
+from tools.models import Client, Project, ClientType
 
 
 class ChoiceField(serializers.ChoiceField):
@@ -41,7 +41,29 @@ class ProjectAddSerializer(serializers.ModelSerializer):
         ]
 
 
+class ClientTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientType
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class ProjectClientSerializer(serializers.ModelSerializer):
+    client_type = ClientTypeSerializer()
+
+    class Meta:
+        model = Client
+        fields = [
+            'id',
+            'client_name',
+            'client_type'
+        ]
+
+
 class ProjectRetrieveSerializer(serializers.ModelSerializer):
+    client = ProjectClientSerializer()
     created_at = serializers.SerializerMethodField()
 
     def get_created_at(self, obj):
@@ -52,6 +74,7 @@ class ProjectRetrieveSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'client_id',
+            'client',
             'project_name',
             'project_type',
             'start_date',
@@ -62,23 +85,8 @@ class ProjectRetrieveSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProjectProjectSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Project
-        fields = [
-            'id',
-            'client_id',
-            'project_name',
-            'project_type',
-            'start_date',
-            'end_date',
-            'project_budget',
-            'billing_structure',
-        ]
-
-
 class ListProjectRetrieveSerializer(serializers.ModelSerializer):
+    client = ProjectClientSerializer()
     client_id = serializers.IntegerField()
     project_type = ChoiceField(choices=Project.PROJECT_TYPES)
     billing_structure = ChoiceField(choices=Project.BILLING_STRUCTURE)
@@ -88,6 +96,7 @@ class ListProjectRetrieveSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'client_id',
+            'client',
             'project_name',
             'project_type',
             'start_date',

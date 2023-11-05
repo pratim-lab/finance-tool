@@ -14,26 +14,32 @@ $(document).ready(function () {
         results: []
     };
 
-    
-
     function getProjectColumnsHtml(project) {
-        return '' +
-            '<th class="client_name">' +
-                '<div class="btn-group dropend project-id-' + project.id + '" role="group">' +
-                    '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
-                        '<img src="/static/custom_admin_assets/images/primary_fill.svg" alt="">' +
-                    '</button>' +
-                    '<span> ' + project.project_name + '</span>' +
-                    '<ul class="dropdown-menu">' +
-                        '<li><button class="btn btn-client-edit" data-id="' + project.id + '">Edit</button></li>       ' +
-                        '<li><button class="btn btn-client-delete" data-id="' + project.id + '">Delete</button></li>' +
-                    '</ul>' +
-                '</div>' +
-            '</th>' +
-            '<td class="client_type">' + project.project_type + '</td>' +
-            '<td class="client_status">' + project.start_date + '</td>' +
-            '<td class="client_status">' + project.end_date + '</td>' +
-            '<td class="projected_revenue">' + project.project_budget + '</td>';
+        let clientTypeName = "";
+        if (project.client !== null) {
+            if (project.client.client_type !== null) {
+                clientTypeName = project.client.client_type.name;
+            }
+        }
+        return `
+            <th class="client_name">
+                <div class="btn-group dropend project-id-${project.id}" role="group">
+                    <button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                        <img src="/static/custom_admin_assets/images/primary_fill.svg" alt="">
+                    </button>
+                    <span>${project.project_name}</span>
+                    <ul class="dropdown-menu">
+                        <li><button class="btn btn-client-edit" data-id="${project.id}">Edit</button></li>
+                        <li><button class="btn btn-client-delete" data-id="${project.id}">Delete</button></li>
+                    </ul>
+                </div>
+            </th>
+            <td class="client_type_name">${clientTypeName}</td>
+            <td class="client_type">${project.project_type}</td>
+            <td class="client_status">${project.start_date}</td>
+            <td class="client_status">${project.end_date}</td>
+            <td class="projected_revenue">${project.project_budget}</td>`;
     }
 
     function getProjectRowHtml(project) {

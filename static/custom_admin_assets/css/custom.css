@@ -224,6 +224,8 @@ article h1 {
 .listing-table table tr th {
   padding: 15px 20px;
   font-size: 14px;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .listing-table table tr th {
@@ -239,6 +241,7 @@ article h1 {
 .listing-table table tr th:first-child {
   background-color: #fff;
   border-right: 1px solid #F0F0F0;
+  width: 210px;
 }
 
 table thead th:first-child {
@@ -836,7 +839,89 @@ span.no{
   color: #777777;
   margin-bottom: 0px;
 }
-
+.listing-table table tr th .dropend{
+  align-items: center;
+}
+.listing-table .staftab table,  .listing-table .business-table table{
+  width: 100%;
+}
+.listing-table .staftab table tr th:first-child{
+  width: 220px;
+  display: block;
+}
+.listing-table .business-table table tr th:last-child{
+  width: 170px;
+  display: block;
+}
+.business-table tbody tr:first-child, .business-table tbody tr:first-child th{
+  background-color: #F3F3F3;
+  font-weight: 700;
+}
+.listing-table .business-table table tr td, .listing-table .business-table table tr th{
+  padding: 10px;
+}
+.top-part{
+  display: flex;
+    width: 100%;
+    padding: 0 32px;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.top-part select, a.editbtn{
+  border: 1px solid  #BABFC3;
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+a.editbtn{
+  padding: 5px 10px;
+  color: #202223;
+  font-weight: 500;
+}
+.addcat{
+  text-align: right;
+}
+.editarea{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.editname{
+  width: 70%;
+}
+.editsec li{
+  overflow: hidden;
+    padding: 20px 0;
+    border-bottom: 1px solid #EDEDED;
+}
+.editsec li:last-child{
+  border: none;
+}
+#editModalCenter .modal-dialog{
+  max-width: 458px;
+}
+#warningModalCenter .modal-dialog{
+  max-width: 380px;
+}
+#warningModalCenter .modal-dialog p{
+  font-size: 14px;
+}
+.editname{
+  position: relative;
+}
+.fieldinput{
+  position: absolute;
+  width: 100%;
+    left: 0;
+    top: -2px;
+}
+.btn.btn-danger {
+  color: #fff;
+  background-color: #dc3545!important;
+  border-color: #dc3545;
+}
 /* Info section */
 
 @media only screen and (max-width:1600px) {

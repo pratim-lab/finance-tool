@@ -23,6 +23,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Project Name</th>
+                                        <th scope="col">Type</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Start Date</th>
                                         <th scope="col">End Date</th>
@@ -72,15 +73,15 @@
                                 {{ project_add_form.project_name }}
                                 <ul id="id_error_{{ project_add_form.project_name.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-                            <div class="col-md-12">
-                                <label for="inputProjectType" class="form-label">Project Type</label>
-                                {{ project_add_form.project_type }}
-                                <ul id="id_error_{{ project_add_form.project_type.name }}" class="error_container" style="color: red;"></ul>
-                            </div>
                             <div class="col-12">
                                 <label for="inputClient" class="form-label">Client</label>
                                 {{ project_add_form.client }}
                                 <ul id="id_error_{{ project_add_form.client.name }}" class="error_container" style="color: red;"></ul>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputProjectType" class="form-label">Project Status</label>
+                                {{ project_add_form.project_type }}
+                                <ul id="id_error_{{ project_add_form.project_type.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Start
@@ -106,7 +107,6 @@
                                 {{ project_add_form.billing_structure }}
                                 <ul id="id_error_{{ project_add_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
                             </div>
-
                         </form>
                     </div>
                     <div class="modal-footer">
