@@ -47,7 +47,13 @@ $(document).ready(function () {
         let activeProjectsHtml = getProjectsHtml(client.projects.active_projects);
         let pipelineProjectsHtml = getProjectsHtml(client.projects.pipeline_projects);
         const clientType = client.client_type !== null ? client.client_type.name : null;
-        return '' +
+        let optionsHtml = '';
+        if(client.client_status == 'Active Client'){
+            optionsHtml = '<td class="client_status"><span class="active">' + client.client_status + '</span></td>';
+        }else{
+            optionsHtml = '<td class="client_status">' + client.client_status + '</td>';
+        }
+        const selectHtml = '' +
             '<th class="client_name">' +
                 '<div class="btn-group dropend client-id-' + client.id + '" role="group">' +
                     '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
@@ -61,11 +67,12 @@ $(document).ready(function () {
                 '</div>' +
             '</th>' +
             '<td class="client_type">' + clientType + '</td>' +
-            '<td class="client_status">' + client.client_status + '</td>' +
+            optionsHtml +
             '<td class="active_projects">' + activeProjectsHtml + '</td>' +
             '<td class="pipeline_projects">' + pipelineProjectsHtml + '</td>' +
             '<td class="annual_revenue">' + client.committed_annual_revenue + '</td>' +
             '<td class="projected_revenue">' + client.projected_annual_revenue + '</td>';
+        return selectHtml;
     }
 
     function getClientRowHtml(client) {

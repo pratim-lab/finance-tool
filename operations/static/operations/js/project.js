@@ -15,11 +15,18 @@ $(document).ready(function () {
     };
 
     function getProjectColumnsHtml(project) {
+        let optionsHtml = '';
         let clientTypeName = "";
         if (project.client !== null) {
             if (project.client.client_type !== null) {
                 clientTypeName = project.client.client_type.name;
             }
+        }
+
+        if (project.project_type=='Active') {
+            optionsHtml += `<td class="client_type"><span class="active">${project.project_type}</span></td>`;
+        }else{
+            optionsHtml += `<td class="client_type">${project.project_type}</td>`;
         }
         return `
             <th class="client_name">
@@ -36,7 +43,7 @@ $(document).ready(function () {
                 </div>
             </th>
             <td class="client_type_name">${clientTypeName}</td>
-            <td class="client_type">${project.project_type}</td>
+            ${optionsHtml}
             <td class="client_status">${project.start_date}</td>
             <td class="client_status">${project.end_date}</td>
             <td class="projected_revenue">${project.project_budget}</td>`;
