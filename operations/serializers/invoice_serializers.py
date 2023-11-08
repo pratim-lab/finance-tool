@@ -83,7 +83,8 @@ class ListInvoiceRetrieveSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     client = InvoiceClientSerializer()
     project = InvoiceProjectSerializer()
-
+    invoice_status = ChoiceField(choices=Invoice.INVOICE_STATUS)
+    
     class Meta:
         model = Invoice
         fields = [

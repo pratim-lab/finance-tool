@@ -31,7 +31,17 @@ $(document).ready(function () {
     }
 
     function getInvoiceColumnsHtml(invoice) {
-        return '' +
+        let optionsHtml = '';
+        if(invoice.invoice_status == 'Sent'){
+            optionsHtml = '<td class="annual_revenue"><span class="sent">' + invoice.invoice_status + '</span></td>';
+        }else if(invoice.invoice_status == 'Paid'){
+            optionsHtml = '<td class="annual_revenue"><span class="paid">' + invoice.invoice_status + '</span></td>';
+        }else if(invoice.invoice_status == 'To Be Invoiced'){
+            optionsHtml = '<td class="annual_revenue"><span class="to-be-invoiced">' + invoice.invoice_status + '</span></td>';
+        }else{
+            optionsHtml = '<td class="annual_revenue">' + invoice.invoice_status + '</td>';
+        }
+        const selectHtml =  '' +
             '<th class="client_name">' +
                 '<div class="btn-group dropend client-id-' + invoice.id + '" role="group">' +
                     '<button type="button" class="btn btn-secondary list-action-button" data-bs-toggle="dropdown" aria-expanded="false">' +
@@ -47,9 +57,10 @@ $(document).ready(function () {
             '<td class="client_type">' + invoice.project.project_name + '</td>' +
             '<td class="client_status">' + invoice.invoice_date + '</td>' +
             '<td class="annual_revenue">' + invoice.invoice_number + '</td>' +
-            '<td class="annual_revenue">' + invoice.invoice_status + '</td>' +
+            optionsHtml +
             '<td class="annual_revenue">' + invoice.expected_date_of_payment + '</td>' +
             '<td class="projected_revenue">' + invoice.invoice_amount + '</td>';
+        return selectHtml;
     }
 
     function getInvoiceRowHtml(invoice) {
