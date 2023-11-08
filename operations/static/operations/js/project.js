@@ -26,7 +26,7 @@ $(document).ready(function () {
         if (project.project_type=='Active') {
             optionsHtml += `<td class="client_type"><span class="active">${project.project_type}</span></td>`;
         }else{
-            optionsHtml += `<td class="client_type">${project.project_type}</td>`;
+            optionsHtml += `<td class="client_type"><span class="inactive">${project.project_type}</span></td>`;
         }
         return `
             <th class="client_name">

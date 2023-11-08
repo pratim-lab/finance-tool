@@ -51,7 +51,7 @@ $(document).ready(function () {
         if(client.client_status == 'Active Client'){
             optionsHtml = '<td class="client_status"><span class="active">' + client.client_status + '</span></td>';
         }else{
-            optionsHtml = '<td class="client_status">' + client.client_status + '</td>';
+            optionsHtml = '<td class="client_status"><span class="inactive">' + client.client_status + '</span></td>';
         }
         const selectHtml = '' +
             '<th class="client_name">' +
