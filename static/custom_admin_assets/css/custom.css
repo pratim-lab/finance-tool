@@ -769,15 +769,28 @@ span.no{
   border-bottom: 1px solid #EBECED;
 }
 
-.selectpart{
-  background: #AEE9D1;
+.selectpart-25,.selectpart-50,.selectpart-75,.selectpart-100{
     border-radius: 100px;
     display: inline-flex;
 }
-.selectpart select{
+.selectpart-25 select,.selectpart-50 select,.selectpart-75 select,.selectpart-100 select{
   background-color: transparent;
   font-size: 12px;
 }
+
+.selectpart-25{
+  background: #FED3D1;
+}
+.selectpart-50{
+  background: #FFEA8A;
+}
+.selectpart-75{
+  background: #A4E8F2;
+}
+.selectpart-100{
+  background: #AEE9D1;
+}
+
 .customdrop{
   padding: 12px 24px!important;
   font-size: 14px;

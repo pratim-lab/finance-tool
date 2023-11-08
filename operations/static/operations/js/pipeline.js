@@ -52,10 +52,10 @@ $(document).ready(function () {
             optionsHtml += `<option value="${item.confidence}" selected>${item.confidence}%</option>`;
         }
         return `
-            <select class="form-select form-select-sm" aria-label=".form-select-sm example" 
+            <div id="selectpart-${item.id}" class="selectpart-${item.confidence}"><select class="form-select form-select-sm" aria-label=".form-select-sm example" 
                 onchange="do_change_confidence(${item.id},this.value)">
                 ${optionsHtml}
-            </select>
+            </select></div>
         `;
     }
 
@@ -82,11 +82,7 @@ $(document).ready(function () {
                 </a>${ item.project ? item.project.project_name: ''}
             </td>
             <td>${item.estimated_price}</td>
-            <td>
-                <div class="selectpart">
-                    ${getConfidenceSelectHtml(item)}
-                </div>
-            </td>
+            <td>${getConfidenceSelectHtml(item)}</td>
             <td>${item.no_of_payments}</td>
             <td class="fte_billable_rate">${item.total_value_in_forecast}</td>
             <td class="benefits">${item.estimated_payment_amount}</td>
@@ -928,6 +924,8 @@ $(document).ready(function () {
 });
 
 function do_change_confidence(itemId,itemVal){
+    $("#selectpart-"+itemId).removeClass();
+    $("#selectpart-"+itemId).addClass("selectpart-"+itemVal);
     $.ajax({
         url: "/tools/update_confidence_of_pipeline",
         type: "get",
