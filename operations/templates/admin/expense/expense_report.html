@@ -5,237 +5,181 @@
     <section>
         <article>
             <div class="top-head">
-                <h1>Business expenses</h1>
+                <h1>Expenses</h1>
+                <a type="button" class="btn btn-primary" id="btn-modal-expense"> Add Expense Type</a>
+            </div>
+            <div class="listing-table mid-menu">
+                <ul id="tabs-nav" class="new-tabs status-ul">
+                    <li class="active"><a href="#tab1">Expense Report</a></li>
+                    <li id="id_btn_tab_information"><a href="#tab2">Expense Types</a></li>
+                </ul>
             </div>
             <div class="client-area">
-                <div class="top-part">
-                    <select>
-                        <option>Months</option>
-                    </select>
-                    <a href="#" class="editbtn" id="btn-show-expense-type" >
-                        <img src="assets/images/edit_minor.svg" alt=""/> Edit
-                    </a>
-                </div>
                 <div class="listing-table">
                     <div id="tabs-content">
+
                         <div id="tab1" class="tab-content">
-                            <div class="table-responsive listing-table-contact business-table">
+                            <div class="table-responsive listing-table-contact">
                                 <table class="table">
+                                    <thead id="id_expense_report_thead"></thead>
+                                    <tbody id="id_expense_report_tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="tab2" class="tab-content">
+                            <div class="table-responsive">
+                                <p id="id_no_content" style="text-align: center; display: none;">No expenses to show</p>
+                                <table class="table" id="id_expenses_table">
                                     <thead>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">Jan</th>
-                                        <th scope="col">Feb</th>
-                                        <th scope="col">Mar</th>
-                                        <th scope="col">Aprl</th>
-                                        <th scope="col">May</th>
-                                        <th scope="col">June</th>
-                                        <th scope="col">July</th>
-                                        <th scope="col"><img src="assets/images/eoy.svg" alt=""> EOY Projection</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">Expense Type</th>
+                                            <th scope="col">Recurring Payment</th>
+                                            <th scope="col">Expense Payment Amount</th>
+                                            <th scope="col">Date of First Payment</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th>
-                                            <div class="totals">Total</div>
-                                        </th>
-                                        <td>$000,000</td>
-                                        <td>
-                                            $000,000
-                                        </td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Advertising</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Office expenses</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Travel</th>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Utilities</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>(expense)</th>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                        <td>$000,000</td>
-                                    </tr>
-                                    <tr>
-                                        <th>(expense)</th>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/darkline.svg" alt=""></td>
-                                        <td><img src="assets/images/lightline.svg" alt=""></td>
-                                        <td><img src="assets/images/lightline.svg" alt=""></td>
-                                        <td><img src="assets/images/lightline.svg" alt=""></td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <ul class="pagination justify-content-center" id="id_pagination_container">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true" id="id_btn_previous_page">
+                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" id="id_btn_next_page">
+                                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                        </ul>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="modal-expense-type" tabindex="-1" role="dialog"
+            <div class="modal fade" id="modal-expense" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Edit expenses</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add new client</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <ul class="editsec">
-                                <li class="addcat">
-                                    <a href="#" class="editbtn" id="btn-add-expense-type">
-                                        <img src="assets/images/plus-icon.svg" alt=""> Add expense category</a>
-                                </li>
-                                <li>
-                                    <div class="editarea">
-                                        <div class="editname">
-                                            Advertising
-                                            <input type="text" placeholder="(new expense)" class="fieldinput"/>
-                                        </div>
-                                        <div class="editbtn">
-                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
-                                                                             alt=""></a>
-                                            <a href="#" class="editbtn"><img src="assets/images/tick-icon.svg" alt=""/></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="editarea">
-                                        <div class="editname">
-                                            Office expenses
-                                        </div>
-                                        <div class="editbtn">
-                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
-                                                                             alt=""></a>
-                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="editarea">
-                                        <div class="editname">
-                                            Travel
-                                        </div>
-                                        <div class="editbtn">
-                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
-                                                                             alt=""></a>
-                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="editarea">
-                                        <div class="editname">
-                                            (expense)
-                                        </div>
-                                        <div class="editbtn">
-                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
-                                                                             alt=""></a>
-                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="editarea">
-                                        <div class="editname">
-                                            (expense)
-                                        </div>
-                                        <div class="editbtn">
-                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
-                                                                             alt=""></a>
-                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                            <form class="row g-3 custom-form">
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Expense Type</label>
+                                    {{ expense_form.expense_type }}
+                                    <button type="button" class="btn" id="btn-edit-expense-type">Edit</button>
+                                    <button type="button" class="btn" id="btn-add-expense-type">+</button>
+                                    <ul id="id_error_{{ expense_form.expense_type.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12 field-expense_type_other">
+                                    <label for="inputAddress2" class="form-label">Expense Type Other</label>
+                                    {{ expense_form.expense_type_other }}
+                                    <ul id="id_error_{{ expense_form.expense_type_other.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Recurring Payment</label>
+                                    {{ expense_form.recurring_payment }}
+                                    <ul id="id_error_{{ expense_form.recurring_payment.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Expense Payment Amount</label>
+                                    {{ expense_form.expense_payment_amount }}
+                                    <ul id="id_error_{{ expense_form.expense_payment_amount.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12 field-expense_frequency">
+                                    <label for="inputAddress2" class="form-label">Expense Frequency</label>
+                                    {{ expense_form.expense_frequency }}
+                                    <ul id="id_error_{{ expense_form.expense_frequency.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Date of First Payment</label>
+                                    {{ expense_form.date_of_first_payment }}
+                                    <ul id="id_error_{{ expense_form.date_of_first_payment.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12 field-date_of_last_payment">
+                                    <label for="inputAddress2" class="form-label">Date of Last Payment</label>
+                                    {{ expense_form.date_of_last_payment }}
+                                    <ul id="id_error_{{ expense_form.date_of_last_payment.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#warningModalCenter">Save
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                            <button type="button" class="btn btn-primary" id="id_btn_expense_add">Add Expense</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure to delete?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    data-dismiss="modal">
+                                Cancel
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-            <div class="modal fade" id="modal-expense-type-delete-confirmation" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <!-- Expense Type Modal -->
+            <div class="modal fade" id="modal-expense-type" tabindex="-1" role="dialog"  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add new expense type</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>Removing an expense category will remove any existing expenses from all finance and
-                                budget palges.</p>
+                            <form class="row g-3 custom-form">
+                                <input type="hidden" value="-1" id="id_selected_expense"/>
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Expense Name</label>
+                                    {{ expense_type_form.expense_name }}
+                                    <ul id="id_error_{{ expense_type_form.expense_name.name }}" class="error_container" style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label">Expense Description</label>
+                                    {{ expense_type_form.expense_description }}
+                                    <ul id="id_error_{{ expense_type_form.expense_name.name }}" class="error_container" style="color: red;"></ul>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary">Back</button>
-                            <button type="button" class="btn btn-danger" id="btn-confirm-delete-expense-type">Continue</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                            <button type="button" id="id_btn_expense_type_add" class="btn btn-primary">Add</button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </article>
     </section>
     <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">

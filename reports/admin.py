@@ -8,7 +8,8 @@ from django.template.response import TemplateResponse
 from django.urls import path
 from django.contrib.auth.admin import csrf_protect_m
 
-from reports.custom_admin_views.contractor_expense_views import contractor_monthly_expense_edit_view
+from reports.custom_admin_views.contractor_expense_views import contractor_monthly_expense_edit_view, \
+    type_total_expense_edit_view_alt
 from reports.models import ContractorMonthlyExpense, ContractorMonthlyExpenseReport, TypeTotalExpense, \
     TypeTotalExpenseReport
 from tools.models import Contractor
@@ -278,6 +279,73 @@ def get_expense_calc():
                 total = total + expense_value
 
     return year, months, grouped_expense, type_total_expenses, monthly_total_expenses, total
+
+
+def get_expense_calc_alt():
+    months = get_months()
+    year = get_current_year()
+
+    grouped_expense = {}
+    type_total_expenses = {}
+    monthly_total_expenses = {}
+    total = 0
+    for m in months:
+        monthly_total_expenses[m['id']] = 0
+
+    expense_types = ExpenseType.objects.all()
+    expense_type_map = {}
+    for e in expense_types:
+        expense_type_map[e.expense_name] = e.id
+
+    for e in expense_types:
+        type_total_expenses[e.expense_name] = 0
+        m_dict = {}
+        for m in months:
+            m_dict[m['id']] = {'expense': 0, 'updated': False}
+        grouped_expense[e.expense_name] = {
+            year: m_dict
+        }
+    previously_updated_expenses = TypeTotalExpense.objects.all()
+    updated_expenses = dict()
+    for expense_r in previously_updated_expenses:
+        key = '{}_{}_{}'.format(expense_r.expense_type.id, expense_r.year, expense_r.month)
+        updated_expenses[key] = float(expense_r.expense)
+
+    expenses_list = Expense.objects.all()
+    for e in expenses_list:
+        for m in months:
+            ex = get_month_expense(e, year, m['id'])
+            grouped_expense[e.expense_type.expense_name][year][m['id']]['expense'] = grouped_expense[e.expense_type.expense_name][year][m['id']]['expense'] + ex
+
+    for expense_type in expense_types:
+        for m in months:
+            key = '{}_{}_{}'.format(expense_type.id, year, m['id'])
+            if key in updated_expenses:
+                grouped_expense[expense_type.expense_name][year][m['id']] = {'expense': updated_expenses[key], 'updated': True}
+
+    for ex_type, value in grouped_expense.items():
+        for year, value2 in value.items():
+            for month, expense in value2.items():
+                monthly_total_expenses[month] = monthly_total_expenses[month] + expense['expense']
+                type_total_expenses[ex_type] = type_total_expenses[ex_type] + expense['expense']
+                total = total + expense['expense']
+
+    rows = []
+    for ex_type, value in grouped_expense.items():
+        if type_total_expenses[ex_type] == 0:
+            continue
+        row = [{'name': ex_type, 'id': expense_type_map[ex_type]}]
+        for year, value2 in value.items():
+            for month, expense in value2.items():
+                row.append({
+                    'year': year,
+                    'month': month,
+                    'expense': expense['expense'],
+                    'updated': expense['updated']
+                })
+        rows.append(row)
+
+    return year, months, type_total_expenses, monthly_total_expenses, total, rows
 
 
 def get_employee_calc():
@@ -623,7 +691,7 @@ class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super().get_urls()
-        my_urls = [path("edit", self.admin_site.admin_view(type_total_expense_edit_view))]
+        my_urls = [path("edit", self.admin_site.admin_view(type_total_expense_edit_view_alt))]
 
         return my_urls + urls
 

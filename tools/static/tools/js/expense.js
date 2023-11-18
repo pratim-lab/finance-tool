@@ -19,7 +19,7 @@ $(document).ready(function() {
 	$("#id_expense_type").change(function () {
 	    var expense_type_val = $(this).val();
 	    if(expense_type_val== 'Other'){
-			$(".field-expense_type_other").show(); 
+			$(".field-expense_type_other").show();
 	    }else{
 	    	$(".field-expense_type_other").hide();
 	    }

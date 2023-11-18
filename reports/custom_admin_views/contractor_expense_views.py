@@ -3,8 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from reports.models import ContractorMonthlyExpense, TypeTotalExpense
-from reports.serializers import ContractorMonthlyExpenseEditSerializer, TypeTotalExpenseEditSerializer
-from tools.models import Contractor, Expense
+from reports.serializers import ContractorMonthlyExpenseEditSerializer, TypeTotalExpenseEditSerializer, \
+    TypeTotalExpenseEditSerializerAlt
+from tools.models import Contractor, Expense, ExpenseType
 
 from reports.models import EmployeeMonthlyExpense
 from reports.serializers import EmployeeMonthlyExpenseEditSerializer
@@ -83,6 +84,29 @@ def type_total_expense_edit_view(request):
         }
     )
 
+    return Response({
+        'id': monthly_expense.id,
+        'expense': monthly_expense.expense
+    })
+
+
+@api_view(['POST'])
+def type_total_expense_edit_view_alt(request):
+    serializer = TypeTotalExpenseEditSerializerAlt(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    data = serializer.validated_data
+    if not ExpenseType.objects.filter(id=data['expense_type_id']).exists():
+        return Response({'message': 'Expense type is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+
+    monthly_expense, created = TypeTotalExpense.objects.update_or_create(
+        expense_type_id=data['expense_type_id'],
+        year=data['year'],
+        month=data['month'],
+        defaults={
+            'expense': data['expense']
+        }
+    )
     return Response({
         'id': monthly_expense.id,
         'expense': monthly_expense.expense
