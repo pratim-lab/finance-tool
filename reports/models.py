@@ -58,10 +58,12 @@ class TypeTotalExpenseReport(TypeTotalExpense):
         verbose_name = 'Expense'
         verbose_name_plural = 'Expenses'
 
+
 class InvoiceMonthlyExpense(models.Model):
    
     def __str__(self):
         return ''
+
 
 class InvoiceMonthlyExpenseReport(InvoiceMonthlyExpense):
 
@@ -70,10 +72,12 @@ class InvoiceMonthlyExpenseReport(InvoiceMonthlyExpense):
         verbose_name = 'Invoice'
         verbose_name_plural = 'Invoices'
 
+
 class PipelineMonthlyExpense(models.Model):
    
     def __str__(self):
         return ''
+
 
 class PipelineMonthlyExpenseReport(PipelineMonthlyExpense):
 
@@ -82,10 +86,12 @@ class PipelineMonthlyExpenseReport(PipelineMonthlyExpense):
         verbose_name = 'Pipeline'
         verbose_name_plural = 'Pipelines'
 
+
 class IncomeForecast(models.Model):
    
     def __str__(self):
         return ''
+
 
 class IncomeForecastReport(IncomeForecast):
 
@@ -94,10 +100,12 @@ class IncomeForecastReport(IncomeForecast):
         verbose_name = 'Income Forecast'
         verbose_name_plural = 'Income Forecasts'
 
+
 class MonthlyBudgetTracker(models.Model):
    
     def __str__(self):
         return ''
+
 
 class MonthlyBudgetTrackerReport(MonthlyBudgetTracker):
 
@@ -106,14 +114,17 @@ class MonthlyBudgetTrackerReport(MonthlyBudgetTracker):
         verbose_name = 'Monthly Budget Tracker'
         verbose_name_plural = 'Monthly Budget Trackers'
 
+
 class MonthlyBudgetGraph(models.Model):
    
     def __str__(self):
         return ''
+
 
 class MonthlyBudgetTrackerGraph(MonthlyBudgetGraph):
 
     class Meta:
         proxy = True
         verbose_name = 'Budget Graph'
-        verbose_name_plural = 'Budget Graph'        
+        verbose_name_plural = 'Budget Graph'
+

@@ -22,15 +22,22 @@
 </head>
 
 <body>
-
 <section>
     <aside id="sidebar">
         <div class="logo">
             <img src="{% static 'custom_admin_assets/images/logo.svg' %}" alt=""/>
         </div>
         <ul class="slide-list">
-            <li><a href="#"><img src="{% static 'custom_admin_assets/images/forcust.svg' %}" alt=""/> Forecast</a></li>
-            <li><a href="#"><img src="{% static 'custom_admin_assets/images/profit.svg' %}" alt=""/> Profits and loss</a>
+            <li><a href="/custom-admin/operations/financialforecastgraph/"
+                    {% if request.path == '/custom-admin/operations/financialforecastgraph/' %}
+                        class="active-menu-item"
+                    {% endif %}>
+                <img src="{% static 'custom_admin_assets/images/forcust.svg' %}" alt=""/> Forecast
+            </a>
+            </li>
+            <li>
+                <a href="#"><img src="{% static 'custom_admin_assets/images/profit.svg' %}" alt=""/> Profits and
+                    loss</a>
             </li>
         </ul>
         {% if available_apps %}
@@ -40,7 +47,7 @@
                         <a href="#" class="accordion active">{{ app.name | upper }}</a>
                         <ul class="panel" style="display: block;">
                             {% for model in app.models %}
-                                <li>
+                                <li class="menu-item">
                                     <a href="{{ model.admin_url }}"{% if model.admin_url in request.path %}
                                        class="active" {% endif %}>{{ model.name }}</a>
                                 </li>
@@ -52,8 +59,14 @@
         {% else %}
             <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
         {% endif %}
-        <div class="setting-icon"><a href="#"><img src="{% static 'custom_admin_assets/images/settings_minor.svg' %}"
-                                                   alt=""/></a></div>
+        <div class="setting-icon">
+            <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false"><img
+                    src="{% static 'custom_admin_assets/images/settings_minor.svg' %}" alt=""/></a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="/admin/logout">Log out</a></li>
+            </ul>
+        </div>
     </aside>
     <div>
         {% block content %}

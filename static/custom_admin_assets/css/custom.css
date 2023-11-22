@@ -937,6 +937,10 @@ a.editbtn{
 }
 /* Info section */
 
+.active-menu-item {
+    background-color: #E8D1F34D;
+}
+
 @media only screen and (max-width:1600px) {
   .listing-table table {
     width: 1400px;

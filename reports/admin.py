@@ -584,6 +584,7 @@ def get_monthly_budget_calc():
 
     return months, grouped_invoice, type_total_invoices, monthly_total_expenses, total_expenses, grouped_netincome, type_total_netincome, grouped_strtmonthlybal, type_total_strtmonthlybal
 
+
 class ContractorMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/contractor_expense_page.html'
 
@@ -965,6 +966,7 @@ class MonthlyBudgetTrackerAdmin(admin.ModelAdmin):
 
 class MonthlyBudgetTrackerAdminGraph(admin.ModelAdmin):
     change_list_template = 'admin/monthly_budget_graph_page.html'
+
     def has_add_permission(self, request, obj=None):
         return False
 
