@@ -158,7 +158,9 @@ DATE_INPUT_FORMATS = ['%m-%d-%Y']
 DISABLE_DARK_MODE = True
 
 # ADMIN_LANDING_PAGE_URL = '/custom-admin/reports/monthlybudgettrackergraph/'
-ADMIN_LANDING_PAGE_URL = '/custom-admin/tools/client/'
+ADMIN_LANDING_PAGE_URL = '/custom-admin/operations/financialforecastgraph/'
+LOGOUT_REDIRECT_URL = '/custom-admin/operations/financialforecastgraph/'
+LOGIN_URL = '/admin/login/?next=/custom-admin/operations/financialforecastgraph/'
 
 # LOGGING = {
 #     'version': 1,
