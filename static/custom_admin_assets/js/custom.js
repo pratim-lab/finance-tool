@@ -1,5 +1,5 @@
 (function ($) {
-    $('a[href^="/custom-admin/operations/financialforecastgraph/"]').parent('.menu-item').hide();
+    // $('a[href^="/custom-admin/operations/financialforecastgraph/"]').parent('.menu-item').hide();
     $(window).on("load", function () {
         $("ul.slide-list2").mCustomScrollbar();
     });

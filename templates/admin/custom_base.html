@@ -47,10 +47,13 @@
                         <a href="#" class="accordion active">{{ app.name | upper }}</a>
                         <ul class="panel" style="display: block;">
                             {% for model in app.models %}
+{#                                hide financial forecast from admin menu as it is already on the top of the menu#}
+                                {% if model.admin_url != "/custom-admin/operations/financialforecastgraph/" %}
                                 <li class="menu-item">
                                     <a href="{{ model.admin_url }}"{% if model.admin_url in request.path %}
                                        class="active" {% endif %}>{{ model.name }}</a>
                                 </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>
