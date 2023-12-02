@@ -3,17 +3,25 @@ if (!$) {
 }
 
 $(document).ready(function () {
+    const $incomeTypeSelect = $('#income_type_select');
+
+    let filters = {
+        "incomeType": $incomeTypeSelect.val()
+    };
 
     let forecastGraphData = {
         income: null,
         expenses: null,
         profit: null
     };
+    let ctx = document.getElementById("id-forecast-graph-container").getContext('2d');
+    let forecastGraph = null;
 
     function initializeForecastGraph() {
-        let ctx = document.getElementById("id-forecast-graph-container").getContext('2d');
-
-        let forecastGraph = new Chart(ctx, {
+        if (forecastGraph) {
+            forecastGraph.destroy();
+        }
+        forecastGraph = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [
@@ -75,12 +83,17 @@ $(document).ready(function () {
     }
 
     async function getForecastGraphData() {
-        let path = '/custom-admin/operations/financialforecastgraph/api/graph-data';
+        let path = '/custom-admin/operations/financialforecastgraph/api/graph-data?income_type=' + filters.incomeType;
         const response = await apiClient.get(path);
         forecastGraphData = response.data;
         initializeForecastGraph();
     }
 
     getForecastGraphData();
+
+    $incomeTypeSelect.change(function (e) {
+        filters.incomeType = $(this).val();
+        getForecastGraphData();
+    });
 
 });

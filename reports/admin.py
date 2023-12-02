@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.template.response import TemplateResponse
 from django.urls import path
 from django.contrib.auth.admin import csrf_protect_m
@@ -49,6 +50,14 @@ def get_months():
         {'id': 11, 'value': 'November'},
         {'id': 12, 'value': 'December'}
     ]
+
+
+def get_initial_monthly_amount():
+    months = get_months()
+    m_dict = {}
+    for m in months:
+        m_dict[m['id']] = 0.0
+    return m_dict
 
 
 def get_current_year():
@@ -491,7 +500,73 @@ def get_contractor_calc():
         for item in monthly_total:
             total = total + item
 
-    return year, months, contractors, rows, monthly_total_items, total    
+    return year, months, contractors, rows, monthly_total_items, total
+
+
+def get_monthly_pipeline_amount(weighted):
+    year = get_current_year()
+    q = (Q(expected_date_of_first_payment__year=year)
+         | Q(expected_date_of_second_payment__year=year)
+         | Q(expected_date_of_third_payment__year=year)
+         | Q(expected_date_of_forth_payment__year=year)
+         | Q(expected_date_of_fifth_payment__year=year)
+         | Q(expected_date_of_sixth_payment__year=year)
+         | Q(expected_date_of_seventh_payment__year=year)
+         | Q(expected_date_of_eighth_payment__year=year)
+         | Q(expected_date_of_nineth_payment__year=year)
+         | Q(expected_date_of_tenth_payment__year=year)
+         | Q(expected_date_of_eleventh_payment__year=year)
+         | Q(expected_date_of_twelfth_payment__year=year)
+         )
+    pipelines = Pipeline.objects.filter(q)
+    total_monthly_amount = get_initial_monthly_amount()
+    for pipeline in pipelines:
+        monthly_amount = get_initial_monthly_amount()
+        if weighted:
+            total_amount = float(pipeline.total_value_in_forecast) * (float(pipeline.confidence) / 100)
+        else:
+            total_amount = float(pipeline.total_value_in_forecast)
+        single_payment_amount = total_amount / float(pipeline.no_of_payments)
+        if pipeline.expected_date_of_first_payment is not None:
+            monthly_amount[pipeline.expected_date_of_first_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_first_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_second_payment is not None:
+            monthly_amount[pipeline.expected_date_of_second_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_second_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_third_payment is not None:
+            monthly_amount[pipeline.expected_date_of_third_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_third_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_forth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_forth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_forth_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_fifth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_fifth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_fifth_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_sixth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_sixth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_sixth_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_seventh_payment is not None:
+            monthly_amount[pipeline.expected_date_of_seventh_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_seventh_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_eighth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_eighth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_eighth_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_nineth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_nineth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_nineth_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_tenth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_tenth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_tenth_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_eleventh_payment is not None:
+            monthly_amount[pipeline.expected_date_of_eleventh_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_eleventh_payment.month] + single_payment_amount)
+        if pipeline.expected_date_of_twelfth_payment is not None:
+            monthly_amount[pipeline.expected_date_of_twelfth_payment.month] = (
+                    monthly_amount[pipeline.expected_date_of_twelfth_payment.month] + single_payment_amount)
+        for key, value in monthly_amount.items():
+            total_monthly_amount[key] = total_monthly_amount[key] + value
+    return total_monthly_amount
+
 
 def get_monthly_budget_calc():
     months = get_months()
@@ -846,6 +921,7 @@ class PipelineMonthlyExpenseAdmin(admin.ModelAdmin):
         }
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
+
 
 class IncomeForecastAdmin(admin.ModelAdmin):
     change_list_template = 'admin/income_forecast_page.html'

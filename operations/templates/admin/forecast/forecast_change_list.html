@@ -4,17 +4,17 @@
     <section>
         <article>
             <div class="top-head">
-                <h1>Financial Forecast 2023</h1>
+                <h1>Financial Forecast {{ year }}</h1>
             </div>
             <div class="client-area">
                 <div class="listing-table">
                     <canvas id="id-forecast-graph-container" style="width:100%;max-width:1000px"></canvas>
                 </div>
                 <div class="top-part">
-                    <select>
-                        <option>Weighted</option>
-                        <option>Unweighted</option>
-                        <option>Exclude pipeline</option>
+                    <select id="income_type_select">
+                        <option value="weighted" selected>Weighted</option>
+                        <option value="unweighted">Unweighted</option>
+                        <option value="exclude_pipeline">Exclude pipeline</option>
                     </select>
                 </div>
                 <div class="listing-table">
@@ -93,10 +93,7 @@
                                 </table>
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
         </article>
