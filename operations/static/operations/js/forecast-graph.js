@@ -82,11 +82,30 @@ $(document).ready(function () {
         });
     }
 
+    function getTrHtml(amounts, thTitle) {
+        let tds = `<th>${thTitle}</th>`;
+        let totalAmount = 0;
+        for (let i = 0; i < amounts.length; i++) {
+            totalAmount += amounts[i];
+            tds += `<td>${amounts[i]}</td>`;
+        }
+        tds += `<td>${totalAmount}</td>`;
+        return `<tr>${tds}</tr>`;
+    }
+
+    function updateForecastTable() {
+        const incomeRowHtml = getTrHtml(forecastGraphData.income, "Income");
+        const expensesRowHtml = getTrHtml(forecastGraphData.expenses, "Total Expenses");
+        const profitRowHtml = getTrHtml(forecastGraphData.profit, "Net Income (Profit)");
+        $('#forecast-table').find('tbody').html(profitRowHtml + incomeRowHtml + expensesRowHtml);
+    }
+
     async function getForecastGraphData() {
         let path = '/custom-admin/operations/financialforecastgraph/api/graph-data?income_type=' + filters.incomeType;
         const response = await apiClient.get(path);
         forecastGraphData = response.data;
         initializeForecastGraph();
+        updateForecastTable();
     }
 
     getForecastGraphData();
