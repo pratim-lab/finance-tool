@@ -36,12 +36,12 @@ class FinancialForecastGraphAdmin(admin.ModelAdmin):
          type_total_netincome, grouped_strtmonthlybal, type_total_strtmonthlybal) = get_monthly_budget_calc()
 
         for month, monthly_invoices in grouped_invoice.items():
-            for month, invoice in monthly_invoices.items():
+            for _, invoice in monthly_invoices.items():
                 income.append(invoice)
         for month, expense in monthly_total_expenses.items():
             expenses.append(expense)
         for month, monthly_netincomes in grouped_netincome.items():
-            for month, netincome in monthly_netincomes.items():
+            for _, netincome in monthly_netincomes.items():
                 profit.append(netincome)
         if income_type == "weighted" or income_type == "unweighted":
             monthly_pipeline_amount = get_monthly_pipeline_amount(income_type == "weighted")
