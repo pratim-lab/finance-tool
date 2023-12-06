@@ -271,6 +271,8 @@ class Pipeline(models.Model):
 	estimated_payment_amount = models.CharField(max_length=10,help_text='Please enter amount in USD', null=True)
 	note = models.TextField(null=True, blank=True)
 	status = models.CharField(max_length=4, choices=STATUS, default='CUR')
+	created_at = models.DateTimeField(auto_now_add=True, null=True)
+	updated_at = models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self):
 		return '{}'.format(self.estimated_price)

@@ -38,7 +38,7 @@ class ContractorListView(generics.ListAPIView):
     pagination_class = ContractorAdminPagination
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at']
-    ordering = ['created_at']
+    ordering = ['-created_at']
 
     def get_queryset(self):
         return Contractor.objects.all()

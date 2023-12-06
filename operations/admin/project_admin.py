@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import csrf_protect_m
+from django.template.response import TemplateResponse
 from django.urls import path
 from django.utils.html import format_html
-
+from functools import partial, reduce, update_wrapper
 from djangoproject.admin import custom_admin
 from operations.admin_views.project_views import (ProjectCreateAdminAPIView, ProjectRetrieveUpdateDestroyAdminAPIView,
                                                  ProjectListView)
@@ -16,14 +17,28 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display_links = ('project_name',)
 
     def get_urls(self):
+        def wrap(view):
+            def wrapper(*args, **kwargs):
+                return self.admin_site.admin_view(view)(*args, **kwargs)
+            wrapper.model_admin = self
+            return update_wrapper(wrapper, view)
+        info = self.model._meta.app_label, self.model._meta.model_name
         urls = super().get_urls()
         my_urls = [
             path("api/add", self.admin_site.admin_view(ProjectCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(ProjectListView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(ProjectRetrieveUpdateDestroyAdminAPIView.as_view())),
-
+            path('<path:object_id>/change/', self.admin_site.admin_view(self.details), name='%s_%s_change' % info),
         ]
         return my_urls + urls
+
+    def details(self, request, object_id):
+        context = dict(
+            self.admin_site.each_context(request),
+            project_id=object_id,
+            project_add_form=ProjectAddForm()
+        )
+        return TemplateResponse(request, 'admin/project/project_details.html', context)
 
     def action(self, obj):
         return format_html(

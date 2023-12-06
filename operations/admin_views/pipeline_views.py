@@ -1,5 +1,5 @@
 import django_filters
-from rest_framework import generics, status
+from rest_framework import generics, status, filters
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -51,7 +51,7 @@ class PipelineListView(generics.ListAPIView):
     permission_classes = [IsAdminUser, ]
     serializer_class = ListPipelineRetrieveSerializer
     pagination_class = AdminPagination
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['status']
     ordering_fields = ['created_at']
     ordering = ['-created_at']

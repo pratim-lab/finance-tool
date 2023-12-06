@@ -21,26 +21,6 @@ class ChoiceField(serializers.ChoiceField):
     #     self.fail('invalid_choice', input=data)
 
 
-class ProjectAddSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    client_id = serializers.IntegerField()
-    project_type = ChoiceField(choices=Project.PROJECT_TYPES)
-    billing_structure = ChoiceField(choices=Project.BILLING_STRUCTURE)
-   
-    class Meta:
-        model = Project
-        fields = [
-            'id',
-            'client_id',
-            'project_name',
-            'project_type',
-            'start_date',
-            'end_date',
-            'project_budget',
-            'billing_structure'
-        ]
-
-
 class ClientTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientType
@@ -62,8 +42,35 @@ class ProjectClientSerializer(serializers.ModelSerializer):
         ]
 
 
+class ProjectAddSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    client = ProjectClientSerializer(read_only=True)
+    client_id = serializers.IntegerField()
+    project_type = ChoiceField(choices=Project.PROJECT_TYPES)
+    p_type = serializers.CharField(source='project_type', read_only=True)
+    billing_structure = ChoiceField(choices=Project.BILLING_STRUCTURE)
+    b_structure = serializers.CharField(source='billing_structure', read_only=True)
+
+    class Meta:
+        model = Project
+        fields = [
+            'id',
+            'client_id',
+            'client',
+            'project_name',
+            'project_type',
+            'p_type',
+            'start_date',
+            'end_date',
+            'project_budget',
+            'billing_structure',
+            'b_structure'
+        ]
+
+
 class ProjectRetrieveSerializer(serializers.ModelSerializer):
     client = ProjectClientSerializer()
+    p_type = ChoiceField(choices=Project.PROJECT_TYPES, source='project_type')
     created_at = serializers.SerializerMethodField()
 
     def get_created_at(self, obj):
@@ -77,6 +84,7 @@ class ProjectRetrieveSerializer(serializers.ModelSerializer):
             'client',
             'project_name',
             'project_type',
+            'p_type',
             'start_date',
             'end_date',
             'project_budget',

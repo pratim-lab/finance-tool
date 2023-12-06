@@ -1,0 +1,357 @@
+{% extends "admin/custom_base.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+    <section>
+        <article>
+            <div class="top-head">
+                <h1>Project Details</h1>
+                <button id="btn-project-modal-show" class="btn btn-primary">Add Project</button>
+            </div>
+            <div class="client-area pro-area">
+                <div class="project-details">
+                    <div class="project-top">
+                        <div class="project-top-lft">
+                            <a href="" class="editbtn" id="btn-back"><img
+                                    src="{% static '/custom_admin_assets/images/arrow-left_minor.svg' %}" alt=""></a>
+                            <input type="hidden" id="project-id" value="{{ project_id }}">
+                            <h2>
+                                <p id="project-name"></p>
+                                <span id="project-client-type"></span>
+                            </h2>
+                            <span class="active" id="project-status"></span>
+                        </div>
+                        <div class="project-top-rgt">
+                            <div class="btn-group" role="group" id="btn-group-project-details-container">
+                                <button type="button" class="btn btn-secondary dropdown-toggle btn-group-actions"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item" href="">View Invoice</a>
+                                    <a class="dropdown-item" id="btn-project-edit" href="">Edit Project</a>
+                                    <a class="dropdown-item" id="btn-project-delete" href="">Remove Project</a>
+                                </div>
+                            </div>
+                            <a href="#" class="editbtn">Track project
+                                <img src="{% static '/custom_admin_assets/images/arrow-rgt.svg' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="commonpadding budgt">
+                        <div class="lft-area flexarea ratingarea">
+                            <div class="rating">
+                                <h6>Project budget</h6>
+                                <p id="project-budget"></p>
+                            </div>
+                            <div class="rating">
+                                <h6>Start date</h6>
+                                <p id="project-start-date"></p>
+                            </div>
+                            <div class="rating">
+                                <h6>End date</h6>
+                                <p id="project-end-date"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-table">
+                        <ul id="tabs-nav" class="new-tabs">
+                            <li class="active"><a href="#tab1">Project finances</a></li>
+                            <li><a href="#tab2">Staff</a></li>
+                        </ul>
+                        <div id="tabs-content">
+                            <div id="tab1" class="tab-content">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td><strong>Contractor - fixed fee</strong></td>
+                                            <td>$000,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total billables - Contractors</strong></td>
+                                            <td>$000,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total billables - Vendors</strong></td>
+                                            <td>$000,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Grand total</strong></td>
+                                            <td>$000,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Client budget</strong></td>
+                                            <td>$000,000</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="tab2" class="tab-content">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Client Name</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Active projects</th>
+                                            <th scope="col">Pipeline projects</th>
+                                            <th scope="col">Committed Annual Revenue</th>
+                                            <th scope="col">Projected annual revenue</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th><a href="#" class="dropmenu"><img src="assets/images/menudot.svg"
+                                                                                  alt=""/></a> Zoetis
+                                            </th>
+                                            <td>Non-profit</td>
+                                            <td><span class="active">Active</span></td>
+                                            <td>Zoetis diagnostics restr...</td>
+                                            <td>Pipeline project X</td>
+                                            <td>-----</td>
+                                            <td>-----</td>
+                                        </tr>
+                                        <tr>
+                                            <th><a href="#" class="dropmenu"><img src="assets/images/menudot.svg"
+                                                                                  alt=""/></a>NMBD
+                                            </th>
+                                            <td>Enterprise (?)</td>
+                                            <td><span class="active">Active</span></td>
+                                            <td>
+                                                <select class="form-select form-select-sm"
+                                                        aria-label=".form-select-sm example">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select form-select-sm"
+                                                        aria-label=".form-select-sm example">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </td>
+                                            <td>-----</td>
+                                            <td>-----</td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="editModalCenter" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Edit expenses</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="editsec">
+                                <li class="addcat">
+                                    <a href="#" class="editbtn"><img src="assets/images/plus-icon.svg" alt=""> Add
+                                        expense category</a>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            Advertising
+                                            <input type="text" placeholder="(new expense)" class="fieldinput"/>
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/tick-icon.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            Office expenses
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            Travel
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            (expense)
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="editarea">
+                                        <div class="editname">
+                                            (expense)
+                                        </div>
+                                        <div class="editbtn">
+                                            <a href="#" class="editbtn"><img src="assets/images/delete_minor.svg"
+                                                                             alt=""></a>
+                                            <a href="#" class="editbtn"><img src="assets/images/edit_minor.svg" alt=""/></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#warningModalCenter">Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="warningModalCenter" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Removing an expense category will remove any existing expenses from all finance and
+                                budget palges.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary">Back</button>
+                            <button type="button" class="btn btn-danger">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modal-project" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add new project</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="row g-3 custom-form">
+                                <input type="hidden" value="-1" id="id_selected_project"/>
+                                <div class="col-12">
+                                    <label for="inputProjectName" class="form-label">Project Name</label>
+                                    {{ project_add_form.project_name }}
+                                    <ul id="id_error_{{ project_add_form.project_name.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputClient" class="form-label">Client</label>
+                                    {{ project_add_form.client }}
+                                    <ul id="id_error_{{ project_add_form.client.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="inputProjectType" class="form-label">Project Status</label>
+                                    {{ project_add_form.project_type }}
+                                    <ul id="id_error_{{ project_add_form.project_type.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Start
+                                        Date</label>
+                                    {{ project_add_form.start_date }}
+                                    <ul id="id_error_{{ project_add_form.start_date.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlTextarea1" class="form-label">End
+                                        Date</label>
+                                    {{ project_add_form.end_date }}
+                                    <ul id="id_error_{{ project_add_form.end_date.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputProjectName" class="form-label">Project Budget</label>
+                                    {{ project_add_form.project_budget }}
+                                    <ul id="id_error_{{ project_add_form.project_budget.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="inputBillingStructure" class="form-label">Billing Structure</label>
+                                    {{ project_add_form.billing_structure }}
+                                    <ul id="id_error_{{ project_add_form.billing_structure.name }}"
+                                        class="error_container" style="color: red;"></ul>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                            <button type="button" id="id_btn_project_add" class="btn btn-primary">Add project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="modal-delete" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure to delete?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    data-dismiss="modal">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
+    <script src="{% static 'custom_admin_assets/js/moment.min.js' %}"></script>
+    <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
+    <script src="{% static 'operations/js/project-details.js' %}"></script>
+{% endblock %}

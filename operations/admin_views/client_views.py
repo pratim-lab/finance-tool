@@ -35,7 +35,7 @@ class ClientListView(generics.ListAPIView):
     permission_classes = [IsAdminUser, ]
     serializer_class = ListClientRetrieveSerializer
     pagination_class = AdminPagination
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['client_status', 'city']
     ordering_fields = ['client_name', 'created_at']
     ordering = ['-created_at']

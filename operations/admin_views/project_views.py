@@ -35,7 +35,7 @@ class ProjectListView(generics.ListAPIView):
     permission_classes = [IsAdminUser, ]
     serializer_class = ListProjectRetrieveSerializer
     pagination_class = AdminPagination
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['project_type']
     ordering_fields = ['project_name', 'created_at']
     ordering = ['-created_at']
