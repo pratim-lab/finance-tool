@@ -102,8 +102,10 @@
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Client Type</label>
                                 {{ client_add_form.client_type }}
+                                <div class="btn-edit-add">
                                 <button type="button" class="btn" id="btn-edit-client-type">Edit</button>
                                 <button type="button" class="btn" id="btn-add-client-type">+</button>
+                                </div>
                                 <ul id="id_error_{{ client_add_form.client_type.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">

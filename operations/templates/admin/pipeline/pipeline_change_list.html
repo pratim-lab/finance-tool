@@ -66,15 +66,19 @@
                             <div class="col-md-12 {{ form.client.css_classes }}">
                                 <label for="inputAddress2" class="form-label">Client</label>
                                 {{ form.client }}
+                                <div class="btn-edit-add">
                                 <button type="button" class="btn" id="btn-edit-client">Edit</button>
                                 <button type="button" class="btn" id="btn-add-client">+</button>
+                                </div>
                                 <ul id="id_error_{{ form.client.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Project</label>
                                 {{ form.project }}
+                                <div class="btn-edit-add">
                                 <button type="button" class="btn" id="btn-edit-project">Edit</button>
                                 <button type="button" class="btn" id="btn-add-project">+</button>
+                                </div>
                                 <ul id="id_error_{{ form.project.name }}" class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
