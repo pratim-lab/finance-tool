@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils import dateformat
-from tools.models import Client, Project, ClientType
+from tools.models import Client, Project, ClientType, Contractor, Employee
 
 
 class ChoiceField(serializers.ChoiceField):
@@ -111,4 +111,53 @@ class ListProjectRetrieveSerializer(serializers.ModelSerializer):
             'end_date',
             'project_budget',
             'billing_structure',
+        ]
+
+
+class ProjectContractorSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    contractor_id = serializers.IntegerField()
+    contractor_name = serializers.SerializerMethodField()
+    contractor_role = serializers.SerializerMethodField()
+
+    def get_contractor_name(self, obj):
+        return obj.contractor.contractor_name
+
+    def get_contractor_role(self, obj):
+        return obj.contractor.contractor_role
+
+
+class ProjectEmployeeSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    employee_id = serializers.IntegerField()
+    employee_name = serializers.SerializerMethodField()
+    project_role = serializers.SerializerMethodField()
+
+    def get_employee_name(self, obj):
+        return obj.employee.employee_name
+
+    def get_project_role(self, obj):
+        return obj.employee.project_role
+
+
+class ProjectStaffUpdateSerializer(serializers.Serializer):
+    contractor_ids = serializers.ListSerializer(child=serializers.IntegerField(required=True), required=True)
+    employee_ids = serializers.ListSerializer(child=serializers.IntegerField(required=True), required=True)
+
+
+class ContractorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contractor
+        fields = [
+            'id',
+            'contractor_name'
+        ]
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = [
+            'id',
+            'employee_name'
         ]

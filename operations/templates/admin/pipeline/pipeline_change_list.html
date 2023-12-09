@@ -27,7 +27,7 @@
                                         <th scope="col">Estimated price</th>
                                         <th scope="col">Likelihood of winning</th>
                                         <th scope="col">Payments</th>
-                                        <th scope="col">Total value in forecast	</th>
+                                        <th scope="col">Total value in forecast </th>
                                         <th scope="col">Payment amount (with confidence)</th>
                                     </tr>
                                 </thead>
@@ -52,7 +52,7 @@
         </div>
 
         <!-- Pipeline Modal -->
-        <div class="modal fade" id="modal-item" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal fade" id="modal-item" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -65,106 +65,134 @@
                         <form class="row g-3 custom-form">
                             <div class="col-md-12 {{ form.client.css_classes }}">
                                 <label for="inputAddress2" class="form-label">Client</label>
-                                {{ form.client }}
-                                <div class="btn-edit-add">
-                                <button type="button" class="btn" id="btn-edit-client">Edit</button>
-                                <button type="button" class="btn" id="btn-add-client">+</button>
+                                <div class="wrapeselectbtn">
+                                    {{ form.client }}
+                                    <div class="btn-edit-add">
+                                        <button type="button" class="btn" id="btn-edit-client">Edit</button>
+                                        <button type="button" class="btn" id="btn-add-client">+</button>
+                                    </div>
                                 </div>
-                                <ul id="id_error_{{ form.client.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.client.name }}" class="error_container" style="color: red;">
+                                </ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Project</label>
-                                {{ form.project }}
-                                <div class="btn-edit-add">
-                                <button type="button" class="btn" id="btn-edit-project">Edit</button>
-                                <button type="button" class="btn" id="btn-add-project">+</button>
+                                <div class="wrapeselectbtn">
+                                    {{ form.project }}
+                                    <div class="btn-edit-add">
+                                        <button type="button" class="btn" id="btn-edit-project">Edit</button>
+                                        <button type="button" class="btn" id="btn-add-project">+</button>
+                                    </div>
                                 </div>
-                                <ul id="id_error_{{ form.project.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.project.name }}" class="error_container" style="color: red;">
+                                </ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Estimated Price</label>
                                 {{ form.estimated_price }}
-                                <ul id="id_error_{{ form.estimated_price.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.estimated_price.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputAddress2" class="form-label">Confidence</label>
                                 {{ form.confidence }}
-                                <ul id="id_error_{{ form.confidence.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.confidence.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputAddress2" class="form-label">No of Payments</label>
                                 {{ form.no_of_payments }}
-                                <ul id="id_error_{{ form.no_of_payments.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.no_of_payments.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputAddress2" class="form-label">Expected Date of First Payment</label>
                                 {{ form.expected_date_of_first_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_first_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_first_payment.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_second_payment">
                                 <label for="inputState" class="form-label">Expected Date of Second Payment</label>
                                 {{ form.expected_date_of_second_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_second_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_second_payment.name }}"
+                                    class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_third_payment">
                                 <label for="inputState" class="form-label">Expected Date of Third Payment</label>
                                 {{ form.expected_date_of_third_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_third_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_third_payment.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_forth_payment">
-                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Fourth Payment</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Fourth
+                                    Payment</label>
                                 {{ form.expected_date_of_forth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_forth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_forth_payment.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_fifth_payment">
-                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Fifth Payment</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Fifth
+                                    Payment</label>
                                 {{ form.expected_date_of_fifth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_fifth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_fifth_payment.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_sixth_payment">
-                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Sixth Payment</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Sixth
+                                    Payment</label>
                                 {{ form.expected_date_of_sixth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_sixth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_sixth_payment.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_seventh_payment">
-                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Seventh Payment</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Seventh
+                                    Payment</label>
                                 {{ form.expected_date_of_seventh_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_seventh_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_seventh_payment.name }}"
+                                    class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_eighth_payment">
-                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Eighth Payment</label>
+                                <label for="exampleFormControlTextarea1" class="form-label">Expected Date of Eighth
+                                    Payment</label>
                                 {{ form.expected_date_of_eighth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_eighth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_eighth_payment.name }}"
+                                    class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_nineth_payment">
                                 <label for="inputState" class="form-label">Expected Date of Ninth Payment</label>
                                 {{ form.expected_date_of_nineth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_nineth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_nineth_payment.name }}"
+                                    class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_tenth_payment">
                                 <label for="inputState" class="form-label">Expected Date of Tenth Payment</label>
                                 {{ form.expected_date_of_tenth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_tenth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_tenth_payment.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_eleventh_payment">
                                 <label for="inputState" class="form-label">Expected Date of Eleventh Payment</label>
                                 {{ form.expected_date_of_eleventh_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_eleventh_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_eleventh_payment.name }}"
+                                    class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12 field-expected_date_of_twelfth_payment">
                                 <label for="inputState" class="form-label">Expected Date of Twelfth Payment</label>
                                 {{ form.expected_date_of_twelfth_payment }}
-                                <ul id="id_error_{{ form.expected_date_of_twelfth_payment.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.expected_date_of_twelfth_payment.name }}"
+                                    class="error_container" style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Total Value in Forecast</label>
                                 {{ form.total_value_in_forecast }}
-                                <ul id="id_error_{{ form.total_value_in_forecast.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.total_value_in_forecast.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Estimated Payment Amount</label>
                                 {{ form.estimated_payment_amount }}
-                                <ul id="id_error_{{ form.estimated_payment_amount.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ form.estimated_payment_amount.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Note</label>
@@ -198,7 +226,7 @@
         </div>
 
         <!-- Client Modal -->
-        <div class="modal fade" id="modal-client" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal fade" id="modal-client" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -209,66 +237,77 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 custom-form">
-                            <input type="hidden" value="-1" id="id_selected_client"/>
+                            <input type="hidden" value="-1" id="id_selected_client" />
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Client Name</label>
                                 {{ client_form.client_name }}
-                                <ul id="id_error_{{ client_form.client_name.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.client_name.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Address 1</label>
                                 {{ client_form.address1 }}
-                                <ul id="id_error_{{ client_form.address1.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.address1.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Address 2</label>
                                 {{ client_form.address2 }}
-                                <ul id="id_error_{{ client_form.address2.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.address2.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-6">
                                 <label for="inputAddress2" class="form-label">City</label>
                                 {{ client_form.city }}
-                                <ul id="id_error_{{ client_form.city.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.city.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-4">
                                 <label for="inputAddress2" class="form-label">State</label>
                                 {{ client_form.state }}
-                                <ul id="id_error_{{ client_form.state.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.state.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-2">
                                 <label for="inputAddress2" class="form-label">Zipcode</label>
                                 {{ client_form.zipcode }}
-                                <ul id="id_error_{{ client_form.zipcode.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.zipcode.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
 
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Client Type</label>
                                 {{ client_form.client_type }}
-                                <ul id="id_error_{{ client_form.client_type.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.client_type.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
 
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Client Status</label>
                                 {{ client_form.client_status }}
-                                <ul id="id_error_{{ client_form.client_status.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.client_status.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
 
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Billing Structure</label>
                                 {{ client_form.billing_structure }}
-                                <ul id="id_error_{{ client_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.billing_structure.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
 
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Billing Target</label>
                                 {{ client_form.billing_target }}
-                                <ul id="id_error_{{ client_form.billing_target.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.billing_target.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
 
                             <div class="col-md-12">
                                 <label for="inputState" class="form-label">Payment Terms</label>
                                 {{ client_form.payment_terms }}
-                                <ul id="id_error_{{ client_form.payment_terms.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ client_form.payment_terms.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                         </form>
                     </div>
@@ -281,7 +320,7 @@
         </div>
 
         <!-- Project Modal -->
-        <div class="modal fade" id="modal-project" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal fade" id="modal-project" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -292,21 +331,24 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 custom-form">
-                            <input type="hidden" value="-1" id="id_selected_project"/>
+                            <input type="hidden" value="-1" id="id_selected_project" />
                             <div class="col-12">
                                 <label for="inputClient" class="form-label">Client</label>
                                 {{ project_form.client }}
-                                <ul id="id_error_{{ project_form.client.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ project_form.client.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-12">
                                 <label for="inputProjectName" class="form-label">Project Name</label>
                                 {{ project_form.project_name }}
-                                <ul id="id_error_{{ project_form.project_name.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ project_form.project_name.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputProjectType" class="form-label">Project Type</label>
                                 {{ project_form.project_type }}
-                                <ul id="id_error_{{ project_form.project_type.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ project_form.project_type.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="exampleFormControlTextarea1" class="form-label">Start
@@ -325,12 +367,14 @@
                             <div class="col-12">
                                 <label for="inputProjectName" class="form-label">Project Budget</label>
                                 {{ project_form.project_budget }}
-                                <ul id="id_error_{{ project_add_form.project_budget.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ project_add_form.project_budget.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                             <div class="col-md-12">
                                 <label for="inputBillingStructure" class="form-label">Billing Structure</label>
                                 {{ project_form.billing_structure }}
-                                <ul id="id_error_{{ project_form.billing_structure.name }}" class="error_container" style="color: red;"></ul>
+                                <ul id="id_error_{{ project_form.billing_structure.name }}" class="error_container"
+                                    style="color: red;"></ul>
                             </div>
                         </form>
                     </div>

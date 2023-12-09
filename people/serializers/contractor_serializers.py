@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from people.serializers.utils import get_current_year, get_months
 from reports.models import ContractorMonthlyExpense
-from tools.models import Contractor
+from tools.models import Contractor, Project
 
 
 def get_contractor_expense(contractor):
@@ -105,7 +105,22 @@ class ContractorRetrieveSerializer(serializers.ModelSerializer):
         ]
 
 
+class ContactorProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = [
+            'id',
+            'project_name'
+        ]
+
+
 class ListContractorRetrieveSerializer(serializers.ModelSerializer):
+    projects = serializers.SerializerMethodField()
+
+    def get_projects(self, obj):
+        project_contractors_ids = obj.contractor_projects.all().values_list('project_id', flat=True)
+        projects = Project.objects.filter(id__in=project_contractors_ids)
+        return ContactorProjectSerializer(projects, many=True).data
 
     class Meta:
         model = Contractor
@@ -124,6 +139,7 @@ class ListContractorRetrieveSerializer(serializers.ModelSerializer):
             'contractor_estimated_weekly_salary',
             'is_active',
             'created_at',
+            'projects'
         ]
 
 

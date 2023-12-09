@@ -41,7 +41,7 @@ class ContractorListView(generics.ListAPIView):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        return Contractor.objects.all()
+        return Contractor.objects.all().prefetch_related('contractor_projects')
 
 
 class ContractorReportView(views.APIView):

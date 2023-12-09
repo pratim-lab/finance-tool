@@ -792,13 +792,13 @@ span.no {
     border-bottom: 1px solid #EBECED;
 }
 
-.selectpart {
+.selectpart, .selectpart-25, .selectpart-50, .selectpart-75, .selectpart-100 {
     background: #AEE9D1;
     border-radius: 100px;
     display: inline-flex;
 }
 
-.selectpart select {
+.selectpart select, .selectpart-25 select, .selectpart-50 select, .selectpart-75 select, .selectpart-100 select {
     background-color: transparent;
     font-size: 12px;
 }
@@ -1131,6 +1131,52 @@ a.editbtn {
     border: 0 !important;
 }
 
+/* Custom tooltip */
+
+a.tooltiplink {
+    position: relative;
+    text-decoration: none;
+    border: none!important;
+}
+
+a.tooltiplink:hover::after {
+    content: attr(data-title);
+    background-color: #fff;
+    color: #202223;
+    font-size: 14px;
+    line-height: 16px;
+    display: block;
+    position: absolute;
+    top: 28px;
+    left: 0;
+    z-index: 3;
+    width: 341px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(23, 24, 24, 0.12);
+    box-shadow: 0px 8px 20px -4px rgba(23, 24, 24, 0.12), 0px 3px 6px -3px rgba(23, 24, 24, 0.08);
+
+}
+/* Custom tooltip end */
+.wrapeselectbtn, .wrapeselectbtn .btn-edit-add, .staffbtnarea{
+    display: flex;
+    gap: 5px;
+}
+.wrapeselectbtn .btn-edit-add button{
+    color: #fff;
+}
+.staftab table tbody{
+    border-top: 1px solid #F0F0F0;
+}
+.staffbtnarea{
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 20px;
+}
+.staffbtnarea a.staffbtn{
+    font-size: 14px;
+    color: #202223;
+}
 @media only screen and (max-width: 1600px) {
     .listing-table table {
         width: 1400px;
@@ -1147,5 +1193,7 @@ a.editbtn {
     .modal-dialog {
         max-width: 600px;
     }
-
+    #editModalStaff .modal-dialog {
+        max-width: 373px;
+    }
 }

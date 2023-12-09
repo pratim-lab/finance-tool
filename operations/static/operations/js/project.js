@@ -23,9 +23,9 @@ $(document).ready(function () {
             }
         }
 
-        if (project.project_type=='Active') {
+        if (project.project_type === 'Active') {
             optionsHtml += `<td class="client_type"><span class="active">${project.project_type}</span></td>`;
-        }else{
+        } else{
             optionsHtml += `<td class="client_type"><span class="inactive">${project.project_type}</span></td>`;
         }
         return `
@@ -214,8 +214,8 @@ $(document).ready(function () {
             client_id: $('#id_client').val(),
             project_name: $('#id_project_name').val(),
             project_type: $('#id_project_type').val(),
-            start_date: $('#id_start_date').val(),
-            end_date: $('#id_end_date').val(),
+            start_date: $('#id_start_date').val() === '' ? null : $('#id_start_date').val(),
+            end_date: $('#id_end_date').val() === '' ? null : $('#id_end_date').val(),
             project_budget: $('#id_project_budget').val(),
             billing_structure: $('#id_billing_structure').val()
         };

@@ -276,3 +276,17 @@ class Pipeline(models.Model):
 
 	def __str__(self):
 		return '{}'.format(self.estimated_price)
+
+
+class ProjectContractor(models.Model):
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE, related_name='contractor_projects')
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+
+class ProjectEmployee(models.Model):
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
