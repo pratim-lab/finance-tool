@@ -115,8 +115,7 @@ class ListProjectRetrieveSerializer(serializers.ModelSerializer):
 
 
 class ProjectContractorSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    contractor_id = serializers.IntegerField()
+    id = serializers.IntegerField(source='contractor_id')
     contractor_name = serializers.SerializerMethodField()
     contractor_role = serializers.SerializerMethodField()
 
@@ -128,8 +127,7 @@ class ProjectContractorSerializer(serializers.Serializer):
 
 
 class ProjectEmployeeSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    employee_id = serializers.IntegerField()
+    id = serializers.IntegerField(source='employee_id')
     employee_name = serializers.SerializerMethodField()
     project_role = serializers.SerializerMethodField()
 

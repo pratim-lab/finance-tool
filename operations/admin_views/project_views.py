@@ -5,9 +5,11 @@ from rest_framework.response import Response
 
 from operations.admin_views.utils import AdminPagination
 from operations.models import Project
-from operations.serializers.project_serializers import ProjectAddSerializer, ProjectRetrieveSerializer, \
-    ListProjectRetrieveSerializer, ProjectContractorSerializer, ProjectEmployeeSerializer, ProjectStaffUpdateSerializer, \
-    EmployeeSerializer, ContractorSerializer
+from operations.serializers.project_serializers import (ProjectAddSerializer, ProjectRetrieveSerializer,
+                                                        ListProjectRetrieveSerializer, ProjectContractorSerializer,
+                                                        ProjectEmployeeSerializer,
+                                                        ProjectStaffUpdateSerializer, EmployeeSerializer,
+                                                        ContractorSerializer)
 from tools.models import ProjectContractor, ProjectEmployee, Contractor, Employee
 
 

@@ -45,6 +45,8 @@ class ContractorListView(generics.ListAPIView):
 
 
 class ContractorReportView(views.APIView):
+    permission_classes = [IsAdminUser, ]
+
     def get(self, request):
         year, months, contractors, rows, monthly_total_items, total = get_contractor_calc()
         resp_data = {
@@ -56,4 +58,3 @@ class ContractorReportView(views.APIView):
             'contractors': ExpenseContractorSerializer(contractors, many=True).data
         }
         return Response(resp_data)
-

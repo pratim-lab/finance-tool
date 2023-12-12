@@ -554,13 +554,13 @@ span.inactive {
 /*  background: url(../images/reset.svg) 0 0 no-repeat;*/
 /*}*/
 
-.btn-sec > .save {
+.btn-sec>.save {
     background: url(../images/tick.svg) 0 0 no-repeat;
     border: none;
     text-indent: -3000px;
 }
 
-.btn-sec > .reset {
+.btn-sec>.reset {
     background: url(../images/reset.svg) 0 0 no-repeat;
     border: none;
     text-indent: -3000px;
@@ -626,7 +626,7 @@ span.inactive {
     box-shadow: 0px 4px 19px 0px rgba(0, 0, 0, 0.15);
 }
 
-.btn-check:focus + .btn-secondary,
+.btn-check:focus+.btn-secondary,
 .btn-secondary:focus {
     box-shadow: none !important;
 }
@@ -711,12 +711,14 @@ span.inactive {
     color: #212B36;
 }
 
-.left-info .listing li a:hover, .left-info .listing li.active a {
+.left-info .listing li a:hover,
+.left-info .listing li.active a {
     background-color: #e8d1f360;
     color: #9E3FFD;
 }
 
-.left-info .listing li a:hover:before, .left-info .listing li.active a:before {
+.left-info .listing li a:hover:before,
+.left-info .listing li.active a:before {
     position: absolute;
     width: 3px;
     height: 100%;
@@ -792,13 +794,21 @@ span.no {
     border-bottom: 1px solid #EBECED;
 }
 
-.selectpart, .selectpart-25, .selectpart-50, .selectpart-75, .selectpart-100 {
+.selectpart,
+.selectpart-25,
+.selectpart-50,
+.selectpart-75,
+.selectpart-100 {
     background: #AEE9D1;
     border-radius: 100px;
     display: inline-flex;
 }
 
-.selectpart select, .selectpart-25 select, .selectpart-50 select, .selectpart-75 select, .selectpart-100 select {
+.selectpart select,
+.selectpart-25 select,
+.selectpart-50 select,
+.selectpart-75 select,
+.selectpart-100 select {
     background-color: transparent;
     font-size: 12px;
 }
@@ -887,7 +897,8 @@ span.no {
     align-items: center;
 }
 
-.listing-table .staftab table, .listing-table .business-table table {
+.listing-table .staftab table,
+.listing-table .business-table table {
     width: 100%;
 }
 
@@ -901,12 +912,14 @@ span.no {
     display: block;
 }
 
-.business-table tbody tr:first-child, .business-table tbody tr:first-child th {
+.business-table tbody tr:first-child,
+.business-table tbody tr:first-child th {
     background-color: #F3F3F3;
     font-weight: 700;
 }
 
-.listing-table .business-table table tr td, .listing-table .business-table table tr th {
+.listing-table .business-table table tr td,
+.listing-table .business-table table tr th {
     padding: 10px;
 }
 
@@ -919,7 +932,8 @@ span.no {
     margin-bottom: 12px;
 }
 
-.top-part select, a.editbtn {
+.top-part select,
+a.editbtn {
     border: 1px solid #BABFC3;
     box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
     padding: 5px;
@@ -1008,7 +1022,9 @@ a.editbtn {
     padding: 23px;
 }
 
-.project-top, .project-top-lft, .project-top-rgt {
+.project-top,
+.project-top-lft,
+.project-top-rgt {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1018,7 +1034,8 @@ a.editbtn {
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
-    line-height: 24px; /* 120% */
+    line-height: 24px;
+    /* 120% */
     padding: 0 16px;
     color: #202223;
 }
@@ -1028,7 +1045,8 @@ a.editbtn {
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px; /* 142.857% */
+    line-height: 20px;
+    /* 142.857% */
     color: #6D7175;
 }
 
@@ -1074,7 +1092,8 @@ a.editbtn {
     border: 1px solid #ECECEC;
 }
 
-.btn-white, .btn-white:hover {
+.btn-white,
+.btn-white:hover {
     background-color: #fff !important;
     color: #6F7782;
     font-weight: 500;
@@ -1136,7 +1155,7 @@ a.editbtn {
 a.tooltiplink {
     position: relative;
     text-decoration: none;
-    border: none!important;
+    border: none !important;
 }
 
 a.tooltiplink:hover::after {
@@ -1157,26 +1176,116 @@ a.tooltiplink:hover::after {
     box-shadow: 0px 8px 20px -4px rgba(23, 24, 24, 0.12), 0px 3px 6px -3px rgba(23, 24, 24, 0.08);
 
 }
+
 /* Custom tooltip end */
-.wrapeselectbtn, .wrapeselectbtn .btn-edit-add, .staffbtnarea{
+.wrapeselectbtn,
+.wrapeselectbtn .btn-edit-add,
+.staffbtnarea {
     display: flex;
     gap: 5px;
 }
-.wrapeselectbtn .btn-edit-add button{
+
+.wrapeselectbtn .btn-edit-add button {
     color: #fff;
 }
-.staftab table tbody{
+
+.staftab table tbody {
     border-top: 1px solid #F0F0F0;
 }
-.staffbtnarea{
+
+.staffbtnarea {
     align-items: center;
     justify-content: space-between;
     margin-right: 20px;
 }
-.staffbtnarea a.staffbtn{
+
+.staffbtnarea a.staffbtn {
     font-size: 14px;
     color: #202223;
 }
+#editModalStaff .modal-content{
+    overflow: hidden;
+}
+.selectbox {
+    padding: 5px 8px 5px 12px;
+    border-radius: 4px;
+    border: 1px solid #BABFC3;
+    background: #FFF;
+    font-size: 14px;
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+}
+.selectbox a, .selectdrop a{
+    display: block;
+    font-weight: 500;
+    color: #202223;
+}
+.selectbox a img, .selectdrop a img{
+    float: right;
+}
+.selectdrop{
+    border-radius: 4px;
+    background: #FFF;
+    box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.12);
+    padding: 11px 10px;
+    font-size: 14px;
+    position: relative;
+    display: none;
+}
+.selectdrop .sub-menu a img{
+    float: left;
+}
+.selectdrop .sub-menu{
+    position: absolute;
+    top: 0;
+    left: 355px;
+    border-radius: 4px;
+    background: #FFF;
+    box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.12);
+    padding: 11px 10px;
+    width: 100%;
+    transition: all ease 0.5s;
+    -webkit-transition: all ease 0.5s;
+}
+.selectdrop ul li:hover .sub-menu{
+    transition: all ease 0.5s;
+    -webkit-transition: all ease 0.5s;
+}
+.selectdrop .sub-menu li a{
+    padding-left: 20px!important;
+}
+.selectdrop .sub-menu li a{
+    font-weight: 400;
+}
+.selectdrop li a{
+    padding: 5px 0;
+}
+.selectdrop .sub-menu li a:hover, .selectdrop li a:hover{
+    background: #F4F4F4;
+}
+.selectdrop .sub-menu li:first-child a{
+    padding-left: 0!important;
+}
+.selectdrop .sub-menu li:first-child a{
+  font-weight: 600;
+}
+.containers{
+    font-size: 14px;
+    color: #373737;
+    margin-top: 10px;
+}
+.containers button{
+    float: right;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+}
+
+.selected-staff {
+    background-color: #BBBFC3;
+    border-radius: 5px;
+}
+
 @media only screen and (max-width: 1600px) {
     .listing-table table {
         width: 1400px;
@@ -1193,6 +1302,7 @@ a.tooltiplink:hover::after {
     .modal-dialog {
         max-width: 600px;
     }
+
     #editModalStaff .modal-dialog {
         max-width: 373px;
     }

@@ -2,9 +2,12 @@ $(document).ready(function () {
 
     let project = null;
     let staffData = null;
+    let availableStaff = null;
+    let addedContractors = [];
+    let addedEmployees = [];
 
     function goBack() {
-        window.history.back();
+        window.location.href = '/custom-admin/operations/project/';
     }
 
     function updateProjectData() {
@@ -46,6 +49,7 @@ $(document).ready(function () {
     function updateEmployeeTable() {
         if (staffData.employees.length === 0) {
             $('#employee-table').hide();
+            $('#employee-table').find('tbody').html('');
             $('#id_no_employees').show();
         } else {
             let rowsHtml = '';
@@ -59,15 +63,43 @@ $(document).ready(function () {
                             <td>${staffData.employees[i].project_role}</td>
                         </tr>`;
             }
+            $('#employee-table').find('tbody').html(rowsHtml);
             $('#employee-table').show();
             $('#id_no_employees').hide();
-            $('#employee-table').find('tbody').html(rowsHtml);
         }
+    }
+
+    function updateSelectedStaffHtml() {
+        let staffHtml = '';
+        for (let i = 0; i < addedContractors.length; i++) {
+            staffHtml += `<div class="row">
+                                <div class="col-sm-4">${addedContractors[i].contractor_name}</div>
+                                <div class="col-sm-6">Contractor</div>
+                                <div class="col-sm-2">
+                                    <button class="btn-remove-contractor" 
+                                        data-contractor-id="${addedContractors[i].id}">×
+                                    </button>
+                                </div>
+                            </div>`;
+        }
+        for (let i = 0; i < addedEmployees.length; i++) {
+            staffHtml += `<div class="row">
+                                <div class="col-sm-4">${addedEmployees[i].employee_name}</div>
+                                <div class="col-sm-6">Full time employee</div>
+                                <div class="col-sm-2">
+                                    <button class="btn-remove-employee" 
+                                        data-employee-id="${addedEmployees[i].id}">×
+                                    </button>
+                                </div>
+                            </div>`;
+        }
+        $('#staff-container').html(staffHtml);
     }
 
     function updateContractorsTable() {
         if (staffData.contractors.length === 0) {
             $('#contractor-table').hide();
+            $('#contractor-table').find('tbody').html('');
             $('#id_no_contractors').show();
         } else {
             let rowsHtml = '';
@@ -82,14 +114,15 @@ $(document).ready(function () {
                         </tr>`;
             }
             $('#id_no_contractors').hide();
-            $('#contractor-table').show();
             $('#contractor-table').find('tbody').html(rowsHtml);
+            $('#contractor-table').show();
         }
     }
 
     function updateStaffTables() {
         updateContractorsTable();
         updateEmployeeTable();
+        updateSelectedStaffHtml();
     }
 
     async function getProjectStaff() {
@@ -98,8 +131,167 @@ $(document).ready(function () {
         updateStaffTables();
     }
 
+    function updateAvailableStaffList() {
+        const contractors = availableStaff.contractors;
+        const employees = availableStaff.employees;
+        let contractorsLisHtml = `<li><a class="back" href="#"><img
+                                            src="/static/custom_admin_assets/images/chevron-left_minor-1.svg"
+                                            alt=""/>
+                                            Contractors</a>
+                                        </li>`;
+        for (let i = 0; i < contractors.length; i++) {
+            contractorsLisHtml += `<li><a href="#" data-contractor-id="${contractors[i].id}" 
+                                        class="btn-select-contractor">${contractors[i].contractor_name}</a>
+                                   </li>`;
+        }
+        let employeeLisHtml = `<li><a class="back" href="#"><img
+                                        src="/static/custom_admin_assets/images/chevron-left_minor-1.svg"
+                                        alt=""/>
+                                        Full time employees</a>
+                                    </li>`;
+        for (let i = 0; i < employees.length; i++) {
+            employeeLisHtml += `<li><a href="#" data-employee-id="${employees[i].id}" 
+                                    class="btn-select-employee">${employees[i].employee_name}</a>
+                                </li>`;
+        }
+        $('#available-contractors-ul').html(contractorsLisHtml);
+        $('#available-employees-ul').html(employeeLisHtml);
+    }
+
+    async function getAvailableStaff() {
+        const response = await apiClient.get('/custom-admin/operations/project/api/' + projectId + '/available-staff');
+        availableStaff = response.data;
+    }
 
     getProjectStaff();
+
+    $('#btn-add-staff').click(async function (e) {
+        e.preventDefault();
+        await getAvailableStaff();
+        updateAvailableStaffList();
+        addedEmployees = staffData.employees.slice(0);
+        addedContractors = staffData.contractors.slice(0);
+        updateSelectedStaffHtml();
+        $('.selectdrop').hide();
+        $('#editModalStaff').find('.sub-menu').css("left", "355px");
+        $('#editModalStaff').modal('show');
+    });
+
+    // Staff pop up
+
+    function getSelectedContractor(contractorId) {
+        for(let i = 0; i < availableStaff.contractors.length; i++) {
+            if (contractorId == availableStaff.contractors[i].id) {
+                return availableStaff.contractors[i];
+            }
+        }
+    }
+
+    function addToContractors(selectedContractor) {
+        let found = false;
+        for(let i = 0; i < addedContractors.length; i++) {
+            if(addedContractors[i].id == selectedContractor.id) {
+                addedContractors.splice(i, 1);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            addedContractors.push(selectedContractor);
+        }
+    }
+
+    $('#editModalStaff').on('click', '.btn-remove-contractor', function () {
+        const contractorId = $(this).attr('data-contractor-id');
+        for (let i = 0; i < addedContractors.length; i++) {
+            if (contractorId == addedContractors[i].id) {
+                addedContractors.splice(i, 1);
+                break;
+            }
+        }
+        updateSelectedStaffHtml();
+    });
+
+    $('#editModalStaff').on('click', '.btn-select-contractor', function () {
+        const contractorId = $(this).attr('data-contractor-id');
+        $(this).parent().toggleClass('selected-staff');
+        const selectedContractor = getSelectedContractor(contractorId);
+        addToContractors(selectedContractor);
+        updateSelectedStaffHtml();
+    });
+
+    function getSelectedEmployee(employeeId) {
+        for (let i = 0; i < availableStaff.employees.length; i++) {
+            if(employeeId == availableStaff.employees[i].id) {
+                return availableStaff.employees[i];
+            }
+        }
+    }
+
+    function addToEmployees(selectedEmployee) {
+        let found = false;
+        for (let i = 0; i < addedEmployees.length; i++) {
+            if(addedEmployees[i].id == selectedEmployee.id) {
+                addedEmployees.splice(i, 1);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            addedEmployees.push(selectedEmployee);
+        }
+    }
+
+    $('#editModalStaff').on('click', '.btn-remove-employee', function () {
+        const employeeId = $(this).attr('data-employee-id');
+        console.log(employeeId);
+        for (let i = 0; i < addedEmployees.length; i++) {
+            if (employeeId == addedEmployees[i].id) {
+                addedEmployees.splice(i, 1);
+                break;
+            }
+        }
+        updateSelectedStaffHtml();
+    });
+
+    $('#editModalStaff').on('click', '.btn-select-employee', function () {
+        const employeeId = $(this).attr('data-employee-id');
+        $(this).parent().toggleClass('selected-staff');
+        const selectedEmployee = getSelectedEmployee(employeeId);
+        addToEmployees(selectedEmployee);
+        updateSelectedStaffHtml();
+    });
+    
+    $('#editModalStaff').on('click', '#btn-update-project-staff', async function () {
+        const contractorIds = addedContractors.map(c => c.id);
+        const employeeIds = addedEmployees.map(e => e.id);
+        const data = {
+            contractor_ids: contractorIds,
+            employee_ids: employeeIds
+        };
+        const resp = await apiClient.patch('/custom-admin/operations/project/api/' + projectId + '/staff/', data);
+        staffData.employees = resp.data.employees;
+        staffData.contractors = resp.data.contractors;
+        updateStaffTables();
+        $('#editModalStaff').modal('hide');
+    });
+    
+     $('#editModalStaff').on('click', '.staff-category-li a', function (e) {
+         e.preventDefault();
+         $(this).parent().find('.sub-menu').css("left", "0");
+     });
+
+    $('#editModalStaff').on('click', '.selectbox', function (e) {
+        e.preventDefault();
+        $('.selectdrop').slideToggle();
+    });
+
+    $('#editModalStaff').on('click', '.selectdrop .sub-menu li:first-child a', function (e) {
+        e.preventDefault();
+        $('#editModalStaff').find('.sub-menu').css("left", "355px");
+    });
+
+    // Staff pop up end
 
     // End Project staff
 

@@ -28,7 +28,7 @@
                                     Actions
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="">View Invoice</a>
+{#                                    <a class="dropdown-item" href="">View Invoice</a>#}
                                     <a class="dropdown-item" id="btn-project-edit" href="">Edit Project</a>
                                     <a class="dropdown-item" id="btn-project-delete" href="">Remove Project</a>
                                 </div>
@@ -56,10 +56,13 @@
                     </div>
 
                     <div class="listing-table">
-                        <ul id="tabs-nav" class="new-tabs">
-                            <li class="active"><a href="#tab1">Project finances</a></li>
-                            <li><a href="#tab2">Staff</a></li>
-                        </ul>
+                        <div class="staffbtnarea">
+                            <ul id="tabs-nav" class="new-tabs">
+                                <li class="active"><a href="#tab1">Project finances</a></li>
+                                <li><a href="#tab2">Staff</a></li>
+                            </ul>
+                            <a href="#" class="staffbtn" id="btn-add-staff">+ Add staff</a>
+                        </div>
                         <div id="tabs-content">
                             <div id="tab1" class="tab-content">
                                 <div class="table-responsive">
@@ -92,7 +95,8 @@
                             <div id="tab2" class="tab-content">
                                 <p>Contractors</p>
                                 <div class="table-responsive">
-                                    <p id="id_no_contractors" style="text-align: center; display: none;">No contractors to show</p>
+                                    <p id="id_no_contractors" style="text-align: center; display: none;">No contractors
+                                        to show</p>
                                     <table class="table" id="contractor-table">
                                         <thead>
                                         <tr>
@@ -101,20 +105,21 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-{#                                            <tr>#}
-{#                                                <th>#}
-{#                                                    <a href="#" class="dropmenu">#}
-{#                                                        <img src="assets/images/menudot.svg" alt=""/>#}
-{#                                                    </a>Zoetis#}
-{#                                                </th>#}
-{#                                                <td>Developer</td>#}
-{#                                            </tr>#}
+                                        {#                                            <tr>#}
+                                        {#                                                <th>#}
+                                        {#                                                    <a href="#" class="dropmenu">#}
+                                        {#                                                        <img src="assets/images/menudot.svg" alt=""/>#}
+                                        {#                                                    </a>Zoetis#}
+                                        {#                                                </th>#}
+                                        {#                                                <td>Developer</td>#}
+                                        {#                                            </tr>#}
                                         </tbody>
                                     </table>
                                 </div>
                                 <p>Full time employees</p>
                                 <div class="table-responsive">
-                                    <p id="id_no_employees" style="text-align: center; display: none;">No employees to show</p
+                                    <p id="id_no_employees" style="text-align: center; display: none;">No employees to
+                                        show</p>
                                     <table class="table" id="employee-table">
                                         <thead>
                                         <tr>
@@ -123,21 +128,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-{#                                            <tr>#}
-{#                                                <th>#}
-{#                                                    <a href="#" class="dropmenu">#}
-{#                                                        <img src="assets/images/menudot.svg" alt=""/>#}
-{#                                                    </a>Zoetis#}
-{#                                                </th>#}
-{#                                                <td>Developer</td>#}
-{#                                            </tr>#}
+                                        {#                                            <tr>#}
+                                        {#                                                <th>#}
+                                        {#                                                    <a href="#" class="dropmenu">#}
+                                        {#                                                        <img src="assets/images/menudot.svg" alt=""/>#}
+                                        {#                                                    </a>Zoetis#}
+                                        {#                                                </th>#}
+                                        {#                                                <td>Developer</td>#}
+                                        {#                                            </tr>#}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -258,7 +262,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add new project</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add staff to project</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -331,6 +335,85 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                     data-dismiss="modal">
                                 Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Modal -->
+            <div class="modal fade" id="editModalStaff" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add staff to project</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="staffselect">
+                                <label>Select staff</label>
+                                <div class="staffselectarea">
+                                    <div class="selectbox"><a href="#">Select <img
+                                            src="{% static 'custom_admin_assets/images/caret-down_minor.svg' %}"
+                                            alt=""/></a></div>
+                                    <div class="selectdrop">
+                                        <ul class="staff-category-ul">
+                                            <li class="staff-category-li"><a href="#">Full time employees <img
+                                                    src="{% static 'custom_admin_assets/images/chevron-left_minor.svg' %}"
+                                                    alt=""/></a>
+                                                <ul class="sub-menu" id="available-employees-ul">
+{#                                                    <li><a class="back" href="#"><img#}
+{#                                                            src="{% static 'custom_admin_assets/images/chevron-left_minor-1.svg' %}"#}
+{#                                                            alt=""/>#}
+{#                                                        Contractors1</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+                                                </ul>
+                                            </li>
+                                            <li class="staff-category-li"><a href="#">Contractors <img
+                                                    src="{% static 'custom_admin_assets/images/chevron-left_minor.svg' %}"
+                                                    alt=""/></a>
+                                                <ul class="sub-menu" id="available-contractors-ul">
+{#                                                    <li><a class="back" href="#"><img#}
+{#                                                            src="{% static 'custom_admin_assets/images/chevron-left_minor-1.svg' %}"#}
+{#                                                            alt=""/>#}
+{#                                                        Contractors2</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+{#                                                    <li><a href="#">Contractors</a></li>#}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="containers" id="staff-container">
+{#                                    <div class="row">#}
+{#                                        <div class="col-sm-4">Jane Doe</div>#}
+{#                                        <div class="col-sm-6">Contractor</div>#}
+{#                                        <div class="col-sm-2">#}
+{#                                            <button>×</button>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-sm-4">Jane Doe</div>#}
+{#                                        <div class="col-sm-6">Full time employee</div>#}
+{#                                        <div class="col-sm-2">#}
+{#                                            <button>×</button>#}
+{#                                        </div>#}
+{#                                    </div>#}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                            <button type="button" class="btn btn-primary" id="btn-update-project-staff">Add to project
                             </button>
                         </div>
                     </div>

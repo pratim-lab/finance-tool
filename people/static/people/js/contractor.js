@@ -30,7 +30,6 @@ $(document).ready(function () {
             }
         }
         expenseData.monthlyTotal = monthlyTotal;
-
     }
 
     let expenseData = {};
@@ -62,29 +61,29 @@ $(document).ready(function () {
                     }
                     tds += '' +
                         '<td class="' + updatedClass + '">' +
-                            '<span class="clickarea">$<span class="val">' + col.expense + '</span></span>' +
-                            '<div class="input-area" style="display: none;">' +
-                                '<input type="text" class="txt_modified" placeholder="$' + col.expense +
-                                '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
-                                '<div class="btn-sec">' +
-                                    '<input type="button" class="reset" value="reset"/>' +
-                                    '<a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>' +
-                                    '<input type="button" class="save" value="submit"/>' +
-                                '</div>' +
-                            '</div>' +
+                        '<span class="clickarea">$<span class="val">' + col.expense + '</span></span>' +
+                        '<div class="input-area" style="display: none;">' +
+                        '<input type="text" class="txt_modified" placeholder="$' + col.expense +
+                        '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
+                        '<div class="btn-sec">' +
+                        '<input type="button" class="reset" value="reset"/>' +
+                        '<a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>' +
+                        '<input type="button" class="save" value="submit"/>' +
+                        '</div>' +
+                        '</div>' +
                         '</td>';
-                expenseRowTotal += Number(col.expense);
+                    expenseRowTotal += Number(col.expense);
                 }
-                
+
             }
             tds += '' +
-            '<td>' +
+                '<td>' +
                 '<span>$</span>' +
-                '<span id="total">'+ expenseRowTotal +'</span>' +
-            '</td>';
+                '<span id="total">' + expenseRowTotal + '</span>' +
+                '</td>';
 
             const row = '<tr>' + tds + '</tr>';
-            
+
             rows += row;
         }
         let lastRowTds = '';
@@ -99,8 +98,8 @@ $(document).ready(function () {
         }
         lastRowTds += '' +
             '<td>' +
-                '<span>$</span>' +
-                '<span id="total">' + expenseData.total + '</span>' +
+            '<span>$</span>' +
+            '<span id="total">' + expenseData.total + '</span>' +
             '</td>';
         const lastRow = '<tr>' + lastRowTds + '</tr>';
         return lastRow + rows;
@@ -266,6 +265,19 @@ $(document).ready(function () {
         }
     }
 
+    function getProjectsLisHtml() {
+        const projects = data.results[selectedIndex].projects;
+        let listHtml = '';
+        for (let i = 0; i < projects.length; i++) {
+            listHtml += `<li class="flexarea">
+                            <span>${projects[i].project_name}</span> 
+                            <a href="/custom-admin/operations/project/${projects[i].id}/change/">View on projects page
+                            </a>
+                         </li>`;
+        }
+        return listHtml;
+    }
+
     function updateDetails() {
         const sc = data.results[selectedIndex];
         const address = `${sc.address1}, ${sc.city}, ${sc.zipcode}, ${sc.state}`;
@@ -275,10 +287,17 @@ $(document).ready(function () {
         $('#id_contractor_details').find('#id_address').html(address);
         $('#id_contractor_details').find('#id_cost_rate').html(sc.contractor_hourly_salary);
         $('#id_contractor_details').find('#id_hours').html(sc.contractor_expected_weekly_hours);
+        if (sc.projects.length === 0) {
+            $('#projects-ul').hide();
+            $('#no-projects').show();
+        } else {
+            $('#projects-ul').html(getProjectsLisHtml());
+            $('#no-projects').hide();
+            $('#projects-ul').show();
+        }
         if (sc.is_active) {
             $('#id_contractor_details').find('.active').show();
-        }
-        else {
+        } else {
             $('#id_contractor_details').find('.active').hide();
         }
     }
@@ -416,7 +435,8 @@ $(document).ready(function () {
             .then(() => {
                 $('#id_copy_clipboard').html('Copied to clipboard');
             })
-            .catch((err) => {});
+            .catch((err) => {
+            });
     });
 
     $('#btn_copy_address').on('mouseout', function (e) {
@@ -455,25 +475,23 @@ $(document).ready(function () {
         $('.input-area').hide();
     });
 
+    function calculateNet() {
+        const sal = parseFloat($("#id_contractor_hourly_salary").val());
+        const hours = parseFloat($("#id_contractor_expected_weekly_hours").val());
+        if (!isNaN(sal) && !isNaN(hours)) {
+            const netsal = sal * hours;
+            $("#id_contractor_estimated_weekly_salary").val(netsal);
+        } else {
+            $("#id_contractor_estimated_weekly_salary").val('');
+        }
+    }
 
     $("#id_contractor_hourly_salary").blur(function () {
-        calculate_net();
+        calculateNet();
     });
 
     $("#id_contractor_expected_weekly_hours").blur(function () {
-        calculate_net();
+        calculateNet();
     });
 
 });
-
-function calculate_net() {
-    sal = parseFloat($("#id_contractor_hourly_salary").val());
-    hours = parseFloat($("#id_contractor_expected_weekly_hours").val());
-    if (!isNaN(sal) && !isNaN(hours)) {
-        netsal = sal * hours;
-        $("#id_contractor_estimated_weekly_salary").val(netsal);
-    } else {
-        $("#id_contractor_estimated_weekly_salary").val('');
-    }
-
-}
