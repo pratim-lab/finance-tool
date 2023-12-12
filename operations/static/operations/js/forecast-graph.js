@@ -71,10 +71,22 @@ $(document).ready(function () {
                 plugins: {
                     title: {
                         display: true,
+                        position: "top",
+                        align: "start",
                         text: 'Monthly budget tracker',
                         padding: {
-                            top: 10,
-                            bottom: 10
+                            left: 15,
+                            bottom: 15
+                        }
+                    },
+                    legend: {
+                        position: "top",
+                        align: "start",
+                        labels: {
+                            usePointStyle: true
+                        },
+                        padding: {
+                            bottom: 15
                         }
                     }
                 }
