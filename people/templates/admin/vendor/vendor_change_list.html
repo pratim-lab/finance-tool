@@ -1,0 +1,106 @@
+{% extends "admin/custom_base.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+    <section>
+        <article>
+            <div class="top-head">
+                <h1>Vendors</h1>
+                <button id="btn-vendor-modal-show" class="btn btn-primary">Add Vendor</button>
+            </div>
+            <div class="client-area">
+                <div class="listing-table">
+                    <div id="tabs-content">
+                        <div id="tab1" class="tab-content">
+                            <div class="table-responsive">
+                                <p id="id_no_content" style="text-align: center; display: none;">No vendors to show</p>
+                                <table class="table" id="id_vendor_table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Vendor Name</th>
+                                        <th scope="col">Vendor Description</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <ul class="pagination justify-content-center" id="id_pagination_container">
+                                {#                            <li class="page-item">#}
+                                {#                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" id="id_btn_previous_page">#}
+                                {#                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>#}
+                                {#                                </a>#}
+                                {#                            </li>#}
+                                {#                            <li class="page-item"><a class="page-link" href="#">1</a></li>#}
+                                {#                            <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+                                {#                            <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+                                {#                            <li class="page-item">#}
+                                {#                                <a class="page-link" href="#" id="id_btn_next_page">#}
+                                {#                                    <i class="fa fa-chevron-right" aria-hidden="true"></i>#}
+                                {#                                </a>#}
+                                {#                            </li>#}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modal-vendor" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add new vendor</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="row g-3 custom-form">
+                                <input type="hidden" value="-1" id="id_selected_vendor"/>
+                                <div class="col-12">
+                                    <label for="inputVendorName" class="form-label">Vendor Name</label>
+                                    {{ vendor_add_form.vendor_name }}
+                                    <ul id="id_error_{{ vendor_add_form.vendor_name.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputClient" class="form-label">Description</label>
+                                    {{ vendor_add_form.vendor_description }}
+                                    <ul id="id_error_{{ vendor_add_form.vendor_description.name }}" class="error_container"
+                                        style="color: red;"></ul>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+                            <button type="button" id="id_btn_vendor_add" class="btn btn-primary">Add vendor</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure to delete?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-confirm-delete">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    data-dismiss="modal">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+    </section>
+    <input type="hidden" id="id_csrf_token" value="{{ csrf_token }}">
+    <script src="{% static 'custom_admin_assets/js/httpClient.js' %}"></script>
+    <script src="{% static 'people/js/vendor.js' %}"></script>
+{% endblock %}

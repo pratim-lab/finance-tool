@@ -7,3 +7,7 @@ class ContractorAdminPagination(PageNumberPagination):
 
 class StaffAdminPagination(PageNumberPagination):
     page_size = 8
+
+
+class VendorAdminPagination(PageNumberPagination):
+    page_size = 8

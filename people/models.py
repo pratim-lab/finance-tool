@@ -1,4 +1,4 @@
-from tools.models import Contractor as ToolsContractor, Employee as ToolsEmployee
+from tools.models import Contractor as ToolsContractor, Employee as ToolsEmployee, Vendor as ToolsVendor
 
 
 class Contractor(ToolsContractor):
@@ -7,5 +7,10 @@ class Contractor(ToolsContractor):
 
 
 class Staff(ToolsEmployee):
+    class Meta:
+        proxy = True
+
+
+class Vendor(ToolsVendor):
     class Meta:
         proxy = True

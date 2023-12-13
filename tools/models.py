@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class ClientType(models.Model):
 	name = models.CharField(max_length=100)
@@ -124,6 +124,26 @@ class Contractor(models.Model):
 
 	def __str__(self):
 		return '{}'.format(self.contractor_name)
+
+
+class Vendor(models.Model):
+	vendor_name = models.CharField(max_length=255)
+	vendor_description = models.TextField(null=True, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return '{}'.format(self.vendor_name)
+
+
+class VendorExpense(models.Model):
+	vendor = models.ForeignKey(Vendor, null=False, on_delete=models.CASCADE)
+	year = models.IntegerField(null=False)
+	month = models.IntegerField(null=False, validators=[MinValueValidator(1), MaxValueValidator(12)])
+	expense = models.DecimalField(null=False, max_digits=10, decimal_places=2)
+
+	def __str__(self):
+		return '{} - {} - {}: {}'.format(self.vendor.vendor_name, self.year, self.month, self.expense)
 
 
 class ExpenseType(models.Model):
