@@ -8,10 +8,39 @@
                 <h1>Vendors</h1>
                 <button id="btn-vendor-modal-show" class="btn btn-primary">Add Vendor</button>
             </div>
+            <div class="listing-table mid-menu">
+                <ul id="tabs-nav" class="new-tabs status-ul">
+                    <li class="active"><a href="#tab1">Costs</a></li>
+                    <li id="id_btn_tab_information"><a href="#tab2">Information</a></li>
+                </ul>
+            </div>
             <div class="client-area">
                 <div class="listing-table">
                     <div id="tabs-content">
                         <div id="tab1" class="tab-content">
+                            <div class="table-responsive listing-table-contact">
+                                <table class="table" id="vendor-expense-table">
+                                    <thead id="id_thead">
+                                        <th scope="col"></th>
+                                        <th scope="col">Jan</th>
+                                        <th scope="col">Feb</th>
+                                        <th scope="col">Mar</th>
+                                        <th scope="col">Apr</th>
+                                        <th scope="col">May</th>
+                                        <th scope="col">Jun</th>
+                                        <th scope="col">Jul</th>
+                                        <th scope="col">Aug</th>
+                                        <th scope="col">Sep</th>
+                                        <th scope="col">Oct</th>
+                                        <th scope="col">Nov</th>
+                                        <th scope="col">Dec</th>
+                                        <th>EOY Projection</th>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tab2" class="tab-content">
                             <div class="table-responsive">
                                 <p id="id_no_content" style="text-align: center; display: none;">No vendors to show</p>
                                 <table class="table" id="id_vendor_table">

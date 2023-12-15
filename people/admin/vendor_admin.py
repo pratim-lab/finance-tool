@@ -3,7 +3,7 @@ from django.urls import path
 from django.template.response import TemplateResponse
 from djangoproject.admin import custom_admin
 from people.admin_views.vendor_views import VendorCreateAdminAPIView, VendorListView, \
-    VendorRetrieveUpdateDestroyAdminAPIView
+    VendorRetrieveUpdateDestroyAdminAPIView, VendorReportView, VendorExpenseUpdateView
 from people.forms.vendor_forms import VendorForm
 from people.models import Vendor
 
@@ -15,7 +15,8 @@ class VendorAdmin(admin.ModelAdmin):
         urls = [
             path("api/add", self.admin_site.admin_view(VendorCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(VendorListView.as_view())),
-            # path("api/report", self.admin_site.admin_view(EmployeeReportView.as_view())),
+            path("api/expense/edit", self.admin_site.admin_view(VendorExpenseUpdateView.as_view())),
+            path("api/report", self.admin_site.admin_view(VendorReportView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(VendorRetrieveUpdateDestroyAdminAPIView.as_view())),
             path("", self.admin_site.admin_view(self.vendors), name='%s_%s_changelist' % info)
         ]
