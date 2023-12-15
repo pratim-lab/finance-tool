@@ -9,6 +9,7 @@ class Contractor(ToolsContractor):
 class Staff(ToolsEmployee):
     class Meta:
         proxy = True
+        verbose_name_plural = 'Staff'
 
 
 class Vendor(ToolsVendor):

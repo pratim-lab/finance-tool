@@ -237,7 +237,7 @@ $(document).ready(function () {
         $('#id_contractor_hourly_salary').val('');
         $('#id_contractor_expected_weekly_hours').val('');
         $('#id_contractor_estimated_weekly_salary').val('');
-        $('#id_is_active').prop('checked', false);
+        $('#id_is_active').prop('checked', true);
     }
 
     function fillUpForm(contractor) {

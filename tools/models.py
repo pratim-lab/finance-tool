@@ -14,6 +14,7 @@ class Client(models.Model):
 	CLIENT_STATUSES = (
 		('AC', 'Active Client'),
 		('PC', 'Prospective Client'),
+		('IC', 'Inactive Client')
 	)
 	BILLING_STRUCTURE = (
 		('R', 'Retainer'),

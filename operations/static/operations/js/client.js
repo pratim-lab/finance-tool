@@ -31,7 +31,7 @@ $(document).ready(function () {
         if (projects.length === 0) {
             return '<span>-----</span>';
         } else if (projects.length === 1) {
-            return '<a href="' + '/admin/tools/project/' + projects[0].id + '/change/' + '" target="_blank">' + projects[0].project_name + '</a>';
+            return '<a href="' + '/custom-admin/operations/project/' + projects[0].id + '/change/' + '" target="_blank">' + projects[0].project_name + '</a>';
         } else {
             let optionsHtml = '<option value="-1" selected>' + projects.length + '</option>';
             for (let i = 0; i < projects.length; i++) {
