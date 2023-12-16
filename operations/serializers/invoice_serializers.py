@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils import dateformat
 from tools.models import Client, Project, Invoice
 
+
 class InvoiceClientSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -10,6 +11,7 @@ class InvoiceClientSerializer(serializers.ModelSerializer):
             'id',
             'client_name'
         ]
+
 
 class InvoiceProjectSerializer(serializers.ModelSerializer):
 
@@ -40,6 +42,8 @@ class ChoiceField(serializers.ChoiceField):
 
 
 class InvoiceAddSerializer(serializers.ModelSerializer):
+    client_obj = InvoiceClientSerializer(read_only=True, source='client')
+    project_obj = InvoiceProjectSerializer(read_only=True, source='project')
     
     class Meta:
         model = Invoice
@@ -47,6 +51,8 @@ class InvoiceAddSerializer(serializers.ModelSerializer):
             'id',
             'client',
             'project',
+            'client_obj',
+            'project_obj',
             'invoice_date',
             'invoice_number',
             'invoice_status',

@@ -192,6 +192,9 @@ $(document).ready(function () {
             },
         });
         if (resp.status === 201) {
+            resp.data.project = resp.data.project_obj;
+            resp.data.client = resp.data.client_obj;
+            console.log(resp.data);
             invoiceData.results = [resp.data, ...invoiceData.results];
             updateTable();
             $('#modal-invoice').modal('hide');
@@ -209,6 +212,8 @@ $(document).ready(function () {
             },
         });
         if (resp.status === 200) {
+            resp.data.project = resp.data.project_obj;
+            resp.data.client = resp.data.client_obj;
             for (let i = 0; i < invoiceData.results.length; i++) {
                 if (invoiceData.results[i].id === resp.data.id) {
                     invoiceData.results[i] = resp.data;
@@ -225,8 +230,8 @@ $(document).ready(function () {
     $('#id_btn_invoice_add').on('click', function () {
         $('.error_container').html('');
         let data = {
-            client_id: $('#id_client').val(),
-            project_id: $('#id_project').val(),
+            client: $('#id_client').val(),
+            project: $('#id_project').val(),
             invoice_date: $('#id_invoice_date').val(),
             invoice_number: $('#id_invoice_number').val(),
             invoice_amount: $('#id_invoice_amount').val(),
@@ -238,7 +243,6 @@ $(document).ready(function () {
         } else if (currentOperation === 'edit') {
             editInvoice(data);
         }
-
     });
 
     $('tbody').on('click', '.btn-invoice-edit', async function (e) {
