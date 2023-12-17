@@ -59,12 +59,19 @@ $(document).ready(function () {
         `;
     }
 
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
+
     function getItemColumnsHtml(item, index) {
         let toolTipHtml = ``;
-        if(item.note === null || item.note === '') {
+        if (item.note === null || item.note === '') {
             toolTipHtml = `<a href="">`;
-        }
-        else {
+        } else {
             toolTipHtml = `<a href="" class="tooltiplink" data-title="${item.note}">`;
         }
         return `
@@ -87,17 +94,17 @@ $(document).ready(function () {
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M13 10C13 10.5523 13.4477 11 14 11C14.5523 11 15 10.5523 15 10C15 9.44772 14.5523 9 14 9C13.4477 9 13 9.44772 13 10ZM9 10C9 10.5523 9.44772 11 10 11C10.5523 11 11 10.5523 11 10C11 9.44772 10.5523 9 10 9C9.44772 9 9 9.44772 9 10ZM5 10C5 10.5523 5.44772 11 6 11C6.55228 11 7 10.5523 7 10C7 9.44772 6.55228 9 6 9C5.44772 9 5 9.44772 5 10ZM10 2C5.589 2 2 5.589 2 10C2 11.504 2.425 12.908 3.15 14.111L2.081 16.606C1.92 16.981 2.004 17.418 2.293 17.707C2.484 17.898 2.74 18 3 18C3.133 18 3.268 17.974 3.395 17.919L5.889 16.85C7.092 17.575 8.496 18 10 18C14.411 18 18 14.411 18 10C18 5.589 14.411 2 10 2Z" fill="#8C9196"/>
                 </svg>
-                </a>${ item.project ? item.project.project_name: ''}
+                </a>${item.project ? item.project.project_name : ''}
             </td>
-            <td>${item.estimated_price}</td>
+            <td>${getFormattedAmount(item.estimated_price)}</td>
             <td>${getConfidenceSelectHtml(item)}</td>
             <td>${item.no_of_payments}</td>
-            <td class="fte_billable_rate">${item.total_value_in_forecast}</td>
-            <td class="benefits">${item.estimated_payment_amount}</td>
+            <td class="fte_billable_rate">${getFormattedAmount(item.total_value_in_forecast)}</td>
+            <td class="benefits">${getFormattedAmount(item.estimated_payment_amount)}</td>
         `;
     }
 
-    function getItemRowHtml(item, index){
+    function getItemRowHtml(item, index) {
         return '<tr>' + getItemColumnsHtml(item, index) + '</tr>';
     }
 
@@ -113,8 +120,7 @@ $(document).ready(function () {
         if (itemData.results.length === 0) {
             $('#id_no_content').show();
             $('#id_item_table').hide();
-        }
-        else {
+        } else {
             const itemsRowsHtml = getItemRowsHtml();
             $('#id_no_content').hide();
             $('#id_item_table').show();
@@ -124,7 +130,7 @@ $(document).ready(function () {
 
     function updatePagination() {
         const numberOfPages = Math.ceil(itemData.count / currentSelection.pageSize);
-        if(numberOfPages <= 1) {
+        if (numberOfPages <= 1) {
             $('#id_pagination_container').html('');
             return;
         }
@@ -205,7 +211,7 @@ $(document).ready(function () {
         $('#id_estimated_payment_amount').val('');
         $('#id_note').val('');
         hidePaymentDates();
-        let  no_of_payments = $("#id_no_of_payments").val();
+        let no_of_payments = $("#id_no_of_payments").val();
         date_of_payments(no_of_payments);
     }
 
@@ -233,7 +239,7 @@ $(document).ready(function () {
         $('#id_estimated_payment_amount').val(item.estimated_payment_amount);
         $('#id_note').val(item.note);
         hidePaymentDates();
-        let  no_of_payments = $("#id_no_of_payments").val();
+        let no_of_payments = $("#id_no_of_payments").val();
         date_of_payments(no_of_payments);
     }
 
@@ -293,7 +299,7 @@ $(document).ready(function () {
         }
     }
 
-    function getExpectedPaymentDate($element, paymentNo,  noOfPayments) {
+    function getExpectedPaymentDate($element, paymentNo, noOfPayments) {
         return ($element.val() === '' || noOfPayments < paymentNo) ? null : $element.val();
     }
 
@@ -562,9 +568,10 @@ $(document).ready(function () {
         $(".field-expected_date_of_eleventh_payment").hide();
         $(".field-expected_date_of_twelfth_payment").hide();
     }
+
     hidePaymentDates();
 
-    let  no_of_payments = $("#id_no_of_payments").val();
+    let no_of_payments = $("#id_no_of_payments").val();
     date_of_payments(no_of_payments);
 
 
@@ -711,7 +718,7 @@ $(document).ready(function () {
     function repopulateClientSelectOptions(newClient) {
         const optionHtml = `<option value="${newClient.id}">${newClient.client_name}</option>`;
         $pipelineClient.append(optionHtml);
-        setTimeout(function (){
+        setTimeout(function () {
             const size = $pipelineClient.find("option").length;
             $pipelineClient.prop('selectedIndex', (size - 1));
         }, 200);
@@ -775,7 +782,7 @@ $(document).ready(function () {
         }
     });
 
-    $clientModal.on('hide.bs.modal', function(){
+    $clientModal.on('hide.bs.modal', function () {
         $pipelineModal.modal('show');
     });
 
@@ -805,7 +812,7 @@ $(document).ready(function () {
     }
 
     function fillUpProjectForm(project) {
-        setTimeout(function (){
+        setTimeout(function () {
             $projectClient.val(project.client_id);
         }, 50);
         $projectProjectName.val(project.project_name);
@@ -864,8 +871,7 @@ $(document).ready(function () {
                 const size = $pipelineProject.find("option").length;
                 $pipelineProject.prop('selectedIndex', (size - 1));
             }, 200);
-        }
-        else {
+        } else {
             // $pipelineProject.empty();
         }
     }
@@ -923,7 +929,7 @@ $(document).ready(function () {
         }
     });
 
-    $projectModal.on('hide.bs.modal', function(){
+    $projectModal.on('hide.bs.modal', function () {
         $pipelineModal.modal('show');
     });
 
@@ -931,9 +937,9 @@ $(document).ready(function () {
 
 });
 
-function do_change_confidence(itemId,itemVal){
-    $("#selectpart-"+itemId).removeClass();
-    $("#selectpart-"+itemId).addClass("selectpart-"+itemVal);
+function do_change_confidence(itemId, itemVal) {
+    $("#selectpart-" + itemId).removeClass();
+    $("#selectpart-" + itemId).addClass("selectpart-" + itemVal);
     $.ajax({
         url: "/tools/update_confidence_of_pipeline",
         type: "get",

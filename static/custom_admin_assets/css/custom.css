@@ -1286,6 +1286,18 @@ a.tooltiplink:hover::after {
     border-radius: 5px;
 }
 
+#forecast-table tr.trow:nth-child(1) {
+    background-color: #f1f2ff;
+}
+
+#forecast-table tr.trow:nth-child(2) {
+    background-color: #f2fbf1;
+}
+
+#forecast-table tr.trow:nth-child(3) {
+    background-color: #fff1f1;
+}
+
 @media only screen and (max-width: 1600px) {
     .listing-table table {
         width: 1400px;

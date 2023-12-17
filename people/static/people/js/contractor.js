@@ -33,6 +33,14 @@ $(document).ready(function () {
     }
 
     let expenseData = {};
+    
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
 
     function getThRow() {
         let thTds = '<th scope="col"></th>';
@@ -61,7 +69,7 @@ $(document).ready(function () {
                     }
                     tds += '' +
                         '<td class="' + updatedClass + '">' +
-                        '<span class="clickarea">$<span class="val">' + col.expense + '</span></span>' +
+                        '<span class="clickarea"><span class="val">' + getFormattedAmount(col.expense) + '</span></span>' +
                         '<div class="input-area" style="display: none;">' +
                         '<input type="text" class="txt_modified" placeholder="$' + col.expense +
                         '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
@@ -78,8 +86,8 @@ $(document).ready(function () {
             }
             tds += '' +
                 '<td>' +
-                '<span>$</span>' +
-                '<span id="total">' + expenseRowTotal + '</span>' +
+                '<span></span>' +
+                '<span id="total">' + getFormattedAmount(expenseRowTotal) + '</span>' +
                 '</td>';
 
             const row = '<tr>' + tds + '</tr>';
@@ -92,14 +100,14 @@ $(document).ready(function () {
         for (let i = 1; i <= 12; i++) {
             lastRowTds += '' +
                 '<td>' +
-                '<span>$</span>' +
-                '<span>' + expenseData.monthlyTotal[expenseData.year][i] + '</span>' +
+                '<span></span>' +
+                '<span>' + getFormattedAmount(expenseData.monthlyTotal[expenseData.year][i]) + '</span>' +
                 '</td>';
         }
         lastRowTds += '' +
             '<td>' +
-            '<span>$</span>' +
-            '<span id="total">' + expenseData.total + '</span>' +
+            '<span></span>' +
+            '<span id="total">' + getFormattedAmount(expenseData.total) + '</span>' +
             '</td>';
         const lastRow = '<tr>' + lastRowTds + '</tr>';
         return lastRow + rows;
@@ -124,7 +132,7 @@ $(document).ready(function () {
 
     $('#id_tbody').on('click', '.clickarea', function () {
         $(this).hide();
-        $(this).parent().find('.txt_modified').val($(this).find('.val').html());
+        // $(this).parent().find('.txt_modified').val($(this).find('.val').html());
         $(this).parent().find('.input-area').show();
     });
 
@@ -285,7 +293,7 @@ $(document).ready(function () {
         $('#id_contractor_details').find('.namearea').html(sc.contractor_name);
         $('#id_contractor_details').find('.namearea2').html(sc.contractor_role);
         $('#id_contractor_details').find('#id_address').html(address);
-        $('#id_contractor_details').find('#id_cost_rate').html(sc.contractor_hourly_salary);
+        $('#id_contractor_details').find('#id_cost_rate').html(getFormattedAmount(sc.contractor_hourly_salary));
         $('#id_contractor_details').find('#id_hours').html(sc.contractor_expected_weekly_hours);
         if (sc.projects.length === 0) {
             $('#projects-ul').hide();

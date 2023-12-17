@@ -6,6 +6,14 @@ $(document).ready(function () {
     // Expense Report ----------------------------
 
     let expenseReportData = {};
+    
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
 
     function getThRow() {
         console.log(expenseReportData);
@@ -33,7 +41,7 @@ $(document).ready(function () {
                     }
                     tds += '' +
                         '<td class="' + updatedClass + '">' +
-                            '<span class="clickarea">$<span class="val">' + col.expense + '</span></span>' +
+                            '<span class="clickarea"><span class="val">' + getFormattedAmount(col.expense) + '</span></span>' +
                             '<div class="input-area" style="display: none;">' +
                                 '<input type="text" class="txt_modified" placeholder="$' + col.expense +
                                 '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
@@ -50,8 +58,8 @@ $(document).ready(function () {
             }
             tds += '' +
             '<td>' +
-                '<span>$</span>' +
-                '<span id="total">'+ expenseRowTotal +'</span>' +
+                '<span></span>' +
+                '<span id="total">'+ getFormattedAmount(expenseRowTotal) +'</span>' +
             '</td>';
             const row = '<tr>' + tds + '</tr>';
             rows += row;
@@ -61,15 +69,15 @@ $(document).ready(function () {
         for (const prop in expenseReportData.monthly_total_expenses) {
             firstRowTds += '' +
                 '<td>' +
-                    '<span><b>$</b></span>' +
-                    '<span><b>' + expenseReportData.monthly_total_expenses[prop] + '</b></span>' +
+                    '<span><b></b></span>' +
+                    '<span><b>' + getFormattedAmount(expenseReportData.monthly_total_expenses[prop]) + '</b></span>' +
                 '</td>';
         }
 
         firstRowTds += '' +
             '<td>' +
-                '<span><b>$</b></span>' +
-                '<span id="total"><b>' + expenseReportData.total + '</b></span>' +
+                '<span><b></b></span>' +
+                '<span id="total"><b>' + getFormattedAmount(expenseReportData.total) + '</b></span>' +
             '</td>';
         const firstRow = '<tr>' + firstRowTds + '</tr>';
         return firstRow + rows;
@@ -93,7 +101,7 @@ $(document).ready(function () {
 
     $('#id_expense_report_tbody').on('click', '.clickarea', function () {
         $(this).hide();
-        $(this).parent().find('.txt_modified').val($(this).find('.val').html());
+        // $(this).parent().find('.txt_modified').val($(this).find('.val').html());
         $(this).parent().find('.input-area').show();
     });
 

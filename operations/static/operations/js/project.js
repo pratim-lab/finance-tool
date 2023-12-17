@@ -13,6 +13,14 @@ $(document).ready(function () {
         currentPageNumber: 1,
         results: []
     };
+    
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
 
     function getProjectColumnsHtml(project) {
         let optionsHtml = '';
@@ -46,7 +54,7 @@ $(document).ready(function () {
             ${optionsHtml}
             <td class="client_status">${project.start_date}</td>
             <td class="client_status">${project.end_date}</td>
-            <td class="projected_revenue">${project.project_budget}</td>`;
+            <td class="projected_revenue">${getFormattedAmount(project.project_budget)}</td>`;
     }
 
     function getProjectRowHtml(project) {

@@ -30,6 +30,14 @@ $(document).ready(function () {
         }
     }
 
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
+
     function getInvoiceColumnsHtml(invoice) {
         let optionsHtml = '';
         if(invoice.invoice_status == 'Sent'){
@@ -59,7 +67,7 @@ $(document).ready(function () {
             '<td class="annual_revenue">' + invoice.invoice_number + '</td>' +
             optionsHtml +
             '<td class="annual_revenue">' + invoice.expected_date_of_payment + '</td>' +
-            '<td class="projected_revenue">' + invoice.invoice_amount + '</td>';
+            '<td class="projected_revenue">' + getFormattedAmount(invoice.invoice_amount) + '</td>';
         return selectHtml;
     }
 

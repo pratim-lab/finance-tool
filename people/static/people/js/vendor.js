@@ -10,18 +10,26 @@ $(document).ready(function () {
     }
 
     let monthlyTotalExpenses = null;
+    
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
 
     function getMonthlyTotalExpensesRowHtml() {
         let totalExpense = 0;
         let monthlyTotalExpensesRowHtml = `<th><b>Total</b></th>`;
         for (let i = 0; i < monthlyTotalExpenses.length; i++) {
             totalExpense += monthlyTotalExpenses[i];
-            monthlyTotalExpensesRowHtml += `<td><b>$${monthlyTotalExpenses[i]}</b></td>`;
+            monthlyTotalExpensesRowHtml += `<td><b>${getFormattedAmount(monthlyTotalExpenses[i])}</b></td>`;
         }
         return `
             <tr>
                 ${monthlyTotalExpensesRowHtml}
-                <td><b>$${totalExpense}</b></td>
+                <td><b>${getFormattedAmount(totalExpense)}</b></td>
             </tr>
         `;
     }
@@ -36,7 +44,7 @@ $(document).ready(function () {
             let updatedClass = expense.updated ? 'updated' : '';
             rowHtml += `
                 <td class="${updatedClass}">
-                    <span class="clickarea">$<span class="val">${expense.value}</span></span>
+                    <span class="clickarea"><span class="val">${getFormattedAmount(expense.value)}</span></span>
                     <div class="input-area" style="display: none;">
                         <input type="text" class="txt_modified" placeholder="${expense.value}"
                             value="${expense.value}" data-vendor-index="${index}" data-expense-index="${i}"/>
@@ -53,7 +61,7 @@ $(document).ready(function () {
         return `
             <tr>
                 ${rowHtml}
-                <td>$${totalExpense}</td>
+                <td>${getFormattedAmount(totalExpense)}</td>
             </tr>`;
     }
 
@@ -84,7 +92,7 @@ $(document).ready(function () {
 
     $vendorExpenseTable.on('click', '.clickarea', function () {
         $(this).hide();
-        $(this).parent().find('.txt_modified').val($(this).find('.val').html());
+        // $(this).parent().find('.txt_modified').val($(this).find('.val').html());
         $(this).parent().find('.input-area').show();
     });
 

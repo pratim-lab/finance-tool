@@ -102,7 +102,7 @@ $(document).ready(function () {
             tds += `<td>${amounts[i]}</td>`;
         }
         tds += `<td>${totalAmount}</td>`;
-        return `<tr>${tds}</tr>`;
+        return `<tr class="trow">${tds}</tr>`;
     }
 
     function updateForecastTable() {

@@ -6,6 +6,14 @@ $(document).ready(function () {
     // Cost tab
     let reportData = {};
 
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
+
     function calculateMonthlyTotal() {
         const year = reportData.year;
         let monthlyTotal = {};
@@ -59,7 +67,7 @@ $(document).ready(function () {
                     }
                     tds += `
                         <td class="${updatedClass}">
-                            <span class="clickarea">$<span class="val">${col.expense}</span></span>
+                            <span class="clickarea"><span class="val">${getFormattedAmount(col.expense)}</span></span>
                             <div class="input-area" style="display: none;">
                                 <input type="text" class="txt_modified" placeholder="$${col.expense}" value="${col.expense}" data-i="${i}" data-j="${j}"/>
                                 <div class="btn-sec">
@@ -80,15 +88,15 @@ $(document).ready(function () {
         for (let i = 1; i <= 12; i++) {
             lastRowTds += `
                 <td>
-                    <span>$</span>
-                    <span>${reportData.monthlyTotal[reportData.year][i]}</span>
+                    <span></span>
+                    <span>${getFormattedAmount(reportData.monthlyTotal[reportData.year][i])}</span>
                 </td>
                 `;
         }
         lastRowTds += '' +
         '<td>' +
-            '<span>$</span>' +
-            '<span id="total">' + reportData.total + '</span>' +
+            '<span></span>' +
+            '<span id="total">' + getFormattedAmount(reportData.total) + '</span>' +
         '</td>';
         const lastRow = `<tr>${lastRowTds}</tr>`;
         return lastRow + rows;
@@ -114,7 +122,7 @@ $(document).ready(function () {
 
     $('#id_tbody').on('click', '.clickarea', function () {
         $(this).hide();
-        $(this).parent().find('.txt_modified').val($(this).find('.val').html());
+        // $(this).parent().find('.txt_modified').val($(this).find('.val').html());
         $(this).parent().find('.input-area').show();
     });
 
@@ -205,7 +213,7 @@ $(document).ready(function () {
                 </div>
             </th>
             <td class="project_role">${item.project_role}</td>
-            <td class="employee_monthly_salary">${item.employee_monthly_salary}</td>
+            <td class="employee_monthly_salary">${getFormattedAmount(item.employee_monthly_salary)}</td>
             <td class="fte_billable_rate">${item.fte_billable_rate}</td>
             <td class="benefits">${item.benefits}</td>
         `;
