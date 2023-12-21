@@ -22,7 +22,6 @@ $(document).ready(function () {
             "11": 0,
             "12": 0
         };
-
         for (let i = 0; i < expenseData.rows.length; i++) {
             for (let j = 0; j < expenseData.rows[i].length; j++) {
                 const monthStr = expenseData.rows[i][j].month;
@@ -67,48 +66,45 @@ $(document).ready(function () {
                     if (col.updated) {
                         updatedClass = 'updated';
                     }
-                    tds += '' +
-                        '<td class="' + updatedClass + '">' +
-                        '<span class="clickarea"><span class="val">' + getFormattedAmount(col.expense) + '</span></span>' +
-                        '<div class="input-area" style="display: none;">' +
-                        '<input type="text" class="txt_modified" placeholder="$' + col.expense +
-                        '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
-                        '<div class="btn-sec">' +
-                        '<input type="button" class="reset" value="reset"/>' +
-                        '<a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>' +
-                        '<input type="button" class="save" value="submit"/>' +
-                        '</div>' +
-                        '</div>' +
-                        '</td>';
+                    tds += `
+                        <td class="${updatedClass}">
+                            <span class="clickarea"><span class="val">${getFormattedAmount(col.expense)}</span></span>
+                            <div class="input-area" style="display: none;">
+                                <input type="text" class="txt_modified" placeholder="${col.expense}"
+                                    value="${col.expense}" data-i="${i}" data-j="${j}"/>
+                                <div class="btn-sec">
+                                    <input type="button" class="reset" value="reset"/>
+                                    <a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>
+                                    <input type="button" class="save" value="submit"/>
+                                </div>
+                            </div>
+                        </td>`;
                     expenseRowTotal += Number(col.expense);
                 }
-
             }
-            tds += '' +
-                '<td>' +
-                '<span></span>' +
-                '<span id="total">' + getFormattedAmount(expenseRowTotal) + '</span>' +
-                '</td>';
-
+            tds += `
+                <td>
+                    <span></span>
+                    <span id="total">${getFormattedAmount(expenseRowTotal)}</span>
+                </td>`;
             const row = '<tr>' + tds + '</tr>';
-
             rows += row;
         }
         let lastRowTds = '';
 
         lastRowTds += '<th><div class="totals">Total</div></th>';
         for (let i = 1; i <= 12; i++) {
-            lastRowTds += '' +
-                '<td>' +
-                '<span></span>' +
-                '<span>' + getFormattedAmount(expenseData.monthlyTotal[expenseData.year][i]) + '</span>' +
-                '</td>';
+            lastRowTds += `
+                <td>
+                    <span></span>
+                    <span>${getFormattedAmount(expenseData.monthlyTotal[expenseData.year][i])}</span>
+                </td>`;
         }
-        lastRowTds += '' +
-            '<td>' +
-            '<span></span>' +
-            '<span id="total">' + getFormattedAmount(expenseData.total) + '</span>' +
-            '</td>';
+        lastRowTds += `
+            <td>
+                <span></span>
+                <span id="total">${getFormattedAmount(expenseData.total)}</span>
+            </td>`;
         const lastRow = '<tr>' + lastRowTds + '</tr>';
         return lastRow + rows;
     }
@@ -155,15 +151,37 @@ $(document).ready(function () {
         updateTable();
     });
 
+    $('#id_tbody').on('click', '.reset', async function () {
+        let $txtField = $(this).parents('.input-area').find('.txt_modified');
+        const i = $txtField.attr('data-i');
+        const j = $txtField.attr('data-j');
+        if(!expenseData.rows[i][j].updated) {
+            $(this).parents('.input-area').hide();
+            $(this).parents('td').find('.clickarea').show();
+            return;
+        }
+        let requestData = {
+            contractor_id: expenseData.rows[i][0].id,
+            year: expenseData.rows[i][j].year,
+            month: expenseData.rows[i][j].month
+        };
+        const resp = await apiClient.post('/admin/reports/contractormonthlyexpensereport/reset', requestData);
+        expenseData.rows[i][j].expense = resp.data.expense;
+        expenseData.rows[i][j].updated = false;
+        $(this).parents('.input-area').hide();
+        $(this).parents('td').find('.clickarea').show();
+        updateTable();
+    });
+
     $('#id_tbody').on('click', '.cross', function () {
         $(this).parents('.input-area').hide();
         $(this).parents('td').find('.clickarea').show();
     });
 
-    $('#id_tbody').on('click', '.reset', function () {
-        $(this).parents('.input-area').hide();
-        $(this).parents('td').find('.clickarea').show();
-    });
+    // $('#id_tbody').on('click', '.reset', function () {
+    //     $(this).parents('.input-area').hide();
+    //     $(this).parents('td').find('.clickarea').show();
+    // });
 
     function updateExpenseTable(updatedContractor) {
         let matched = false;

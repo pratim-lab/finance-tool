@@ -44,6 +44,13 @@ class ChoiceField(serializers.ChoiceField):
 class InvoiceAddSerializer(serializers.ModelSerializer):
     client_obj = InvoiceClientSerializer(read_only=True, source='client')
     project_obj = InvoiceProjectSerializer(read_only=True, source='project')
+
+    def validate(self, data):
+        if data['invoice_status'] == "S" or data['invoice_status'] == "P":
+            if data['invoice_number'] is None or data['invoice_number'] == "":
+                raise serializers.ValidationError({
+                    "invoice_number": "This field is required when invoice status is Sent or Paid"})
+        return data
     
     class Meta:
         model = Invoice

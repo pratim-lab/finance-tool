@@ -6,7 +6,8 @@ from rest_framework.response import Response
 
 from people.admin_views.utils import VendorAdminPagination
 from people.models import Vendor
-from people.serializers.vendor_serializers import VendorAddSerializer, VendorExpenseEditSerializer
+from people.serializers.vendor_serializers import VendorAddSerializer, VendorExpenseEditSerializer, \
+    VendorExpenseResetSerializer
 from tools.models import VendorExpense
 
 
@@ -131,4 +132,26 @@ class VendorExpenseUpdateView(views.APIView):
         return Response({
             'vendor_id': vendor.id,
             'expense': vendor_expense.expense
+        })
+
+
+class VendorExpenseResetView(views.APIView):
+    permission_classes = [IsAdminUser, ]
+
+    def post(self, request):
+        serializer = VendorExpenseResetSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        data = serializer.validated_data
+        vendor = Vendor.objects.filter(id=data['vendor_id']).first()
+        if vendor is None:
+            return Response({'message': 'Vendor is not found'}, status=status.HTTP_400_BAD_REQUEST)
+        VendorExpense.objects.filter(
+            vendor=vendor,
+            year=data['year'],
+            month=data['month']
+        ).delete()
+        return Response({
+            'vendor_id': vendor.id,
+            'expense': 0
         })

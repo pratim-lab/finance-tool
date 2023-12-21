@@ -103,7 +103,6 @@ $(document).ready(function () {
     }
 
     function updateReportTable() {
-        console.log(reportData);
         calculateMonthlyTotal();
         const thRow = getThRow();
         const rows = getRows();
@@ -150,9 +149,26 @@ $(document).ready(function () {
         $(this).parents('td').find('.clickarea').show();
     });
 
-    $('#id_tbody').on('click', '.reset', function () {
+    $('#id_tbody').on('click', '.reset', async function () {
+        let $txtField = $(this).parents('.input-area').find('.txt_modified');
+        const i = $txtField.attr('data-i');
+        const j = $txtField.attr('data-j');
+        if(!reportData.rows[i][j].updated) {
+            $(this).parents('.input-area').hide();
+            $(this).parents('td').find('.clickarea').show();
+            return;
+        }
+        let requestData = {
+            employee_id: reportData.rows[i][0].id,
+            year: reportData.rows[i][j].year,
+            month: reportData.rows[i][j].month
+        };
+        const resp = await apiClient.post('/admin/reports/employeemonthlyexpensereport/reset', requestData);
+        reportData.rows[i][j].expense = resp.data.expense;
+        reportData.rows[i][j].updated = false;
         $(this).parents('.input-area').hide();
         $(this).parents('td').find('.clickarea').show();
+        updateReportTable();
     });
 
     function updateReportTable2(updatedItem) {

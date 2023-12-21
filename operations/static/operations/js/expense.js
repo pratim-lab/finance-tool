@@ -16,7 +16,6 @@ $(document).ready(function () {
     }
 
     function getThRow() {
-        console.log(expenseReportData);
         let thTds = '<th scope="col"></th>';
         for (let i = 0; i < expenseReportData.months.length; i++) {
             thTds += '<th scope="col">' + expenseReportData.months[i].value.substring(0, 3) + '</th>';
@@ -39,47 +38,48 @@ $(document).ready(function () {
                     if (col.updated) {
                         updatedClass = 'updated';
                     }
-                    tds += '' +
-                        '<td class="' + updatedClass + '">' +
-                            '<span class="clickarea"><span class="val">' + getFormattedAmount(col.expense) + '</span></span>' +
-                            '<div class="input-area" style="display: none;">' +
-                                '<input type="text" class="txt_modified" placeholder="$' + col.expense +
-                                '" value="' + col.expense + '" data-i="' + i + '" data-j="' + j + '"/>' +
-                                '<div class="btn-sec">' +
-                                    '<input type="button" class="reset" value="reset"/>' +
-                                    '<a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg" alt=""/></a>' +
-                                    '<input type="button" class="save" value="submit"/>' +
-                                '</div>' +
-                            '</div>' +
-                        '</td>';
+                    tds += `
+                        <td class="${updatedClass}">
+                            <span class="clickarea"><span class="val">${getFormattedAmount(col.expense)}</span></span>
+                            <div class="input-area" style="display: none;">
+                                <input type="text" class="txt_modified" placeholder="$${col.expense}"
+                                    value="${col.expense}" data-i="${i}" data-j="${j}"/>
+                                <div class="btn-sec">
+                                    <input type="button" class="reset" value="reset"/>
+                                    <a href="#" class="cross"><img src="/static/custom_admin_assets/images/cross.svg"
+                                        alt=""/></a>
+                                    <input type="button" class="save" value="submit"/>
+                                </div>
+                            </div>
+                        </td>`;
                     expenseRowTotal += Number(col.expense);
                 }
 
             }
-            tds += '' +
-            '<td>' +
-                '<span></span>' +
-                '<span id="total">'+ getFormattedAmount(expenseRowTotal) +'</span>' +
-            '</td>';
+            tds += `
+                <td>
+                    <span></span>
+                    <span id="total">${getFormattedAmount(expenseRowTotal)}</span>
+                </td>`;
             const row = '<tr>' + tds + '</tr>';
             rows += row;
         }
         let firstRowTds = '';
         firstRowTds += '<th><div class="totals"><b>Total</b></div></th>';
         for (const prop in expenseReportData.monthly_total_expenses) {
-            firstRowTds += '' +
-                '<td>' +
-                    '<span><b></b></span>' +
-                    '<span><b>' + getFormattedAmount(expenseReportData.monthly_total_expenses[prop]) + '</b></span>' +
-                '</td>';
+            firstRowTds += `
+                <td>
+                    <span><b></b></span>
+                    <span><b>${getFormattedAmount(expenseReportData.monthly_total_expenses[prop])}</b></span>
+                </td>`;
         }
 
-        firstRowTds += '' +
-            '<td>' +
-                '<span><b></b></span>' +
-                '<span id="total"><b>' + getFormattedAmount(expenseReportData.total) + '</b></span>' +
-            '</td>';
-        const firstRow = '<tr>' + firstRowTds + '</tr>';
+        firstRowTds += `
+            <td>
+                <span><b></b></span>
+                <span id="total"><b>${getFormattedAmount(expenseReportData.total)}</b></span>
+            </td>`;
+        const firstRow = `<tr>${firstRowTds}</tr>`;
         return firstRow + rows;
     }
 
@@ -129,11 +129,27 @@ $(document).ready(function () {
         $(this).parents('td').find('.clickarea').show();
     });
 
-    $('#id_expense_report_tbody').on('click', '.reset', function () {
+    $('#id_expense_report_tbody').on('click', '.reset', async function () {
+        let $txtField = $(this).parents('.input-area').find('.txt_modified');
+        const i = $txtField.attr('data-i');
+        const j = $txtField.attr('data-j');
+        if(!expenseReportData.rows[i][j].updated) {
+            $(this).parents('.input-area').hide();
+            $(this).parents('td').find('.clickarea').show();
+            return;
+        }
+        let requestData = {
+            expense_type_id: expenseReportData.rows[i][0].id,
+            year: expenseReportData.rows[i][j].year,
+            month: expenseReportData.rows[i][j].month
+        };
+        const resp = await apiClient.post('/admin/reports/typetotalexpensereport/reset', requestData);
+        // expenseReportData.rows[i][j].expense = Number(value);
+        expenseReportData.rows[i][j].updated = false;
         $(this).parents('.input-area').hide();
         $(this).parents('td').find('.clickarea').show();
+        fetchExpenseReportData();
     });
-    
 
     // End Expense Report ------------------------
 
@@ -186,7 +202,7 @@ $(document).ready(function () {
     }
 
     function getExpenseRowHtml(expense) {
-        return '<tr>' + getExpenseColumnsHtml(expense) + '</tr>';
+        return `<tr>${getExpenseColumnsHtml(expense)}</tr>`;
     }
 
     function getExpenseRowsHtml() {

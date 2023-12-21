@@ -121,9 +121,27 @@ $(document).ready(function () {
         $(this).parents('td').find('.clickarea').show();
     });
 
-    $vendorExpenseTable.on('click', '.reset', function () {
+    $vendorExpenseTable.on('click', '.reset', async function () {
+        let $txtField = $(this).parents('.input-area').find('.txt_modified');
+        const vendorIndex = $txtField.attr('data-vendor-index');
+        const expenseIndex = $txtField.attr('data-expense-index');
+        if (!expenseData.vendors[vendorIndex].expenses[expenseIndex].updated) {
+            $(this).parents('.input-area').hide();
+            $(this).parents('td').find('.clickarea').show();
+            return;
+        }
+        const month = Number(expenseIndex) + 1;
+        let requestData = {
+            vendor_id: expenseData.vendors[vendorIndex].id,
+            year: expenseData.year,
+            month: month,
+        };
+        const resp = await apiClient.post('/custom-admin/people/vendor/api/expense/reset', requestData);
+        expenseData.vendors[vendorIndex].expenses[expenseIndex].value = resp.data.expense;
+        expenseData.vendors[vendorIndex].expenses[expenseIndex].updated = false;
         $(this).parents('.input-area').hide();
         $(this).parents('td').find('.clickarea').show();
+        updateExpenseTable();
     });
 
     function getDefaultVendorExpenses() {

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 class ClientType(models.Model):
 	name = models.CharField(max_length=100)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -29,11 +30,11 @@ class Client(models.Model):
 		('OTR', 'Other'),
 	)
 	client_name = models.CharField(max_length=255)
-	address1 = models.TextField()
+	address1 = models.TextField(null=True, blank=True)
 	address2 = models.TextField(null=True, blank=True)
-	city = models.CharField(max_length=20)
-	state = models.CharField(max_length=20)
-	zipcode = models.CharField(max_length=10)
+	city = models.CharField(max_length=20, null=True, blank=True)
+	state = models.CharField(max_length=20, null=True, blank=True)
+	zipcode = models.CharField(max_length=10, null=True, blank=True)
 	client_type = models.ForeignKey(ClientType, null=True, on_delete=models.CASCADE)
 	client_status = models.CharField(max_length=2, choices=CLIENT_STATUSES)
 	billing_structure = models.CharField(max_length=2, choices=BILLING_STRUCTURE)
@@ -64,7 +65,7 @@ class Project(models.Model):
 	#confidence = models.CharField(max_length=5, null=True, blank=True, help_text='Please assign confidence as %')
 	start_date = models.DateField(null=True, blank=True)
 	end_date = models.DateField(null=True, blank=True)
-	project_budget = models.CharField(max_length=10,help_text='Please enter amount in USD',null=True, blank=True)
+	project_budget = models.CharField(max_length=10, help_text='Please enter amount in USD',null=True, blank=True)
 	billing_structure = models.CharField(max_length=2, choices=BILLING_STRUCTURE)
 	#total_fees = models.CharField(max_length=10, help_text='Please enter fee in USD')
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -87,11 +88,11 @@ class Employee(models.Model):
 		(BENEFITS_NO, "No"),
 	)
 	employee_name = models.CharField(max_length=255)
-	address1 = models.TextField()
+	address1 = models.TextField(null=True, blank=True)
 	address2 = models.TextField(null=True, blank=True)
-	city = models.CharField(max_length=20)
-	state = models.CharField(max_length=20)
-	zipcode = models.CharField(max_length=10)
+	city = models.CharField(max_length=20, null=True, blank=True)
+	state = models.CharField(max_length=20, null=True, blank=True)
+	zipcode = models.CharField(max_length=10, null=True, blank=True)
 	employee_start_date = models.DateField()
 	payment_structure = models.CharField(max_length=2, choices=PAYMENT_STRUCTURE)
 	employee_monthly_salary = models.CharField(max_length=10, help_text='Please enter salary in USD')
@@ -110,11 +111,11 @@ class Employee(models.Model):
 class Contractor(models.Model):
 	contractor_name = models.CharField(max_length=255)
 	contractor_role = models.CharField(max_length=20, null=True, blank=True)
-	address1 = models.TextField()
+	address1 = models.TextField(null=True, blank=True)
 	address2 = models.TextField(null=True, blank=True)
-	city = models.CharField(max_length=20)
-	state = models.CharField(max_length=20)
-	zipcode = models.CharField(max_length=10)
+	city = models.CharField(max_length=20, null=True, blank=True)
+	state = models.CharField(max_length=20, null=True, blank=True)
+	zipcode = models.CharField(max_length=10, null=True, blank=True)
 	contractor_start_date = models.DateField()
 	contractor_hourly_salary = models.CharField(max_length=10,help_text='Please enter salary in USD')
 	contractor_expected_weekly_hours = models.CharField(max_length=5)
@@ -231,10 +232,10 @@ class Invoice(models.Model):
 	client = models.ForeignKey(Client, on_delete=models.CASCADE)
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)
 	invoice_date = models.DateField()
-	invoice_number = models.CharField(max_length=255)
+	invoice_number = models.CharField(max_length=255, null=True, blank=True)
 	invoice_status = models.CharField(max_length=3, choices=INVOICE_STATUS)
 	expected_date_of_payment = models.DateField()
-	invoice_amount = models.CharField(max_length=10,help_text='Please enter amount in USD')
+	invoice_amount = models.CharField(max_length=10, help_text='Please enter amount in USD')
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

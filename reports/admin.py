@@ -10,7 +10,8 @@ from django.urls import path
 from django.contrib.auth.admin import csrf_protect_m
 
 from reports.custom_admin_views.contractor_expense_views import contractor_monthly_expense_edit_view, \
-    type_total_expense_edit_view_alt
+    type_total_expense_edit_view_alt, contractor_monthly_expense_reset_view, employee_monthly_expense_reset_view, \
+    type_total_expense_reset_view
 from reports.models import ContractorMonthlyExpense, ContractorMonthlyExpenseReport, TypeTotalExpense, \
     TypeTotalExpenseReport
 from tools.models import Contractor
@@ -669,6 +670,7 @@ class ContractorMonthlyExpenseAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         my_urls = [path("edit", self.admin_site.admin_view(contractor_monthly_expense_edit_view))]
+        my_urls = [path("reset", self.admin_site.admin_view(contractor_monthly_expense_reset_view))]
         return my_urls + urls
 
     @csrf_protect_m
@@ -709,6 +711,7 @@ class ContractorMonthlyExpenseAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+
 class EmployeeMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/employee_expense_page.html'
 
@@ -717,8 +720,10 @@ class EmployeeMonthlyExpenseAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super().get_urls()
-        my_urls = [path("edit", self.admin_site.admin_view(employee_monthly_expense_edit_view))]
-
+        my_urls = [
+            path("edit", self.admin_site.admin_view(employee_monthly_expense_edit_view)),
+            path("reset", self.admin_site.admin_view(employee_monthly_expense_reset_view))
+        ]
         return my_urls + urls
 
     @csrf_protect_m
@@ -759,6 +764,7 @@ class EmployeeMonthlyExpenseAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
         return TemplateResponse(request, self.change_list_template, context)
 
+
 class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
     change_list_template = 'admin/expense_expense_page.html'
 
@@ -767,8 +773,10 @@ class ExpenseMonthlyExpenseAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super().get_urls()
-        my_urls = [path("edit", self.admin_site.admin_view(type_total_expense_edit_view_alt))]
-
+        my_urls = [
+            path("edit", self.admin_site.admin_view(type_total_expense_edit_view_alt)),
+            path("reset", self.admin_site.admin_view(type_total_expense_reset_view))
+        ]
         return my_urls + urls
 
     @csrf_protect_m
