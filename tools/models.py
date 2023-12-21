@@ -226,9 +226,9 @@ class Invoice(models.Model):
 	INVOICE_STATUS = (
 		('P', 'Paid'),
 		('S', 'Sent'),
-		('TBI', 'To Be Invoiced')
+		# ('TBI', 'To Be Invoiced'),
+		('NS', 'Not Sent'),
 	)
-
 	client = models.ForeignKey(Client, on_delete=models.CASCADE)
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)
 	invoice_date = models.DateField()

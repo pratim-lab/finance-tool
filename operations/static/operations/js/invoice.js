@@ -44,8 +44,8 @@ $(document).ready(function () {
             optionsHtml = '<td class="annual_revenue"><span class="sent">' + invoice.invoice_status + '</span></td>';
         } else if(invoice.invoice_status === 'Paid'){
             optionsHtml = '<td class="annual_revenue"><span class="paid">' + invoice.invoice_status + '</span></td>';
-        } else if(invoice.invoice_status === 'To Be Invoiced'){
-            optionsHtml = '<td class="annual_revenue"><span class="to-be-invoiced">' + invoice.invoice_status + '</span></td>';
+        } else if(invoice.invoice_status === 'Not Sent'){
+            optionsHtml = '<td class="annual_revenue"><span class="not-sent">' + invoice.invoice_status + '</span></td>';
         } else {
             optionsHtml = '<td class="annual_revenue">' + invoice.invoice_status + '</td>';
         }
