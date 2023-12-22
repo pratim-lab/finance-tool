@@ -805,9 +805,9 @@ $(document).ready(function () {
         $projectClient.val('');
         $projectProjectName.val('');
         $projectProjectType.val('');
-        $projectStarDate.val();
-        $projectEndDate.val();
-        $projectBudget.val();
+        $projectStarDate.val('');
+        $projectEndDate.val('');
+        $projectBudget.val('');
         $projectBillingStructure.val('');
     }
 

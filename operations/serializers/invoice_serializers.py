@@ -44,6 +44,7 @@ class ChoiceField(serializers.ChoiceField):
 class InvoiceAddSerializer(serializers.ModelSerializer):
     client_obj = InvoiceClientSerializer(read_only=True, source='client')
     project_obj = InvoiceProjectSerializer(read_only=True, source='project')
+    inv_status = ChoiceField(choices=Invoice.INVOICE_STATUS, read_only=True, source='invoice_status')
 
     def validate(self, data):
         if data['invoice_status'] == "S" or data['invoice_status'] == "P":
@@ -63,6 +64,7 @@ class InvoiceAddSerializer(serializers.ModelSerializer):
             'invoice_date',
             'invoice_number',
             'invoice_status',
+            'inv_status',
             'expected_date_of_payment',
             'invoice_amount',
         ]

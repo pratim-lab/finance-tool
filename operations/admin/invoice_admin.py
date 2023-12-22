@@ -5,8 +5,9 @@ from django.utils.html import format_html
 
 from djangoproject.admin import custom_admin
 from operations.admin_views.invoice_views import (InvoiceCreateAdminAPIView, InvoiceRetrieveUpdateDestroyAdminAPIView,
-                                                 InvoiceListView)
+                                                  InvoiceListView)
 from operations.forms.invoice_forms import InvoiceAddForm
+from operations.forms.project_forms import ProjectAddForm
 from operations.models import Invoice
 
 
@@ -21,7 +22,6 @@ class InvoiceAdmin(admin.ModelAdmin):
             path("api/add", self.admin_site.admin_view(InvoiceCreateAdminAPIView.as_view())),
             path("api/list", self.admin_site.admin_view(InvoiceListView.as_view())),
             path("api/<pk>", self.admin_site.admin_view(InvoiceRetrieveUpdateDestroyAdminAPIView.as_view())),
-
         ]
         return my_urls + urls
 
@@ -45,7 +45,11 @@ class InvoiceAdmin(admin.ModelAdmin):
 
     @csrf_protect_m
     def changelist_view(self, request, extra_context=None):
-        return super().changelist_view(request, extra_context={"invoice_add_form": InvoiceAddForm(), "title": "Invoices"})
+        return super().changelist_view(request, extra_context={
+            "title": "Invoices",
+            "invoice_add_form": InvoiceAddForm(),
+            "project_form": ProjectAddForm()
+        })
 
 
 custom_admin.register(Invoice, InvoiceAdmin)
