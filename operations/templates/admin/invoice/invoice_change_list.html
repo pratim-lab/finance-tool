@@ -79,11 +79,18 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="exampleFormControlTextarea1" class="form-label">Project</label>
+                                    <div class="wrapeselectbtn">
                                     {{ invoice_add_form.project }}
                                     <div class="btn-edit-add">
-                                        <button type="button" class="btn" id="btn-edit-project">Edit</button>
+                                        <button type="button" class="btn" id="btn-edit-project">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M13.8766 3.12262L16.8781 6.12476L17.3787 5.62407C18.2074 4.79519 18.2074 3.45148 17.3787 2.62259C16.5497 1.79345 15.2055 1.79345 14.3766 2.62259L13.8766 3.12262Z" fill="#5C5F62"/>
+                                                <path d="M15.5001 7.50002L12.4986 4.49788L2.97429 14.0227L2 17.9994L5.97577 17.0248L15.5001 7.50002Z" fill="#5C5F62"/>
+                                                </svg>
+                                        </button>
                                         <button type="button" class="btn" id="btn-add-project">+</button>
                                     </div>
+                                </div>
                                     <ul id="id_error_{{ invoice_add_form.project.name }}" class="error_container"
                                         style="color: red;"></ul>
                                 </div>

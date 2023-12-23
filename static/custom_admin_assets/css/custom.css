@@ -7,6 +7,7 @@ body {
     padding: 0;
     margin: 0;
     font-size: 16px;
+    /* background-color: #F4F4F4; */
 }
 
 img {
@@ -41,6 +42,9 @@ a {
 
 .listing-table table tr td a {
     color: #212529;
+}
+.listing-table canvas{
+    padding: 18px;
 }
 
 .listing-table table tr td a:hover {
@@ -506,7 +510,16 @@ span.inactive {
 
 .mid-menu {
     margin-top: -30px;
+    /* position: relative; */
 }
+/* .mid-menu:before{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    left: 0;
+} */
 
 .input-area {
     width: 92px;
@@ -1186,7 +1199,15 @@ a.tooltiplink:hover::after {
 }
 
 .wrapeselectbtn .btn-edit-add button {
-    color: #fff;
+    color: #5C5F62;
+    border-radius: 4px;
+    border: 1px solid  #BABFC3;
+    background: #FFF!important;
+    /* shadow-button */
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.05);
+    padding: 3px 5px;
+    width: 38px;
+    font-size: 20px;
 }
 
 .staftab table tbody {
@@ -1318,4 +1339,61 @@ a.tooltiplink:hover::after {
     #editModalStaff .modal-dialog {
         max-width: 373px;
     }
+}
+
+/* Invoice page */
+.paid, .sent, .not-sent{
+    position: relative;
+    background-color: #AEE9D1;
+    border-radius: 30px;
+    display: inline-block;
+    padding: 5px 10px;
+    padding-left: 20px;
+}
+.sent{
+    background-color: #FFEA8A;
+}
+.not-sent{
+    background-color: #FED3D1;
+}
+.paid:before, .sent:before, .not-sent:before{
+    position: absolute;
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: url(../images/PIP.svg) 0 0 no-repeat;
+    top: 10px;
+    left: 7px;
+}
+.sent:before{
+    background: url(../images/PIP2.svg) 0 0 no-repeat;
+}
+.not-sent:before{
+    background: url(../images/PIP3.svg) 0 0 no-repeat;
+}
+#forecast-table .trow th{
+    position: relative;
+}
+#forecast-table .trow th:before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    background-color: #2A3ACD;
+    top: 40%;
+    left: 0;
+}
+#forecast-table .trow:nth-child(2) th:before{
+    background-color: #208C1E;
+}
+#forecast-table .trow:nth-child(3) th:before{
+    background-color: #F35050;
+}
+.pipproject{
+    display: flex;
+    gap: 7px;
+}
+.dropend a {
+    color: #212529;
 }

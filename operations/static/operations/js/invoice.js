@@ -194,6 +194,7 @@ $(document).ready(function () {
         if (resp.status === 201) {
             resp.data.project = resp.data.project_obj;
             resp.data.client = resp.data.client_obj;
+            resp.data.invoice_status = resp.data.inv_status;
             invoiceData.results = [resp.data, ...invoiceData.results];
             updateTable();
             $invoiceModal.modal('hide');
@@ -213,6 +214,7 @@ $(document).ready(function () {
         if (resp.status === 200) {
             resp.data.project = resp.data.project_obj;
             resp.data.client = resp.data.client_obj;
+            resp.data.invoice_status = resp.data.inv_status;
             for (let i = 0; i < invoiceData.results.length; i++) {
                 if (invoiceData.results[i].id === resp.data.id) {
                     invoiceData.results[i] = resp.data;
