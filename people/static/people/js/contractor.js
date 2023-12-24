@@ -92,18 +92,18 @@ $(document).ready(function () {
         }
         let lastRowTds = '';
 
-        lastRowTds += '<th><div class="totals">Total</div></th>';
+        lastRowTds += '<th><div class="totals"><b>Total</b></div></th>';
         for (let i = 1; i <= 12; i++) {
             lastRowTds += `
                 <td>
                     <span></span>
-                    <span>${getFormattedAmount(expenseData.monthlyTotal[expenseData.year][i])}</span>
+                    <span><b>${getFormattedAmount(expenseData.monthlyTotal[expenseData.year][i])}</b></span>
                 </td>`;
         }
         lastRowTds += `
             <td>
                 <span></span>
-                <span id="total">${getFormattedAmount(expenseData.total)}</span>
+                <span id="total"><b>${getFormattedAmount(expenseData.total)}</b></span>
             </td>`;
         const lastRow = '<tr>' + lastRowTds + '</tr>';
         return lastRow + rows;
@@ -177,11 +177,6 @@ $(document).ready(function () {
         $(this).parents('.input-area').hide();
         $(this).parents('td').find('.clickarea').show();
     });
-
-    // $('#id_tbody').on('click', '.reset', function () {
-    //     $(this).parents('.input-area').hide();
-    //     $(this).parents('td').find('.clickarea').show();
-    // });
 
     function updateExpenseTable(updatedContractor) {
         let matched = false;
@@ -335,7 +330,7 @@ $(document).ready(function () {
         }
         return `
             <li class="${statusClass}" data-index="${index}">
-                <a href="#">
+                <a href="">
                     <label>${contractor.contractor_name}</label><br/>
                     <span>${contractor.city}, ${contractor.state}</span>
                 </a>
@@ -427,13 +422,11 @@ $(document).ready(function () {
             contractor_estimated_weekly_salary: $('#id_contractor_estimated_weekly_salary').val(),
             is_active: $('#id_is_active').is(":checked")
         };
-
         if (currentOperation === ADD) {
             addContractor(contractorData);
         } else if (currentOperation === EDIT) {
             editContractor(contractorData);
         }
-
     });
 
     $('#btn_modal_contractor').click(function () {
@@ -489,7 +482,8 @@ $(document).ready(function () {
     });
 
 
-    $('#id_ul_contractors').on('click', 'li', async function () {
+    $('#id_ul_contractors').on('click', 'li', async function (e) {
+        e.preventDefault();
         selectedIndex = Number($(this).attr('data-index'));
         $(this).parent().find('li').removeClass('active');
         $(this).addClass('active');

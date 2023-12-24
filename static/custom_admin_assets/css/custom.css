@@ -916,8 +916,8 @@ span.no {
 }
 
 .listing-table .staftab table tr th:first-child {
-    width: 220px;
-    display: block;
+    /*width: 220px;*/
+    /*display: block;*/
 }
 
 .listing-table .business-table table tr th:last-child {

@@ -3,6 +3,15 @@ if (!$) {
 }
 
 $(document).ready(function () {
+
+    function getFormattedAmount(amount) {
+        return Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(Math.floor(amount));
+    }
+
     const $incomeTypeSelect = $('#income_type_select');
 
     let filters = {
@@ -99,9 +108,9 @@ $(document).ready(function () {
         let totalAmount = 0;
         for (let i = 0; i < amounts.length; i++) {
             totalAmount += amounts[i];
-            tds += `<td>${amounts[i]}</td>`;
+            tds += `<td>${getFormattedAmount(amounts[i])}</td>`;
         }
-        tds += `<td>${totalAmount}</td>`;
+        tds += `<td>${getFormattedAmount(totalAmount)}</td>`;
         return `<tr class="trow">${tds}</tr>`;
     }
 
@@ -120,11 +129,11 @@ $(document).ready(function () {
         updateForecastTable();
     }
 
-    getForecastGraphData();
-
     $incomeTypeSelect.change(function (e) {
         filters.incomeType = $(this).val();
         getForecastGraphData();
     });
+
+    getForecastGraphData();
 
 });

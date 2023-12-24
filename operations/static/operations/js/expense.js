@@ -196,7 +196,7 @@ $(document).ready(function () {
                 </div>
             </th>
             <td class="client_type">${expense.recurring_payment}</td>
-            <td class="client_status">${expense.expense_payment_amount}</td>
+            <td class="client_status">${getFormattedAmount(expense.expense_payment_amount)}</td>
             <td class="active_projects">${expense.date_of_first_payment}</td>
         `;
     }

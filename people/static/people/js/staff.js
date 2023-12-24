@@ -5,8 +5,12 @@ if (!$) {
 $(document).ready(function () {
     // Cost tab
     let reportData = {};
+    let total = 0;
 
     function getFormattedAmount(amount) {
+        if (amount === '') {
+            return "";
+        }
         return Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
@@ -15,6 +19,7 @@ $(document).ready(function () {
     }
 
     function calculateMonthlyTotal() {
+        total = 0;
         const year = reportData.year;
         let monthlyTotal = {};
         monthlyTotal[year] = {
@@ -31,11 +36,11 @@ $(document).ready(function () {
             "11": 0,
             "12": 0
         };
-
         for (let i = 0; i < reportData.rows.length; i++) {
-            for (let j = 0; j < reportData.rows[i].length; j++) {
+            for (let j = 1; j < reportData.rows[i].length - 1; j++) {
                 const monthStr = reportData.rows[i][j].month;
                 monthlyTotal[year][monthStr] += Number(reportData.rows[i][j].expense);
+                total += Number(reportData.rows[i][j].expense);
             }
         }
         reportData.monthlyTotal = monthlyTotal;
@@ -54,17 +59,19 @@ $(document).ready(function () {
         let rows = '';
         for (let i = 0; i < reportData.rows.length; i++) {
             let tds = '';
+            let staffTotal = 0;
             for (let j = 0; j < reportData.rows[i].length; j++) {
                 const col = reportData.rows[i][j];
                 if (j === 0) {
                     tds += '<th>' + col.name + '</th>';
                 } else if (j === reportData.rows[i].length - 1) {
-                    // tds += '<td id="yearly_total_contractor_"' + expenseData.rows[0].id + '>' + col + '</td>';
+                    // tds += '<td id="yearly_total_contractor_"' + reportData.rows[0].id + '>' + getFormattedAmount(col) + '</td>';
                 } else {
                     let updatedClass = '';
                     if (col.updated) {
                         updatedClass = 'updated';
                     }
+                    staffTotal += col.expense;
                     tds += `
                         <td class="${updatedClass}">
                             <span class="clickarea"><span class="val">${getFormattedAmount(col.expense)}</span></span>
@@ -80,24 +87,25 @@ $(document).ready(function () {
                         `;
                 }
             }
+            tds += `<td>${getFormattedAmount(staffTotal)}</td>`;
             const row = `<tr>${tds}</tr>`;
             rows += row;
         }
         let lastRowTds = '';
-        lastRowTds += '<th><div class="totals">Total</div></th>';
+        lastRowTds += '<th><div class="totals"><b>Total</b></div></th>';
         for (let i = 1; i <= 12; i++) {
             lastRowTds += `
                 <td>
                     <span></span>
-                    <span>${getFormattedAmount(reportData.monthlyTotal[reportData.year][i])}</span>
+                    <span><b>${getFormattedAmount(reportData.monthlyTotal[reportData.year][i])}</b></span>
                 </td>
                 `;
         }
-        lastRowTds += '' +
-        '<td>' +
-            '<span></span>' +
-            '<span id="total">' + getFormattedAmount(reportData.total) + '</span>' +
-        '</td>';
+        lastRowTds += `
+            <td>
+                <span></span>
+                <span id="total"><b>${getFormattedAmount(total)}</b></span>
+            </td>`;
         const lastRow = `<tr>${lastRowTds}</tr>`;
         return lastRow + rows;
     }
@@ -116,8 +124,6 @@ $(document).ready(function () {
         reportData = response.data;
         updateReportTable();
     }
-
-    fetchReportData();
 
     $('#id_tbody').on('click', '.clickarea', function () {
         $(this).hide();
@@ -230,13 +236,13 @@ $(document).ready(function () {
             </th>
             <td class="project_role">${item.project_role}</td>
             <td class="employee_monthly_salary">${getFormattedAmount(item.employee_monthly_salary)}</td>
-            <td class="fte_billable_rate">${item.fte_billable_rate}</td>
+            <td class="fte_billable_rate">${getFormattedAmount(item.fte_billable_rate)}</td>
             <td class="benefits">${item.benefits}</td>
         `;
     }
 
     function getItemRowHtml(item, index) {
-        return '<tr>' + getItemColumnsHtml(item, index) + '</tr>';
+        return `<tr>${getItemColumnsHtml(item, index)}</tr>`;
     }
 
     function getItemRowsHtml() {
@@ -280,7 +286,7 @@ $(document).ready(function () {
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </a>
             </li>
-                ${paginationHtml}
+            ${paginationHtml}
             <li class="page-item">
                 <a class="page-link" href="#" id="id_btn_next_page">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -303,13 +309,11 @@ $(document).ready(function () {
         for (let key in errorData) {
             let errorHtml = '';
             for (let i = 0; i < errorData[key].length; i++) {
-                errorHtml += '<li>* ' + errorData[key][i] + '</li>';
+                errorHtml += `<li>* ${errorData[key][i]}</li>`;
             }
             $('#id_error_' + key).html(errorHtml);
         }
     }
-
-    getItems();
 
     let currentOperation = 'add';
 
@@ -428,7 +432,6 @@ $(document).ready(function () {
         } else if (currentOperation === 'edit') {
             editItem(data);
         }
-
     });
 
     $('tbody').on('click', '.btn-item-edit', async function (e) {
@@ -505,5 +508,8 @@ $(document).ready(function () {
     $("#id_employee_monthly_tax").blur(function () {
         calculate_net();
     });
+
+    fetchReportData();
+    getItems();
 
 });

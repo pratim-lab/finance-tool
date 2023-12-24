@@ -150,7 +150,7 @@ $(document).ready(function () {
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </a>
             </li>
-                ${paginationHtml}
+            ${paginationHtml}
             <li class="page-item">
                 <a class="page-link" href="#" id="id_btn_next_page">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>

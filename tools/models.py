@@ -119,7 +119,7 @@ class Contractor(models.Model):
 	contractor_start_date = models.DateField()
 	contractor_hourly_salary = models.CharField(max_length=10,help_text='Please enter salary in USD')
 	contractor_expected_weekly_hours = models.CharField(max_length=5)
-	contractor_estimated_weekly_salary = models.CharField(max_length=10,help_text='in USD')
+	contractor_estimated_weekly_salary = models.CharField(max_length=10, help_text='in USD')
 	is_active = models.BooleanField(default=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
@@ -176,7 +176,7 @@ class Expense(models.Model):
 		('Tax Preparation Files', 'Tax Preparation Files'),
 		('Travel', 'Travel'),
 		('Utilities', 'Utilities'),
-		('Other','Other')
+		('Other', 'Other')
 	)
 
 	# with open(os.path.dirname(__file__)+'/json_data/expenses.json') as f:
